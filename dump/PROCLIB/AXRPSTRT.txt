@@ -1,0 +1,72 @@
+//AXRPSTRT PROC AXR=00                                                  00010000
+//* START OF SPECIFICATIONS ******************************************  00020000
+//*                                                                  *  00030000
+//* MEMBER NAME:  AXRPSTRT                                           *  00040000
+//*                                                                  *  00050000
+//*  DESCRIPTIVE NAME:                                               *  00060000
+//*    PROCEDURE USED TO START AXR (SYSTEM REXX) ADDRESS SPACE AFTER *  00070000
+//*    IT HAS TERMINATED.                                            *  00080000
+//*                                                                  *  00090000
+//*01* PROPRIETARY STATEMENT=                                        *  00100000
+//***PROPRIETARY_STATEMENT********************************************  00110000
+//*                                                                  *  00120000
+//* LICENSED MATERIALS - PROPERTY OF IBM                             *  00130000
+//* 5694-A01                                                         *  00140000
+//* COPYRIGHT IBM CORP. 2007,2009                                    *  00150000
+//*                                                                  *  00160000
+//* STATUS = HBB7760                                                 *  00170000
+//*                                                                  *  00180000
+//***END_OF_PROPRIETARY_STATEMENT*************************************  00190000
+//*                                                                  *  00200000
+//*  FUNCTION:  THIS JCL PROCEDURE WILL ATTEMPT TO START THE         *  00210000
+//*    AXR (SYSTEM REXX) ADDRESS SPACE.                              *  00220000
+//*                                                                  *  00230000
+//*  USE:  THIS PROCEDURE CAN BE USED BY AN OPERATOR TO REQUEST      *  00240000
+//*    THAT THE AXR ADDRESS SPACE BE RE-STARTED                      *  00250000
+//*    AFTER THE ADDRESS SPACE HAS ALREADY TERMINATED.               *  00260000
+//*                                                                  *  00270000
+//*  SYNTAX:  S AXRPSTRT                                             *  00280000
+//*           S AXRPSTRT,AXR=nn                                      *  00290000
+//*           S AXRPSTRT,AXR=(aa,bb,...)                             *  00300000
+//*                                                                  *  00310000
+//*  INPUT:  Optional list of AXR parmlib members                    *  00320000
+//*                                                                  *  00330000
+//*  OUTPUT:  A NEW INSTANCE OF THE AXR  ADDRESS SPACE WILL          *  00340000
+//*    BE ATTEMPTED TO BE STARTED.                                   *  00350000
+//*                                                                  *  00360000
+//*      RETURN CODES:                                               *  00370000
+//*         0  -  ASCRE to start AXR address space was successful.   *  00380000
+//*               If the AXR address space fails to complete         *  00390000
+//*               initialization, a message will be issued to        *  00400000
+//*               document the problem.                              *  00410000
+//*                                                                  *  00420000
+//*                                                                  *  00430000
+//*         8  -  ASCRE to start AXR address space failed.           *  00440000
+//*               A message is issued to specify the return          *  00450000
+//*               and reason codes from ASCRE.                       *  00460000
+//*                                                                  *  00470000
+//*                                                                  *  00480000
+//*         12 -  Parse of the input parm to AXRPSTRT failed.        *  00490000
+//*               A message describing the syntax error will be      *  00500000
+//*               issued.                                            *  00510000
+//*                                                                  *  00520000
+//*                                                                  *  00530000
+//*  REQUIRES:   ACCESS TO SYS1.PROCLIB FROM SUBMITTING USERID.      *  00540000
+//*                                                                  *  00550000
+//*  REFERENCES:  NONE                                               *  00560000
+//*                                                                  *  00570000
+//* DISTRIBUTION LIBRARY:  SYS1.PROCLIB                              *  00580000
+//*                                                                  *  00590000
+//* CHANGE ACTIVITY:                                                 *  00600000
+//*                                                                  *  00610000
+//*FLAG LINEITEM  FMID    DATE    ID    COMMENT                      *  00620000
+//* $L0=RXJMGS03  HBB77BR 060115  PDCS: AXR RESTART                  *  00630000
+//* $P1=ME09973   HBB77BR 070501  PDCS: PROLOG UPDATE (OA20905)      *  00640000
+//* $01=OA22774   HBB77SR 071008  PDCS: ADD PART INTO HBB77SR        *  00650000
+//* $02=OA26510   HBB77SR 081015  PDCS: Doc updates                  *  00660000
+//* $L1=SYSREXX   HBB7760 080527  PDCS: MULTIPLE PARMLIB MEMBERS     *  00670000
+//* $P2=ME15322   HBB7760 090115  PDCS: Doc updates                  *  00680000
+//*                                                                  *  00690000
+//* END OF SPECIFICATIONS ********************************************  00700000
+//AXRPSTRT EXEC PGM=AXRINSTR,TIME=NOLIMIT,PARM='AXR=&AXR'               00710000
+//         PEND                                                         00720000

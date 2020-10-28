@@ -1,0 +1,2 @@
+//ASCH PROC ASCH=00                                                     00050000
+//ASCH EXEC PGM=ASBSCHIN,PARM='ASCH=&ASCH',REGION=0K                    00100000

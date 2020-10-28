@@ -1,0 +1,50 @@
+//<JOBNAM> JOB <ACCT>,'<PRGNAM>',CLASS=<JCLASS>,REGION=<REGION>,
+//         MSGCLASS=<MCLASS>,TIME=NOLIMIT<NOTIFY>
+//* THE FOLLOWING LINE IS FOR JES2 SYSTEMS (HERE: USED AS DEFAULT)
+/*JOBPARM SYSAFF=*
+//* THE FOLLOWING LINE IS FOR JES3 SYSTEMS (HERE: IT IS DISABLED)
+//* //*MAIN SYSTEM=(<TSYS>)
+//*
+//DEFENV   SET ENV='ENVAR(<ENV>)'
+//DEFPORT  SET PORT='<PORT>'
+//DEFTIME  SET T='<TIMEOUT>'
+//DEFLOG   SET LOG='<ALOGDSN>'
+//DEFAV    SET AV='<AV>'
+//DEFTIME  SET TIMESTMP='<TSTAMP>'
+//*
+//************************************************************
+//* HCD AGENT JOB SKELETON FOR TCP/IP HOST CONNECTION        *
+//*                                                          *
+//* BEFORE USING THIS SKELETON, PLEASE ENSURE THAT THE       *
+//* JOB WILL RUN ON THE LOCAL SYSTEM:                        *
+//*   FOR JES2 SYSTEMS:                                      *
+//*     ADAPT THE JOBPARM SYSAFF PARAMETER (IF NECESSARY)    *
+//*   FOR JES3 SYSTEMS:                                      *
+//*     COMMENT THE LINE FOR JES2 AND UNCOMMENT THE LINE     *
+//*     FOR JES3. THEN ADAPT THE MAIN SYSTEM PARAMETER.      *
+//*     IF YOU DO NOT MODIFY <TSYS> IN THE MAIN STATEMENT    *
+//*     THEN THE DISPATCHER WILL SUBSTITUE THE LOCAL SYSTEM  *
+//*     NAME FOR <TSYS>.                                     *
+//*                                                          *
+//* YOU SHOULD ALSO SUBSTITUTE ACCOUNTING INFORMATION FOR    *
+//* '<ACCT>' ABOVE, SO THAT INDIVIDUAL USERS DO NOT HAVE     *
+//* TO. ALL OTHER SUBSTITUTABLE PARAMETERS IN THE SKELETON   *
+//* WILL BE SUPPLIED BY THE DISPATCHER.                      *
+//*                                                          *
+//************************************************************
+//*    Licensed Materials - Property of IBM                  *
+//*    5650-ZOS                                              *
+//*    Copyright IBM Corp. 1992, 2019                        *
+//*                                                          *
+//*    Status = HCS77C0                                      *
+//************************************************************
+//*
+//AGNT     EXEC PGM=<PROG>,
+//         PARM='&ENV/P=&PORT T=&T L=&LOG &AV'
+//STEPLIB  DD DISP=SHR,DSN=SYS1.SCBDHENU
+<STEPLIB>
+//SYSOUT   DD <SYSOUT>
+//SYSPRINT DD <SYSPRINT>
+//CEEDUMP  DD <CEEDUMP>
+<HCDPROF>
+<HCDTRACE>

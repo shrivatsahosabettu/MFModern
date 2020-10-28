@@ -1,0 +1,120 @@
+
+//APSWPROM PROC
+//**************** THE PSF WRITER PROCEDURE ******************
+//*
+//*01* MODULE-NAME = APSWPROM
+//* $MOD(APSWPROM) COMP(APS) PROD(PSF) : VERSION 4.6.0
+//*
+//*01* DESCRIPTIVE-NAME = START PROCEDURE FOR MICROFILM
+//*                           DEVICES
+//*
+//*01* STATUS = HPRF460
+//*
+//*01* FUNCTION = SET PSF OPTIONS AND RESOURCES.                   @DUC
+//*
+//*01* NOTES = THE FULL NAME OF THE DEFAULT PAGEDEF IS
+//*               P1A06462.
+//*            THE FULL NAME OF THE DEFAULT FORMDEF IS
+//*               F1A10110.
+//*
+//*            THE FULL NAME OF THE DEFAULT CORE FONT IS X060D8.   @01A
+//*            THE FULL NAME OF EQUIVALENT COMPATIBILITY FONT      @01A
+//*            IS X0GT15.                                          @01A
+//*
+//*            THE FULL NAME OF THE SEPARATOR PAGE PAGEDEF IS
+//*                P1V06483.
+//*
+//*            THE FULL NAME OF THE SEPARATOR PAGE CORE FONT IS
+//*            X060D8.  THE FULL NAME OF EQUIVALENT COMPATIBILITY  @01C
+//*            FONT IS X0GT15.                                     @DRC
+//*
+//*01* REQUIRED ACTIONS =
+//*       1) DEFAULT COMSETUP - DEFAULT COMSETUP FILES ARE SPECIFIED
+//*            IN THIS START PROCEDURE BUT ARE NOT PROVIDED WITH
+//*            PSF/MVS.  DEFAULT COMSETUP FILES MUST BE GENERATED
+//*            WITH SOFTWARE PROVIDED WITH YOUR AFP/COM DEVICE AND
+//*            PLACED IN THE DATASET SPECIFIED ON THE OBJCON01 DD
+//*            IN THIS START PROCEDURE.
+//*
+//*            THE FULL NAME OF THE DEFAULT COMSETUP IS H1SETUPD.
+//*            THE FULL NAME OF THE SEPARATOR PAGE COMSETUP IS
+//*                H1SETUPS.
+//*
+//*       2) RESOLUTION - THIS START PROCEDURE IS SET UP FOR DRIVING
+//*            THE AFP/COM DEVICE AT 240 PEL RESOLUTION.  TO CHANGE
+//*            IT TO DRIVE 300 PEL RESOLUTION AFP/COM DEVICES:
+//*          A) COMMENT OUT THE FIRST PRINTDEV STATEMENT AND
+//*             UNCOMMENT THE SECOND PRINTDEV STATEMENT.
+//*                                                                @DRD
+//*01* CHANGE-ACTIVITY :
+//* $00=OW10067,  HPRF220, 102494 BJ13JPG : AFP/COM SUPPORT
+//* $DU=LAPS0007,HPRF310,050698,BDKUMAL: Version 3.1.0             @DUA
+//* $DR=LAPS0007, HPRF310, 050698 BDKUMAL : Default to core font   @DRA
+//* $DS=LAPS0007, HPRF310, 073098 BDKUMAL : Move CCW Data Buffers  @DSA
+//* $01=OW39733,  HPRF310, 061699 BDKUMAL : Correct typo           @01A
+//* $DX=LAPS0008,HPRF320,991117,BUQ4RLB: Version 3.2.0             @DXA
+//* $EV=LAPS0009,HPRF330,010926,BUQ4RLB: Version 3.3.0             @EVA
+//* $FC=LAPS0010,HPRF340,030203,BDKULD:  Version 3.4.0             @FCA
+//* $FM=LAPS0011,HPRF410,050502,BDKUPG:  Version 4.1.0             @FMA
+//* $FU=LAPS0012,HPRF420,060630,BDKURDD: Version 4.2.0             @FUA
+//* $GD=LAPS0013,HPRF430,080515,BDKURDD: Version 4.3.0             @GDA
+//* $GH=LAPS0014,HPRF440,090922,BDKURDD: Version 4.4.0             @GHA
+//* $HH=LAPS0015,HPRF450,111202,BDKUGLM: Version 4.5.0             @HHA
+//* $IL=LAPS0016,HPRF460,151207,BDKUDWP: Version 4.6.0             @ILA
+//*
+//**** END OF SPECIFICATIONS ***/
+//STEP01   EXEC PGM=APSPPIEP,REGION=4096K
+//JOBHDR OUTPUT PAGEDEF=V06483,     /* JOB SEPARATOR PAGEDEF         */
+//       FORMDEF=A10110,CHARS=60D8, /* JOB SEPARATOR FORMDEF     @01C*/
+//       COMSETUP=H1SETUPS          /* JOB SEPARATOR COMSETUP        */
+//JOBTLR OUTPUT PAGEDEF=V06483,     /* JOB SEPARATOR PAGEDEF         */
+//       FORMDEF=A10110,CHARS=60D8, /* JOB SEPARATOR FORMDEF     @01C*/
+//       COMSETUP=H1SETUPS          /* JOB SEPARATOR COMSETUP        */
+//DSHDR  OUTPUT PAGEDEF=V06483,     /* DATA SET SEPARATOR PAGEDEF    */
+//       FORMDEF=A10110,CHARS=60D8, /* DATA SET SEPARATOR FDEF   @01C*/
+//       COMSETUP=H1SETUPS          /* DATA SET SEPARATOR COMSETUP   */
+//MSGDS  OUTPUT PAGEDEF=A06462,     /* MESSAGE DATASET PAGEDEF       */
+//       FORMDEF=A10110,            /* MESSAGE DATASET FORMDEF       */
+//       PIMSG=NO,CLASS=A           /* SEND MSG DATASET TO CLASS A   */
+//PRTINFO  DD DSN=APSWPROT.PRTINFO, /* Printer Information       @FMA*/
+//         DISP=SHR                 /* Report Dataset            @FMA*/
+//FONT01   DD   DSN=SYS1.FONTLIBB,  /* SYSTEM FONTS - 240 PEL        */
+//         DISP=SHR
+//FONT02   DD   DSN=SYS1.FONT300,   /* SYSTEM FONTS - 300 PEL        */
+//         DISP=SHR
+//PSEG01   DD   DSN=SYS1.PSEGLIB,   /* SYSTEM PAGE SEGMENTS          */
+//         DISP=SHR
+//OLAY01   DD   DSN=SYS1.OVERLIB,   /* SYSTEM OVERLAYS               */
+//         DISP=SHR
+//PDEF01   DD   DSN=SYS1.PDEFLIB,   /* SYSTEM PAGEDEFS               */
+//         DISP=SHR
+//FDEF01   DD   DSN=SYS1.FDEFLIB,   /* SYSTEM FORMDEFS               */
+//         DISP=SHR
+//OBJCON01 DD   DSN=SYS1.APSOCLIB,  /* SYSTEM OBJECT CONTAINERS      */
+//         DISP=SHR                 /*                               */
+//PRT1     CNTL
+//PRT1     PRINTDEV FONTDD=*.FONT01, /* 240 PEL FONT LIBRARY DD      */
+//*                                  /* <-- SEE REQUIRED ACTIONS     */
+//*                                  /*     ABOVE                    */
+//*PRT1     PRINTDEV FONTDD=*.FONT02, /* 300 PEL FONT LIBRARY DD     */
+//*                                   /* <-- SEE REQUIRED ACTIONS    */
+//*                                   /*     ABOVE                   */
+//         OVLYDD=*.OLAY01,         /* OVERLAY  LIBRARY DD           */
+//         PSEGDD=*.PSEG01,         /* SEGMENT  LIBRARY DD           */
+//         PDEFDD=*.PDEF01,         /* PAGEDEF  LIBRARY DD           */
+//         FDEFDD=*.FDEF01,         /* FORMDEF  LIBRARY DD           */
+//         OBJCONDD=*.OBJCON01,     /* OBJECT   LIBRARY DD           */
+//         JOBHDR=*.JOBHDR,         /* JOB HEADER SEPARATOR OUTPUT   */
+//         JOBTRLR=*.JOBTLR,        /* JOB TRAILER SEPARATOR OUTPUT  */
+//         DSHDR=*.DSHDR,           /* DATA SET HEADER OUTPUT        */
+//         MESSAGE=*.MSGDS,         /* MESSAGE DATA SET OUTPUT       */
+//         BUFNO=1,                 /* NUMBER OF WRITE DATA          */
+//*                                 /* BUFFERS                   @DSC*/
+//         PAGEDEF=A06462,          /* DEVICE PAGEDEF DEFAULT        */
+//         FORMDEF=A10110,          /* DEVICE FORMDEF DEFAULT        */
+//         COMSETUP=H1SETUPD,       /* DEFAULT COMSETUP MEMBER       */
+//         CHARS=(60D8),            /* DEVICE DEFAULT FONT       @01C*/
+//         PIMSG=YES,               /* ACCUMULATE DATA SET MESSAGES  */
+//         DATACK=BLOCK,            /* UNBLOCK DATA CHECKS           */
+//         TRACE=YES                /* BUILD INTERNAL TRACE      @DRC*/
+//PRT1     ENDCNTL

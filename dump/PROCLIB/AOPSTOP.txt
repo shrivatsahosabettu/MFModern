@@ -1,0 +1,32 @@
+//*-------------------------------------------------------------------
+//*
+//*  AOPSTOP - This procedure stops the Infoprint Server daemons.
+//*            The USERID assigned to this proc should be a member
+//*            of the AOPOPER group.
+//*
+//*-------------------------------------------------------------------
+//AOPSTOP  PROC OPTIONS=
+//*-------------------------------------------------------------------
+//*  AOPBATCH PARM specifies the path of the program to be run.
+//*  If Infoprint Server was not installed in /usr/lpp/Printsrv,
+//*  then this path should be changed as required for the installation
+//*  directory.
+//*-------------------------------------------------------------------
+//AOPSTOP  EXEC PGM=AOPBATCH,
+//   PARM='//usr/lpp/Printsrv/bin/aopstop &OPTIONS'
+//STDOUT   DD   SYSOUT=*
+//STDERR   DD   SYSOUT=*
+//*-------------------------------------------------------------------
+//*  STDENV is optionally used to specify environment variables.
+//*
+//*  A Unix System Services file can be specified, for example:
+//*    //STDENV  DD  PATH='/etc/Printsrv/env.conf',PATHOPTS=ORDONLY
+//*
+//*  or an MVS data set, for example:
+//*    //STDENV  DD  DISP=SHR,DSN=hlq.stdenv
+//*
+//*  This file or data set should contain VARIABLE=VALUE pairs
+//*  starting in column 1, for example:
+//*
+//*  AOPCONF=/etc/Printsrv/aopd.conf
+//*-------------------------------------------------------------------

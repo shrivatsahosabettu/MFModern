@@ -1,0 +1,23 @@
+//IFGOCETR PROC                                                         00050000
+//******************************************************************    00100000
+//*$MAC(IFGOCETR):    DFSMS/MVS O/C/EOV TRACE STARTED TASK PROC    *    00150000
+//*                                                                *    00200000
+//* STATUS = DFSMS/MVS RELEASE 1.4.0                               *    00250000
+//*                                                                *    00300000
+//*PROPRIETARY V3 STATEMENT                                        *    00350000
+//*LICENSED MATERIALS - PROPERTY OF IBM                            *    00400000
+//*"RESTRICTED MATERIALS OF IBM"                                   *    00450000
+//*5695-DF1                                                        *    00500000
+//*(C) COPYRIGHT 1982,1993  IBM CORP.                              *    00550000
+//*END PROPRIETARY V3 STATEMENT                                    *    00600000
+//*                                                                *    00650000
+//*  FUNCTION -                                                    *    00700000
+//*     THIS PROCEDURE IS USED TO START THE DFSMS/MVS O/C/EOV      *    00750000
+//*     TRACE STARTED TASK ADDRESS SPACE.                          *    00800000
+//*                                                                *    00850000
+//*                                                                *    00900000
+//*$00=SERVICE,HDZ11D0,961008,SJPLJAL: O/C/E TRACE STARTED TASK    *    00950000
+//*                                    SUPPORT                     *    01000000
+//*                                                                *    01050000
+//******************************************************************    01100000
+//TRACEOCE EXEC PGM=IFG0OCET                                            01150000

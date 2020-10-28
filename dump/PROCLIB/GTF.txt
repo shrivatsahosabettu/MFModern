@@ -1,0 +1,6 @@
+//GTFNEW  PROC MEMBER=GTFPARM                                           00050000
+//IEFPROC EXEC PGM=AHLGTF,PARM='MODE=EXT,DEBUG=NO,TIME=YES',           *00083300
+//  TIME=1440,REGION=2880K                                              00116600
+//IEFRDER DD   DSNAME=SYS1.TRACE,UNIT=SYSDA,SPACE=(TRK,20),            *00150000
+//             DISP=(NEW,KEEP)                                          00200000
+//SYSLIB  DD   DSNAME=SYS1.PARMLIB(&MEMBER),DISP=SHR                    00250000

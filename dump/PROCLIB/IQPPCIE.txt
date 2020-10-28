@@ -1,0 +1,43 @@
+//PCIE    PROC                                                          00010000
+//PCIE    EXEC PGM=IQPINIT,REGION=0K,TIME=NOLIMIT                       00020000
+//*                                                                     00180000
+//********************************************************************/ 00190000
+//*                                                                  */ 00200000
+//*01* PROCEDURE NAME : IQPPCIE                                      */ 00210001
+//*                                                                  */ 00220000
+//*01* FUNCTION:                                                     */ 00230000
+//*                                                                  */ 00240000
+//*       The IQPPCIE procedure is used to start the PCIE function.  */ 00250001
+//*       It invokes the module IQPINIT.                             */ 00270000
+//*                                                                  */ 00280000
+//*01* PROPRIETARY STATEMENT=                                         * 00290000
+//***PROPRIETARY_STATEMENT********************************************* 00300000
+//*                                                                   * 00310000
+//* LICENSED MATERIALS - PROPERTY OF IBM                              * 00320000
+//* 5650-ZOS COPYRIGHT IBM CORP. 2013                                 * 00330001
+//*                                                                   * 00350000
+//* STATUS= HBB7790                                                   * 00360001
+//*                                                                   * 00370000
+//***END_OF_PROPRIETARY_STATEMENT************************************** 00380000
+//*                                                                  */ 00390000
+//*01* METHOD OF ACCESS:                                             */ 00400000
+//*                                                                  */ 00410000
+//*    None                                                          */ 00420000
+//*                                                                  */ 00450000
+//*                                                                  */ 00480000
+//*01* COMPONENT:                                                    */ 00490000
+//*                                                                  */ 00500000
+//*       SCIQP (PCIE)                                               */ 00510000
+//*                                                                  */ 00520000
+//*01* DISTRIBUTION LIBRARY:                                         */ 00530000
+//*                                                                  */ 00540000
+//*       SYS1.PROCLIB                                               */ 00550000
+//*                                                                  */ 00560000
+//*01* CHANGE ACTIVITY:                                              */ 00570000
+//*                                                                  */ 00580000
+//*  $L0=IOSPEN  ,HBB7790,110530,PDJI:  PCIE support                 */ 00590001
+//*     =ME22585 ,HBB7790,110922,PDJI:  Part re-shiiped with new     */ 00591001
+//*                                     name IQPPCIE                 */ 00600001
+//*  $L1=FPGA    ,HBB7790,130305,PDJI:  Remove SYSPRINT DD JCL       */ 00600101
+//*                                                                  */ 00601001
+//********************************************************************/ 00610000

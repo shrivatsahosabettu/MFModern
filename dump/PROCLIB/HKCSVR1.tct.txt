@@ -1,0 +1,44 @@
+//HKCSVR1 PROC PARMS='kc4zServer',ROOT='/usr/lpp/liberty_zos/current',
+//   OUTCLS='*',USERDIR='/etc/kc4z'
+//*HKCSVR1 PROC PARMS='kc4zServer',ROOT='/usr/lpp/zosmf',
+//*   OUTCLS='*',USERDIR='/sharedapps/kc4z'
+//*--------------------------------------------------------------*/
+//* kc4z  Websphere Liberty Profile server startup procedure    */
+//*                                                              */
+//* PROPRIETARY STATEMENT:                                       */
+//*                                                              */
+//*     LICENSED MATERIALS - PROPERTY OF IBM                     */
+//*     5650-ZOS COPYRIGHT IBM CORP. 2015 2019                   */
+//*     STATUS = HKCZ120                                         */
+//*--------------------------------------------------------------*/
+//*
+//* ROOT    - The path to the root of WebSphere Liberty Profile
+//*           install.
+//*           This path is used to find the product code.
+//* USERDIR - The path to the WebSphere Liberty Profile user area.
+//*           This path is used to store shared and server specific
+//*           configuration information and is equivalent to the
+//*           WLP_USER_DIR environment variable in the Unix shell.
+//*------------------------------------------------------------------
+//*  633388 20170308 JOD  Change to match liberty_zoa remove wlp dir.
+//*------------------------------------------------------------------
+//* Start the Websphere Liberty Profile server
+//*
+//* WLPUDIR - PATH DD that points to the Liberty Profile's "user"
+//*           directory. If the DD is not allocated, the user
+//*           directory location defaults to the wlp/usr directory
+//*           in the install tree.
+//* STDOUT  - Destination for stdout (System.out)
+//* STDERR  - Destination for stderr (System.err)
+//*------------------------------------------------------------------
+//STEP1   EXEC PGM=BPXBATSL,REGION=0M,TIME=NOLIMIT,
+//  PARM='PGM &ROOT./lib/native/zos/s390x/bbgzsrv --clean &PARMS'
+//WLPUDIR  DD PATH='&USERDIR.'
+//STDOUT   DD SYSOUT=&OUTCLS
+//STDERR   DD SYSOUT=&OUTCLS
+//*STDOUT   DD PATH='&ROOT/hkcsvr1.stdout',
+//*            PATHOPTS=(OWRONLY,OCREAT,OTRUNC),
+//*            PATHMODE=SIRWXU
+//*STDERR   DD PATH='&ROOT/hkcsvr1.stderr',
+//*            PATHOPTS=(OWRONLY,OCREAT,OTRUNC),
+//*            PATHMODE=SIRWXU

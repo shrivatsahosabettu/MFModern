@@ -1,0 +1,174 @@
+//APSWPROB PROC
+//**************** THE PSF SNA WRITER PROCEDURE ***************
+//*
+//*01* MODULE-NAME = APSWPROB
+//* $MOD(APSWPROB) COMP(APS) PROD(PSF) : VERSION 4.6.0
+//*
+//*01* DESCRIPTIVE-NAME = START PROCEDURE FOR PSF:
+//*
+//*  SNA ATTACHED PRINTER
+//*  240 PEL FONT RESOLUTION (CAN BE SWITCHED TO 300 PEL)
+//*  PRINTER SHARING                                               @GDC
+//*
+//*01* STATUS = HPRF460
+//*
+//*01* FUNCTION = SET PSF OPTIONS AND RESOURCES.                   @DUC
+//*
+//*01* NOTES = THE FULL NAME OF THE DEFAULT PAGEDEF IS
+//*               P1A06462.
+//*            THE FULL NAME OF THE DEFAULT FORMDEF IS
+//*               F1A10110.
+//*
+//*            THE FULL NAME OF THE DEFAULT CORE FONT IS X060D8.   @01A
+//*            THE FULL NAME OF EQUIVALENT COMPATIBILITY FONT      @01A
+//*            IS X0GT15.                                          @01A
+//*
+//*            THE FULL NAME OF THE SEPARATOR PAGE PAGEDEF IS
+//*                P1V06483.
+//*
+//*            THE FULL NAME OF THE SEPARATOR PAGE CORE FONT IS
+//*            X060D8.  THE FULL NAME OF EQUIVALENT COMPATIBILITY  @01C
+//*            FONT IS X0GT15.                                     @DRC
+//*
+//*            IF THE PRINTER IS A 300 PEL FONT PRINTER (A
+//*            3935 FOR EXAMPLE),
+//*            THE FIRST FONT01 DD STATEMENT BELOW
+//*            MUST BE COMMENTED OUT AND THE SECOND FONT01
+//*            DD MUST BE UNCOMMENTED.                             @DRC
+//*                                                                @DRD
+//*
+//*01* CHANGE-ACTIVITY :
+//* $00=LAPS0005, HPRF102, 120390 B53KJAU : INITIAL VERSION        @00A
+//* $DU=LAPS0007,HPRF310,050698,BDKUMAL: Version 3.1.0             @DUA
+//* $DR=LAPS0007, HPRF310, 050698 BDKUMAL : Default to core fonts  @DRA
+//* $01=OW39733,  HPRF310, 061699 BDKUMAL:  Correct typo           @01A
+//* $DX=LAPS0008,HPRF320,991117,BUQ4RLB: Version 3.2.0             @DXA
+//* $EV=LAPS0009,HPRF330,010926,BUQ4RLB: Version 3.3.0             @EVA
+//* $FC=LAPS0010,HPRF340,030203,BDKULD : Version 3.4.0             @FCA
+//* $FM=LAPS0011,HPRF410,050502,BDKUPG : Version 4.1.0             @FMA
+//* $FU=LAPS0012,HPRF420,060630,BDKURDD: Version 4.2.0             @FUA
+//* $GD=LAPS0013,HPRF430,080515,BDKURDD: Version 4.3.0             @GDA
+//* $GH=LAPS0014,HPRF440,090922,BDKURDD: Version 4.4.0           @GHADA
+//* $HH=LAPS0015,HPRF450,111202,BDKUGLM: Version 4.5.0             @HHA
+//* $02=OA46136, HPRF450,150622,BDKULMM: Correct system font       @02A
+//*                                      library names             @02A
+//* $IL=LAPS0016,HPRF460,151207,BDKUDWP: Version 4.6.0             @ILA
+//*
+//**** END OF SPECIFICATIONS ***/
+//*
+//STEP01   EXEC PGM=APSPPIEP,REGION=1750K
+//JOBHDR OUTPUT PAGEDEF=V06483,     /* JOB SEPARATOR PAGEDEF         */
+//       FORMDEF=A10110,CHARS=60D8  /* JOB SEPARATOR FORMDEF     @01C*/
+//JOBTLR OUTPUT PAGEDEF=V06483,     /* JOB SEPARATOR PAGEDEF         */
+//       FORMDEF=A10110,CHARS=60D8  /* JOB SEPARATOR FORMDEF     @01C*/
+//DSHDR  OUTPUT PAGEDEF=V06483,     /* DS  SEPARATOR PAGEDEF         */
+//       FORMDEF=A10110,CHARS=60D8  /* DS  SEPARATOR FORMDEF     @01C*/
+//MSGDS  OUTPUT PAGEDEF=A06462,     /* MESSAGE DATASET PAGEDEF       */
+//       FORMDEF=A10110             /* MESSAGE DATASET FORMDEF       */
+//PRTINFO  DD DSN=APSWPROT.PRTINFO, /* Printer Information       @FMA*/
+//         DISP=SHR                 /* Report Dataset            @FMA*/
+//FONT01   DD   DSN=SYS1.FONTLIBB,  /* SYSTEM FONTS              @02C*/
+//         DISP=SHR                                              @DRA*/
+//*FONT01  DD   DSN=SYS1.FONT300,   /* 300 PEL FONT LIBRARY      @02C*/
+//*        DISP=SHR
+//PSEG01   DD   DSN=SYS1.PSEGLIB,   /* SYSTEM PAGE SEGMENTS          */
+//         DISP=SHR
+//OLAY01   DD   DSN=SYS1.OVERLIB,   /* SYSTEM MEDIUM OVERLAYS        */
+//         DISP=SHR                 /*                               */
+//PDEF01   DD   DSN=SYS1.PDEFLIB,   /* SYSTEM PAGEDEFS               */
+//         DISP=SHR
+//FDEF01   DD   DSN=SYS1.FDEFLIB,   /* SYSTEM FORMDEFS               */
+//         DISP=SHR
+//* ***********************************************************      */
+//*              PRINTDEV                                            */
+//* ***********************************************************      */
+//PRT1     CNTL
+//PRT1     PRINTDEV FONTDD=*.FONT01, /* FONT LIBRARY DD              */
+//          OVLYDD=*.OLAY01,         /* OVERLAY  LIBRARY DD          */
+//          PSEGDD=*.PSEG01,         /* SEGMENT  LIBRARY DD          */
+//          PDEFDD=*.PDEF01,         /* PAGEDEF  LIBRARY DD          */
+//          FDEFDD=*.FDEF01,         /* FORMDEF  LIBRARY DD          */
+//          JOBHDR=*.JOBHDR,         /* JOB HEADER SEPARATOR         */
+//*                                  /*   OUTPUT                     */
+//          JOBTRLR=*.JOBTLR,        /* JOB TRAILER SEPARATOR        */
+//*                                  /*   OUTPUT                     */
+//          DSHDR=*.DSHDR,           /* DATA SET HEADER              */
+//*                                  /*   SEPARATOR                  */
+//          MESSAGE=*.MSGDS,         /* MESSAGE DATA SET OUTPUT      */
+//          PAGEDEF=A06462,          /* DEVICE PAGEDEF DEFAULT       */
+//          FORMDEF=A10110,          /* DEVICE FORMDEF DEFAULT       */
+//          CHARS=(60D8),            /* DEVICE DEFAULT FONT      @01C*/
+//          PIMSG=(YES,16),          /*Default,Accumulate data set   */
+//*                                  /* MESSAGES UP TO 16        @GDC*/
+//********************************************************************/
+//* Printer Connection Management #1                                 */
+//* The following lines can be used to set up VTAM RELREQ printer    */
+//* sharing based on TIME.                                           */
+//********************************************************************/
+//*         RELMODE=TIME,            /* Start release interval timer */
+//*                                  /* when release request made@GDA*/
+//*         RELINTV=1800,            /* Release printer 30 minutes   */
+//*                                  /* after release request    @GDA*/
+//*         ACQINTV=300,             /* Acquire printer 5 minutes    */
+//*                                  /* after releasing it       @GDA*/
+//*         MGMTMODE=OUTAVAIL,       /* Default, Acquire printer when*/
+//*                                  /* output available         @GDA*/
+//********************************************************************/
+//* Printer Connection Management #2                                 */
+//* The following lines can be used to set up VTAM RELREQ printer    */
+//* sharing based on when the printer is IDLE.                       */
+//********************************************************************/
+//*         RELMODE=IDLE,            /* Start release interval timer */
+//*                                  /* when no more work        @GDA*/
+//*         RELINTV=30,              /* Release printer 30 seconds   */
+//*                                  /* after being IDLE         @GDA*/
+//*         MGMTMODE=OUTAVAIL,       /* Default, Acquire printer when*/
+//*                                  /* output available         @GDA*/
+//********************************************************************/
+//* Printer Connection Management #3                                 */
+//* The following lines are set up for JES Spool-Driven printer      */
+//* sharing based on using the Disconnect Interval timer(DISCINTV).  */
+//********************************************************************/
+//          FAILURE=WCONNECT,        /* Default, Wait for connection */
+//*                                  /* interval to expire before    */
+//*                                  /* terminating              @GDA*/
+//          TIMEOUT=REDRIVE,         /* Default, Disconnect action is*/
+//*                                  /* to redrive FSA according to  */
+//*                                  /* MGMTMODE value           @GDC*/
+//          DISCINTV=1800,           /* DISCONNECT INTERVAL IN       */
+//*                                  /*  SECONDS (30 min.)           */
+//          MGMTMODE=OUTAVAIL,       /* Default, Connect when        */
+//*                                  /* output available         @GDC*/
+//          RELMODE=NONE,            /* Default, Ignore Release      */
+//*                                  /* Interval.                @GDC*/
+//          CONNINTV=0,              /* Default for SNA, try         */
+//*                                  /* connecting forever.          */
+//********************************************************************/
+//          COMPRESS=NO,             /* Default, no blank compression*/
+//          DATACK=BLOCK,            /* Default, Do not report       */
+//*                                  /* undefined character and      */
+//*                                  /* position errors          @GDC*/
+//*         INTRVMSG=NO,             /* Default, no intervention msg */
+//*                                  /* sent to operator console @GDA*/
+//*         SETUP=FORMS,             /* Issue setup msg for forms@GDA*/
+//*         MAP2OLN=NO,              /* Default, Do not map raster   */
+//*                                  /* fonts to outline         @GDA*/
+//*         RESPTIME=300,            /* Wait 5 minutes for response  */
+//*                                  /* from printer, default=0 (wait*/
+//*                                  /* forever)                 @GDA*/
+//*         NORESP=NOTIFY(OPERATOR), /* Notify operator when RESPTIME*/
+//*                                  /* expires                  @GDA*/
+//*         PRTERROR=NOTHONOR,       /* Default, Do not honor        */
+//*                                  /* PRTERROR on OUTPUT JCL   @GDA*/
+//          APPLID=xxxxxxxx,         /*VTAM APPLICATION PGM          */
+//*                                  /*  NODE NAME                   */
+//          LOGMODE=xxxxxxxx,        /*VTAM LOGON MODE TABLE         */
+//*                                  /*  ENTRY                       */
+//          LUNAME=xxxxxxxx,         /* VTAM LOGICAL UNIT NAME       */
+//*                                  /* Add sample dump stmts    @GDA*/
+//*         DUMP=(ABD0653),          /* Take dump for abend 024-0653 */
+//*         DUMP=(07C00400),         /* Take dump for reason code    */
+//*         DUMP=(,APS788I),         /* Take dump on 1st APS788I     */
+//*         DUMP=(,APS788I,3),       /* Take dump on 3rd APS788I     */
+//          TRACE=YES                /* CREATE INTERNAL TRACE    @DRC*/
+//PRT1      ENDCNTL

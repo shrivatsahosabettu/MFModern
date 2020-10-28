@@ -1,0 +1,81 @@
+//LOGROUTE PROC                                                         00050000
+//********************************************************************* 00100000
+//* $MAC(LOGROUTE): LOG ROUTING PROCEDURE                             * 00150000
+//*                                                                   * 00200000
+//*                                                                   * 00216600
+//*                                                                   * 00233200
+//*PROPRIETARY V3 STATEMENT                                             00250000
+//*LICENSED MATERIALS - PROPERTY OF IBM                                 00300000
+//*"RESTRICTED MATERIALS OF IBM"                                        00350000
+//*5695-DF1                                                             00400000
+//*(C) COPYRIGHT 1989  IBM CORP.                                        00450000
+//*END PROPRIETARY V3 STATEMENT                                         00500000
+//*                                                                   * 00550000
+//*     THIS PROCEDURE IS USED TO START LOG ROUTING.                  * 00600000
+//*     KEYWORDS ARE PASSED VIA THE START COMMAND OR                  * 00650000
+//*     DEFAULTED TO THE KEYWORD VALUES OF THE PARM FIELD             * 00700000
+//*     ON THE EXEC CARD. THE TASK THAT GETS STARTED IS               * 00750000
+//*     WRITTEN TO ACCEPT THE MODIFY AND STOP COMMAND.                * 00800000
+//*                                                                   * 00850000
+//*     KEYWORDS:                                                     * 00900000
+//*        NODEID=NODEVALUE.USERIDVALUE                               * 00950000
+//*         - REQUIRED KEYWORD THAT DEFINES A VALID NETWORK           * 01000000
+//*           NODE, USERID THAT WILL RECEIVE ROUTED DATA.             * 01050000
+//*         - NODEVALUE, USERIDVALUE ARE 1 TO 8 CHARACTERS AND        * 01100000
+//*           MUST BE DELIMITED BY A PERIOD (.) OR BY A SLASH (/).    * 01150000
+//*        TIME=MMMM                                                  * 01200000
+//*         - OPTIONAL KEYWORD THAT DEFINES THE TIME INTERVAL FOR     * 01250000
+//*           DEFERRED ROUTING (DEFAULTS TO 30 MINUTES).              * 01300000
+//*         - MMMM VALUE MUST BE 1 TO 1440 MINUTES.                   * 01350000
+//*         - DEFERRED ROUTING BUFFERS DATA ON SPOOL UNTIL THE        * 01400000
+//*           TIME INTERVAL HAS EXPIRED. THE DATA THEN GETS ROUTED.   * 01450000
+//*        CLASS=SYSOUT CLASS                                     @01A* 01500000
+//*         - OPTIONAL KEYWORD THAT DEFINES THE SYSOUT CLASS TO       * 01550000
+//*           USE FOR ROUTING RECORDS TO THE SERVICE DIRECTOR.        * 01600000
+//*         - THIS FIELD IS ONE CHARACTER LONG.                       * 01650000
+//*         - THE DEFAULT CLASS USED FOR SYSOUT IS "B".               * 01700000
+//*        TEST                                                   @02A* 01750000
+//*         - OPTIONAL KEYWORD FOR THE MODIFY COMMAND TO CAUSE        * 01800000
+//*           TEST RECORDS TO BE GENERATED AND SENT TO THE NODE       * 01850000
+//*           AND USERID SELECTED TO RECEIVE ROUTED DATA.             * 01900000
+//*         - WHEN TEST IS SELECTED, IT SHOULD BE THE ONLY PARAMETER  * 01950000
+//*           ON THE MODIFY COMMAND.                                  * 02000000
+//*         - THE TEST PARAMETER MAY BE SPECIFIED AS FOLLOWS:         * 02050000
+//*           - TEST OR T TO GENERATE ONE EACH OBR, A2 AND A3 RECORD  * 02100000
+//*           - TESTA2 OR TA2 TO GENERATE ONE A2 RECORD               * 02150000
+//*           - TESTA3 OR TA3 TO GENERATE ONE A3 RECORD               * 02200000
+//*           - TESTOBR OR TOBR TO GENERATE ONE OBR RECORD            * 02250000
+//*                                                                   * 02300000
+//*     SYNTAX:                                                       * 02350000
+//*      START COMMAND:                                               * 02400000
+//*        START LOGROUTE,,,(NODEID=NODEVALUE.USERIDVALUE,TIME=MMMM,  * 02450000
+//*                          CLASS=?)                             @01C* 02500000
+//*                                                                   * 02550000
+//*        START LOGROUTE                                             * 02600000
+//*          - KEYWORD VALUES DEFAULT TO PARM FIELD                   * 02650000
+//*                                                                   * 02700000
+//*      MODIFY COMMAND:                                              * 02750000
+//*        MODIFY LOGROUTE,DISPLAY|D,                                 * 02800000
+//*                        NODIED=NODEVALUE,USERIDVALUE,              * 02850000
+//*                        TIME=MMMM,                             @02C* 02900000
+//*                        CLASS=?                                @02A* 02950000
+//*                        TEST|T|TESTOBR|TOBR|TESTA2|TA2|        @02A* 03000000
+//*                        TESTA3|TA3                             @02A* 03050000
+//*                                                                   * 03100000
+//*      STOP COMMAND:                                                * 03150000
+//*        STOP LOGROUTE                                              * 03200000
+//*                                                                   * 03250000
+//*     NOTE:                                                         * 03300000
+//*      - PLACE THE START LOGROUTE COMMAND IN A COMMNDXX PARMLIB     * 03350000
+//*        MEMBER FOR AUTOMATIC EXECUTION WITH AN IPL.                * 03400000
+//*                                                                   * 03450000
+//* CHANGE-ACTIVITY =                                                 * 03500000
+//*                                                                   * 03550000
+//* $L0=LOGROUT,JDP3311,,STLJBC: LOG ROUTING SUPPORT                  * 03600000
+//* $01=OY31223,HDP3330,SJPLKNH: ALLOW USER SPEC. OUPUT CLASS     @01A* 03650000
+//* $02=OY41838,HDP2240,SJPLHGS: PROVIDE MODIFY CMD TEST OPTION   @02A* 03700000
+//********************************************************************* 03750000
+//LOGROUTE EXEC PGM=IECDLGRT,REGION=4M,TIME=1440,                       03800000
+// PARM='NODEID=XXXXMVS1.SERVDIR,TIME=30,CLASS=B'                       03850000
+//SYSPRINT DD DUMMY                                                     03900000
+

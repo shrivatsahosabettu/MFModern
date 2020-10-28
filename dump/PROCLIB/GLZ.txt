@@ -1,0 +1,60 @@
+//GLZ      PROC CONF=''
+//* START OF SPECIFICATIONS ******************************************
+//*                                                                  *
+//* MEMBER NAME:  GLZ                                                *
+//*                                                                  *
+//*  DESCRIPTIVE NAME:                                               *
+//*    Procedure used to start z/OS Container Extensions instance    *
+//*                                                                  *
+//*01* PROPRIETARY STATEMENT=                                        *
+//***PROPRIETARY_STATEMENT********************************************
+//*                                                                  *
+//* LICENSED MATERIALS - PROPERTY OF IBM                             *
+//* 5650-ZOS                                                         *
+//* COPYRIGHT IBM CORP. 2019                                         *
+//*                                                                  *
+//* STATUS = HBB77C0                                                 *
+//*                                                                  *
+//***END_OF_PROPRIETARY_STATEMENT*************************************
+//*                                                                  *
+//*  FUNCTION:  This procedure will start a z/OS Container           *
+//*    Extensions started task.                                      *
+//*                                                                  *
+//*  USE:  This procedure can be used to start a z/OS Container      *
+//*    Extensions instance.                                          *
+//*                                                                  *
+//*  SYNTAX:  START GLZ,JOBNAME=jjjjjjjj,CONF='<cfg-pathname>'       *
+//*                                                                  *
+//*  INPUT:                                                          *
+//*      JOBNAME=jjjjjjjj                                            *
+//*         Required.                                                *
+//*                                                                  *
+//*      CONF='<cfg-pathname>'                                       *
+//*         Full z/OS UNIX filesystem pathname to the configuration  *
+//*         file.  Required.                                         *
+//*                                                                  *
+//*  NOTE:    None.                                                  *
+//*                                                                  *
+//*  OUTPUT:  A new instance of a z/OS Container Extensions address  *
+//*    space is started.                                             *
+//*                                                                  *
+//*  RETURN CODES:                                                   *
+//*    0  -  Successful                                              *
+//*                                                                  *
+//*  REQUIRES:   A valid z/OS Container Extensions configuration     *
+//*              file.                                               *
+//*                                                                  *
+//*  REFERENCES:  NONE                                               *
+//*                                                                  *
+//*  DISTRIBUTION LIBRARY:  SYS1.PROCLIB                             *
+//*                                                                  *
+//*  CHANGE ACTIVITY:                                                *
+//*                                                                  *
+//*FLAG LINEITEM  FMID    DATE    ID    COMMENT                      *
+//* $L0=          HBB77C0 180427  PDEV  Initial release              *
+//*                       180927  PDTAP Specify Region               *
+//* $01=OA58131   HBB77C0 190820  PDTAP Specify Time                 *
+//*                                                                  *
+//* END OF SPECIFICATIONS ********************************************
+//GLZBAIN  EXEC PGM=GLZBAIN,PARM='&CONF.',REGION=0K,TIME=NOLIMIT
+//SYSPRINT DD SYSOUT=*

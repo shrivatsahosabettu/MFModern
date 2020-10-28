@@ -1,0 +1,4 @@
+//XWTRPROC PROC                                                         00000100
+//IEFPROC  EXEC  PGM=IASXWR00,PARM='PA',REGION=20K                      00000200
+//IEFRDER DD UNIT=TAPE,VOL=(,,,35),DSNAME=SYSOUT,DISP=(NEW,KEEP),      C00000300
+//             DCB=(BLKSIZE=133,LRECL=133,BUFL=133,BUFNO=2,RECFM=FM)    00000400

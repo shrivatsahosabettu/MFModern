@@ -1,0 +1,23 @@
+//IDAVDT   PROC                                                         00050000
+//******************************************************************    00100000
+//*$MAC(IDAVDT);     DFSMS VSAM DYNAMIC TRACE STARTED TASK         *    00150000
+//*                                                                *    00250000
+//* STATUS = Z/OS DFSMS V1R12                                      *    00300000
+//*                                                                *    00350000
+//*PROPRIETARY V3 STATEMENT                                        *    00400000
+//*LICENSED MATERIALS - PROPERTY OF IBM                            *    00450000
+//*"RESTRICTED MATERIALS OF IBM"                                   *    00500000
+//*5694-A01                                                        *    00550000
+//*COPYRIGHT IBM CORP. 2009                                        *    00600000
+//*END PROPRIETARY V3 STATEMENT                                    *    00650000
+//*                                                                *    00900000
+//*  FUNCTION -                                                    *    00950000
+//*     This procedure is used to start DFSMS VSAM started         *    01000000
+//*     task IDAVDT to enable VSAM Record Management Trace         *    01050000
+//*     dynamically according to the PARMLIB member IDAVDT00.      *    01100000
+//*                                                                *    01150000
+//*  CHANGE ACTIVITY:                                              *    01183300
+//* $L0=DYNTRAC,HDZ1C10,03/03/2009,KHH0: MODULE CREATED            *    01216600
+//******************************************************************    01250000
+//VDTSTART EXEC PGM=IDAVDTRA,TIME=NOLIMIT                               01300000
+//*                                                                     01350000

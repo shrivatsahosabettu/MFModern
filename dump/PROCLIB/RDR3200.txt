@@ -1,0 +1,8 @@
+//RDR3200    PROC  CLASS=A                                              03002000
+//IEFPROC    EXEC  PGM=IEBEDIT                                          03004000
+//SYSPRINT   DD    SYSOUT=A                                             03006000
+//SYSUT1     DD    DDNAME=IEFRDER                                       03008000
+//SYSUT2     DD    SYSOUT=(&CLASS,INTRDR),DCB=BLKSIZE=80                03010000
+//SYSIN      DD    DUMMY                                                03012000
+//IEFRDER    DD    UNIT=TAPE,LABEL=(,NL),VOL=SER=JES2IN,DISP=OLD,       03014000
+//             DCB=(RECFM=FBS,BLKSIZE=3200,LRECL=80)                    03016000

@@ -1,0 +1,80 @@
+//IEFPROC   PROC   SUB=,SCHEDULR=,GETWORK=,RETWORK=                     00000100
+//IEFPROC   EXEC   PGM=IEFIIC,                                   @P0C   00000200
+//          PARM='&SUB,&SCHEDULR,&GETWORK,&RETWORK'                     00000300
+//                                                                      00000400
+//********************************************************************/ 00000500
+//*                                                                  */ 00002700
+//*01* PROCEDURE NAME : ASCHINT                                      */ 00002800
+//*                                                                  */ 00002900
+//*01* FUNCTION:                                                     */ 00003000
+//*                                                                  */ 00003100
+//*       The ASCHINT procedure is used to start the MVS Initiator,  */ 00003200
+//*       it invokes the module IEFIIC.                              */ 00003300
+//*                                                                  */ 00003400
+//*01* PROPRIETARY STATEMENT=                                         * 00003610
+//***PROPRIETARY_STATEMENT********************************************* 00003620
+//*                                                                   * 00003640
+//* LICENSED MATERIALS - PROPERTY OF IBM                              * 00003650
+//* THIS JCL IS "RESTRICTED MATERIALS OF IBM"                         * 00003660
+//* 5694-A01 (C) COPYRIGHT IBM CORP. 1990, 2003                       * 00003670
+//*                                                                   * 00003680
+//* STATUS= HBB7708                                                   * 00003690
+//*                                                                   * 00003691
+//***END_OF_PROPRIETARY_STATEMENT************************************** 00003692
+//*                                                                  */ 00003700
+//*01* METHOD OF ACCESS:                                             */ 00003800
+//*                                                                  */ 00003900
+//* Issue the following command:                                     */ 00004000
+//*                                                                  */ 00004100
+//* S ASCHINT.id,,,vvvv,SUB=wwww,SCHEDULR=xxxx,GETWORK=y,RETWORK=z   */ 00004200
+//*                                                                  */ 00004300
+//*   Where:                                                         */ 00004400
+//*          id - is an optional name that will be used as           */ 00004500
+//*               the jobname to distinguish this initiator from     */ 00004600
+//*               others for operator commands                       */ 00004700
+//*        vvvv - is the name of the subsystem that will own the     */ 00004800
+//*               initiator started task                             */ 00004900
+//*        wwww - is the name of the subsystem that will own the     */ 00005000
+//*               output processing for this job.   If a GETWORK     */ 00005100
+//*               routine name is not coded then the wwww subsystem  */ 00005200
+//*               will be the owner of all work performed by this    */ 00005300
+//*               initiator                                          */ 00005400
+//*        xxxx - This is the name of the scheduler that owns this   */ 00005500
+//*               initiator (valid when GETWORK is coded, ignored    */ 00005600
+//*               otherwise).  The scheduler name will be passed to  */ 00005700
+//*               SRM with each new piece of work, it will be passed */ 00005800
+//*               to SMF, and will be available to be viewed on the  */ 00005900
+//*               console.                                           */ 00006000
+//*           y - Is the name of a routine in the LNKLST that will   */ 00006100
+//*               receive the work request from this initiator.      */ 00006200
+//*               The presence of this routine is what triggers      */ 00006300
+//*               different processing for transactions.             */ 00006400
+//*               The initiator will initially LOAD this routine     */ 00006500
+//*               and then call it by address.  Therefore to refresh */ 00006600
+//*               this routine the initiator must be brought down.   */ 00006700
+//*           z - Is the name of a routine in the LNKLST that will   */ 00006800
+//*               receive a call when the work is to be returned     */ 00006900
+//*               to the work scheduler.  This routine is optional   */ 00007000
+//*               and is ignored if a GETWORK routine is not         */ 00007100
+//*               specified.                                         */ 00007200
+//*               The initiator will initially LOAD this routine     */ 00007300
+//*               and then call it by address.  Therefore to refresh */ 00007400
+//*               this routine the initiator must be brought down.   */ 00007500
+//*                                                                  */ 00007600
+//*01* COMPONENT:                                                    */ 00007700
+//*                                                                  */ 00007800
+//*       SC1B6 (Initiator)                                          */ 00007900
+//*                                                                  */ 00008000
+//*01* DISTRIBUTION LIBRARY:                                         */ 00008100
+//*                                                                  */ 00008200
+//*       SYS1.PROCLIB                                               */ 00008300
+//*                                                                  */ 00008400
+//*01* CHANGE ACTIVITY:                                              */ 00008500
+//*                                                                  */ 00008600
+//*  $L0= DH30059 HBB4420 900226  PDB3: Transaction Initiator        */ 00008700
+//*  $P0= PYN0834 HBB7708 030601  PDOO: Remove obsolete DPRTY    @P0A*/ 00008800
+//*                                                                  */ 00008900
+//********************************************************************/ 00009000
+//* A - Create new Procedure for starting transaction initiator      */ 00009100
+//* C - Removed the DPRTY=12 parameter from the EXEC statement.  @P0A*/ 00009200
+//*     This parameter is obsolete.                              @P0A*/ 00009300

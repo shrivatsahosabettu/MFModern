@@ -1,0 +1,17 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. CALC1000.
+      *
+       ENVIRONMENT DIVISION.
+      *
+       INPUT-OUTPUT SECTION.
+      *
+       DATA DIVISION.
+      *
+       FILE SECTION.
+      *
+       WORKING-STORAGE SECTION.
+
+       77 END-OF-SESSION-SWITCH       PIC X       VALUE "N".
+       77 SALES-AMOUNT                PIC 9(5)V99.
+       77 SALES-TAX                   PIC Z,ZZZ.99.
+

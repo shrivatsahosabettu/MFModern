@@ -1,0 +1,23 @@
+//********************************************************************  00358300
+//*    LICENSED MATERIALS - PROPERTY OF IBM                          *  00358400
+//*    5650-ZOS                                                      *  00358500
+//*    COPYRIGHT IBM CORP. 1993, 2017                                *  00358600
+//*                                                                  *  00358700
+//********************************************************************  00358800
+//*                                                                  *  00358900
+//*  LINK A PROGRAM                                                  *  00359000
+//*                                                                  *  00359100
+//*  NOTE: NCAL IS SPECIFIED SO NO LIBRARIES WILL BE SEARCHED        *  00359200
+//*        FOR UNRESOLVED REFERENCES.                                *  00359300
+//*                                                                  *  00359400
+//*  z/OS Program Management Binder                                  *  00359500
+//*  STATUS = HPM77B0                                                *  00359600
+//*                                                                  *  00359700
+//********************************************************************  00349800
+//*                                                                     00349900
+//LKED  EXEC PGM=HEWLH096,PARM='MSGLEVEL(4),XREF,LIST,LET,NCAL',        00350000
+//         REGION=2M                                                    00400000
+//SYSPRINT DD  SYSOUT=A                                                 00450000
+//SYSLIN   DD  DDNAME=SYSIN                                             00500000
+//SYSLMOD  DD  DSN=&&GOSET(GO),SPACE=(1024,(50,20,1)),                 *00550000
+//         UNIT=SYSDA,DISP=(MOD,PASS)                                   00600000

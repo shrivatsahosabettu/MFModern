@@ -1,0 +1,48 @@
+//CEA PROC                                                              00010002
+//* START OF SPECIFICATIONS ******************************************  00020000
+//*                                                                  *  00030000
+//* MEMBER NAME:  CEA                                                *  00040002
+//*                                                                  *  00050000
+//*  DESCRIPTIVE NAME:                                               *  00060000
+//*    PROCEDURE USED TO START CEA (COMMON EVENT ADAPTER) ADDRES     *  00070001
+//*    SPACE AFTER IT HAS TERMINATED.                                *  00080001
+//*                                                                  *  00090000
+//*01* PROPRIETARY STATEMENT=                                        *  00100000
+//***PROPRIETARY_STATEMENT********************************************  00110000
+//*                                                                  *  00120000
+//* LICENSED MATERIALS - PROPERTY OF IBM                             *  00130000
+//* 5694-A01                                                         *  00140000
+//* (C) COPYRIGHT IBM CORP. 2006                                     *  00150000
+//*                                                                  *  00160000
+//* STATUS = HBB77BR                                                 *  00170000
+//*                                                                  *  00180000
+//***END_OF_PROPRIETARY_STATEMENT*************************************  00190000
+//*                                                                  *  00200000
+//*  FUNCTION:  THIS JCL PROCEDURE WILL ATTEMPT TO START THE         *  00210000
+//*    CEA (COMMON EVENT ADAPTER) ADDRESS SPACE                      *  00220001
+//*                                                                  *  00230000
+//*  USE:  THIS PROCEDURE CAN BE USED BY AN OPERATOR TO REQUEST      *  00240000
+//*    THAT THE CEA ADDRESS SPACE BE RE-STARTED                      *  00250001
+//*    AFTER THE ADDRESS SPACE HAS ALREADY TERMINATED.               *  00260000
+//*                                                                  *  00270000
+//*  SYNTAX:  S CEA                                                  *  00280002
+//*                                                                  *  00290000
+//*  INPUT:  NONE                                                    *  00300000
+//*                                                                  *  00310000
+//*  OUTPUT:  A NEW INSTANCE OF THE CEA  ADDRESS SPACE WILL          *  00320001
+//*    BE ATTEMPTED TO BE STARTED.                                   *  00330000
+//*                                                                  *  00340000
+//*  REQUIRES:   ACCESS TO SYS1.PROCLIB FROM SUBMITTING USERID.      *  00350000
+//*                                                                  *  00360000
+//*  REFERENCES:  NONE                                               *  00370000
+//*                                                                  *  00390000
+//* DISTRIBUTION LIBRARY:  SYS1.PROCLIB                              *  00400000
+//*                                                                  *  00410000
+//* CHANGE ACTIVITY:                                                 *  00420000
+//*                                                                  *  00430000
+//*FLAG LINEITEM  FMID    DATE    ID    COMMENT                      *  00440000
+//* $L0=          HBB77BR 060419  PDSZ: CEA RESTART                  *  00450001
+//*                                                                  *  00470000
+//* END OF SPECIFICATIONS ********************************************  00480000
+//CEA EXEC PGM=CEAINSTR,TIME=NOLIMIT                                    00490002
+//         PEND                                                         00500000

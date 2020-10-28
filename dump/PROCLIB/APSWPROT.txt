@@ -1,0 +1,159 @@
+//APSWPROT PROC
+//**************** THE PSF TCP/IP WRITER PROCEDURE ***************
+//*
+//*01* MODULE-NAME = APSWPROT
+//* $MOD(APSWPROT) COMP(APS) PROD(PSF) : VERSION 4.6.0
+//*
+//*01* DESCRIPTIVE-NAME = START PROCEDURE FOR PSF:
+//*
+//*  TCP/IP ATTACHED PRINTER ALL DEFAULTS SPECIFIED                @GDC
+//*  24O PEL FONT RESOLUTION (CAN BE SWITCHED TO 300 PEL)          @GDA
+//*  NO PRINTER SHARING                                            @GDA
+//*
+//*01* STATUS = HPRF460
+//*
+//*01* FUNCTION = SET PSF OPTIONS AND RESOURCES.                   @DUC
+//*
+//*01* NOTES = THE FULL NAME OF THE DEFAULT PAGEDEF IS
+//*               P1A06462.
+//*            THE FULL NAME OF THE DEFAULT FORMDEF IS
+//*               F1A10110.
+//*
+//*            THE FULL NAME OF THE DEFAULT CORE FONT IS X060D8.   @03A
+//*            THE FULL NAME OF EQUIVALENT COMPATIBILITY FONT      @03A
+//*            IS X0GT15.                                          @03A
+//*
+//*            THE FULL NAME OF THE SEPARATOR PAGE PAGEDEF IS
+//*                P1V06483.
+//*
+//*            THE FULL NAME OF THE SEPARATOR PAGE CORE FONT IS
+//*            X060D8.  THE FULL NAME OF EQUIVALENT COMPATIBILITY  @03C
+//*            FONT IS X0GT15.                                     @DRC
+//*
+//* REQUIRED ACTIONS =
+//*    RESOLUTION - THIS START PROCEDURE IS SET UP FOR DRIVING
+//*      A TCP/IP DEVICE AT 240 PEL RESOLUTION. TO CHANGE IT
+//*      TO DRIVE 300 PEL RESOLUTION TCP/IP ATTACHED DEVICES:
+//*      -- COMMENT OUT THE FIRST PRINTDEV STATEMENT AND UNCOMMENT
+//*         THE SECOND PRINTDEV STATEMENT
+//*
+//*    SIMPLEX/DUPLEX - THIS START PROCEDURE IS SET UP TO
+//*         DEFAULT TO SIMPLEX PRINTING. TO CHANGE THE DEFAULT TO
+//*         DUPLEX:
+//*      -- USE THE LINE CONTAINING /* DEFAULT FORMDEF - DUPLEX
+//*
+//*    ATTACHMENT - THIS START PROCEDURE IS SET UP FOR A TCP/IP
+//*    ATTACHED PRINTER.
+//*      -- IF YOUR TCP/IP START PROCEDURE IS NOT NAMED 'TCPIP',
+//*         THEN CHANGE THE PARM DEFINITION ON THE EXEC STATEMENT.
+//*
+//*
+//*01* CHANGE-ACTIVITY :
+//* $H1=LAPS0001, HPRF220, 080195 DKU1JAU : TCP/IP SUPPORT
+//* $01=OW15599 , HPRF220, 080195 DKU1JAU :                      @01A
+//* $02=OW26144 , HPRF220, 040797 DKU1MAL : CONNINTV DEFAULT     @02A
+//* $DU=LAPS0007,HPRF310,050598,DKU1MAL: Version 3.1.0           @DUA
+//* $DR=LAPS0007, HPRF310, 050598 DKU1MAL : Default to core font @DRA
+//* $03=OW39733 , HPRF310, 061699 BDKUMAL:  Correct typo         @03A
+//* $DX=LAPS0008,HPRF320,991117,BUQ4RLB: Version 3.2.0           @DXA
+//* $EV=LAPS0009,HPRF330,010926,BUQ4RLB: Version 3.3.0           @EVA
+//* $FC=LAPS0010,HPRF340,030203,BDKULD:  Version 3.4.0           @FCA
+//* $FM=LAPS0011,HPRF410,050502,BDKUPG:  Version 4.1.0           @FMA
+//* $FU=LAPS0012,HPRF420,060630,BDKURDD: Version 4.2.0           @FUA
+//* $GD=LAPS0013,HPRF430,080515,BDKURDD: Version 4.3.0           @GDA
+//* $GH=LAPS0014,HPRF440,090922,BDKURDD: Version 4.4.0           @GHA
+//* $HH=LAPS0015,HPRF450,111202,BDKUGLM: Version 4.5.0           @HHA
+//* $04=OA46136, HPRF450,150622,BDKULMM: Correct system font     @04A
+//*                                      library names           @04A
+//* $IL=LAPS0016,HPRF460,151207,BDKUDWP: Version 4.6.0           @ILA
+//*
+//**** END OF SPECIFICATIONS ***/
+//*
+//STEP01   EXEC PGM=APSPPIEP,REGION=4096K,PARM=(,,,,TCPIP)
+//JOBHDR OUTPUT PAGEDEF=V06483,     /* JOB SEPARATOR PAGEDEF         */
+//       FORMDEF=A10110,CHARS=60D8  /* JOB SEPARATOR FORMDEF     @03C*/
+//JOBTLR OUTPUT PAGEDEF=V06483,     /* JOB SEPARATOR PAGEDEF         */
+//       FORMDEF=A10110,CHARS=60D8  /* JOB SEPARATOR FORMDEF     @03C*/
+//DSHDR  OUTPUT PAGEDEF=V06483,     /* DS  SEPARATOR PAGEDEF         */
+//       FORMDEF=A10110,CHARS=60D8  /* DS  SEPARATOR FORMDEF     @03C*/
+//MSGDS  OUTPUT PAGEDEF=A06462,     /* MESSAGE DATASET PAGEDEF       */
+//       FORMDEF=A10110             /* MESSAGE DATASET FORMDEF       */
+//PRTINFO  DD   DSN=APSWPROT.PRTINFO, /* Printer Information     @FMA*/
+//         DISP=SHR                   /* Report Dataset          @FMA*/
+//FONT01   DD   DSN=SYS1.FONTLIBB,  /* SYSTEM FONTS - 240 PEL    @04C*/
+//         DISP=SHR
+//FONT02   DD   DSN=SYS1.FONT300,   /* SYSTEM FONTS - 300 PEL    @04C*/
+//         DISP=SHR
+//PSEG01   DD   DSN=SYS1.PSEGLIB,   /* SYSTEM PAGE SEGMENTS          */
+//         DISP=SHR
+//OLAY01   DD   DSN=SYS1.OVERLIB,   /* SYSTEM MEDIUM OVERLAYS        */
+//         DISP=SHR                 /*                               */
+//PDEF01   DD   DSN=SYS1.PDEFLIB,   /* SYSTEM PAGEDEFS               */
+//         DISP=SHR
+//FDEF01   DD   DSN=SYS1.FDEFLIB,   /* SYSTEM FORMDEFS               */
+//         DISP=SHR
+//* ***********************************************************      */
+//*              PRINTDEV                                            */
+//* ***********************************************************      */
+//PRT1     CNTL
+//PRT1     PRINTDEV FONTDD=*.FONT01, /* 240 PEL FONT LIBRARY DD      */
+//*                                  /* <-- SEE REQUIRED ACTIONS     */
+//*                                  /*     ABOVE                    */
+//*PRT1     PRINTDEV FONTDD=*.FONT02, /* 300 PEL FONT LIBRARY DD     */
+//*                                   /* <-- SEE REQUIRED ACTIONS    */
+//*                                   /*     ABOVE                   */
+//          OVLYDD=*.OLAY01,         /* OVERLAY  LIBRARY DD          */
+//          PSEGDD=*.PSEG01,         /* SEGMENT  LIBRARY DD          */
+//          PDEFDD=*.PDEF01,         /* PAGEDEF  LIBRARY DD          */
+//          FDEFDD=*.FDEF01,         /* FORMDEF  LIBRARY DD          */
+//          JOBHDR=*.JOBHDR,         /* JOB HEADER SEPARATOR         */
+//*                                  /*   OUTPUT                     */
+//          JOBTRLR=*.JOBTLR,        /* JOB TRAILER SEPARATOR        */
+//*                                  /*   OUTPUT                     */
+//          DSHDR=*.DSHDR,           /* DATA SET HEADER              */
+//*                                  /*   SEPARATOR                  */
+//          MESSAGE=*.MSGDS,         /* MESSAGE DATA SET OUTPUT      */
+//          PAGEDEF=A06462,          /* DEVICE PAGEDEF DEFAULT       */
+//          FORMDEF=A10110,          /* DEFAULT FORMDEF - SIMPLEX    */
+//*         FORMDEF=A10111,          /* DEFAULT FORMDEF - DUPLEX     */
+//          CHARS=(60D8),            /* DEVICE DEFAULT FONT      @03C*/
+//          PIMSG=YES,               /* DEFAULT, ACCUMULATE DATA SET */
+//*                                  /* MESSAGES UP TO 16 MSG GROUPS */
+//          DATACK=BLOCK,            /* DEFAULT, DO NOT REPORT ANY   */
+//*                                  /* UNDEFINED CHARACTER OR       */
+//*                                  /* POSITION ERRORS          @GDC*/
+//          FAILURE=WCONNECT,        /* DEFAULT, WAIT FOR CONNECTION */
+//*                                  /* INTERVAL TO EXPIRE BEFORE    */
+//*                                  /* TERMINATING              @GDC*/
+//          TIMEOUT=REDRIVE,         /* DEFAULT, REDRIVE FSA AFTER   */
+//*                                  /* DISCONNECT INTERVAL EXPIRES  */
+//*                                  /* ACCORDING TO VALUE OF        */
+//*                                  /* MGMTMODE                 @GDC*/
+//          MGMTMODE=IMMED,          /* START COMMUNICATION WITH     */
+//*                                  /* PRINTER IMMEDIATELY      @GDC*/
+//          DISCINTV=0,              /* DEFAULT, DISCONNECT INTERVAL */
+//*                                  /* IN SECONDS, KEEP FOREVER @GDC*/
+//          CONNINTV=600,            /* Default Connect Interval     */
+//*                                  /* for TCP/IP, 10 minutes   @GDC*/
+//*         COMPRESS=NO,             /* Default, no blank compression*/
+//*                                  /* performed                @GDA*/
+//*         SETUP=FORMS,             /* Issue setup msg for forms@GDA*/
+//*         INTRVMSG=NO,             /* Default, no intervention msg */
+//*                                  /* sent to operator console @GDA*/
+//*         MAP2OLN=NO,              /* Default, Do not map raster   */
+//*                                  /* fonts to outline         @GDA*/
+//*         RESPTIME=0,              /* Default, wait forever for    */
+//*                                  /* response from printer    @GDA*/
+//*         NORESP=NOTIFY(OPERATOR), /* Notify operator when RESPTIME*/
+//*                                  /* expires                  @GDA*/
+//*         PRTERROR=NOTHONOR,       /* Default, Do not honor        */
+//*                                  /* PRTERROR on OUTPUT JCL   @GDA*/
+//          IPADDR='xxx.xxx.xxx.xxx',/* IP ADDRESS FOR TCP/IP        */
+//*         PORTNO=5001,             /* Default, port number     @GDA*/
+//*                                  /* Add sample dump stmts    @GDA*/
+//*         DUMP=(ABD0653),          /* Take dump for abend 024-0653 */
+//*         DUMP=(07C00400),         /* Take dump for reason code    */
+//*         DUMP=(,APS788I),         /* Take dump on 1st APS788I     */
+//*         DUMP=(,APS788I,3),       /* Take dump on 3rd APS788I     */
+//          TRACE=YES                /* CREATE INTERNAL TRACE    @DRC*/
+//PRT1      ENDCNTL

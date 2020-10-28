@@ -1,0 +1,29 @@
+//*******************************************************************   00001000
+//* This proc is used to start the shutdown boosts                  *   00002000
+//*                                                                 *   00002100
+//* PROPRIETARY STATEMENT:                                          *   00002200
+//*                                                                 *   00002300
+//*     LICENSED MATERIALS - PROPERTY OF IBM                        *   00002400
+//*     5650-ZOS                                                    *   00002500
+//*     COPYRIGHT IBM CORP. 2019                                    *   00002600
+//*     STATUS = HBB77B0                                            *   00002700
+//*                                                                 *   00002800
+//* CHECKHD=YES -- if zIIP boost is expected but the system is not  *   00002906
+//*     HiperDispatch=YES, then do not start the boosts             *   00003006
+//* CHECKHD=NO  -- start the boost processing regardless of         *   00003105
+//*     HiperDispatch state. The zIIP boost will be activated only  *   00003207
+//*     when HiperDispatch=YES.                                     *   00003307
+//*                                                                 *   00003405
+//* Completion Codes:                                               *   00003508
+//*   0 -- success                                                  *   00003608
+//*   4 -- no shutdown boost was to be initiated, so nothing to do  *   00003709
+//*  16 -- second time using this proc                              *   00003808
+//*  20 -- bad parameter (not CHECKHD=YES/NO)                       *   00003908
+//*  24 -- CHECKHD=YES, zIIP boost wanted, not HD=YES               *   00004008
+//*  32 -- used before IPL boost started                            *   00004108
+//*                                                                 *   00004208
+//* CHANGE-ACTIVITY:                                                *   00004305
+//*  $00=FB       HBB77B0 190131 PDXB: New                          *   00004405
+//*******************************************************************   00004500
+//IEASDBS PROC CHECKHD=YES                                              00005004
+//IEASDBS EXEC PGM=IEAVESBS,REGION=0M,PARM='CHECKHD=&CHECKHD'           00006004

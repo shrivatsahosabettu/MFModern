@@ -1,0 +1,15 @@
+//REMOTE  PROC A=                                                       00010000
+//RMTGEN  EXEC PGM=REMOTGEN,REGION=256K                                 00020000
+//GENPDS    DD DSN=SYS1.AMODGEN(HRTPOPTS),DISP=SHR                      00040000
+//SYSIN     DD UNIT=SYSDA,SPACE=(3200,(200,50),,,ROUND),               C00050000
+//             DCB=(RECFM=FBS,BLKSIZE=3200,LRECL=80)                    00060000
+//SYSLIB    DD DSN=SYS1.&A.MACLIB,DISP=SHR                              00070000
+//SYSUT1    DD DSN=&&SYSUT1,UNIT=SYSDA,SPACE=(1700,(1200,300))          00080000
+//SYSUT2    DD DSN=&&SYSUT2,UNIT=SYSDA,SPACE=(1700,(1200,300))          00090000
+//SYSUT3    DD DSN=&&SYSUT3,UNIT=SYSDA,SPACE=(1700,(1200,300))          00100000
+//SYSPRINT  DD SYSOUT=A                                                 00110000
+//SYSPUNCH  DD SYSOUT=B                                                 00120000
+//SYSGO     DD UNIT=SYSDA,SPACE=(400,(100,50),,,ROUND),                C00130000
+//             DCB=(RECFM=FBS,BLKSIZE=400,LRECL=80)                     00140000
+//CARDIN    DD DDNAME=OPTIONS                                           00150000
+

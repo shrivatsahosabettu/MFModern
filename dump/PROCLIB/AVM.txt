@@ -1,0 +1,2 @@
+//AVM PROC AVMMODE=OPERATOR                                             00050000
+//AVM EXEC PGM=AVFMNBLD,PARM='AVMMODE=&AVMMODE'                         00100000

@@ -1,0 +1,11 @@
+//*--------------------------------------------------------------------
+//*    Licensed Materials - Property of IBM
+//*    5650-ZOS
+//*    Copyright IBM Corp. 1992, 2019
+//*
+//*    Status = HCS77C0
+//*--------------------------------------------------------------------
+//CBDJIMPT  PROC   IODF='',VOLUME='',CS='*',TRACE='',REPL='REPLACE'
+//IMP EXEC PGM=CBDMGHCP,PARM='&TRACE.IMPORT,&IODF.,&VOLUME.,&REPL.,E'
+//HCDMLOG  DD SYSOUT=&CS,DCB=(RECFM=FBA,LRECL=133,BLKSIZE=6650)
+//HCDTRACE DD DUMMY,DCB=(RECFM=FB,LRECL=80,BLKSIZE=3120)

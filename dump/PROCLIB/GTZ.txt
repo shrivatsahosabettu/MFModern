@@ -1,0 +1,38 @@
+//GTZ PROC
+//****************************************************************/
+//*                                                              */
+//* STARTUP PROCEDURE FOR IBM GENERIC TRACKER FOR Z/OS           */
+//*                                                              */
+//* PROPRIETARY STATEMENT:                                       */
+//*                                                              */
+//*     LICENSED MATERIALS - PROPERTY OF IBM                     */
+//*     5650-ZOS                                                 */
+//*     COPYRIGHT IBM CORP. 2013                                 */
+//*     STATUS = HBB7790                                         */
+//*                                                              */
+//* IBM GENERIC TRACKER FOR Z/OS IS STARTED AUTOMATICALLY BY THE */
+//* SYSTEM AT IPL TIME.                                          */
+//*                                                              */
+//* The MEMLIMIT parameter on the procedure step can be adjusted */
+//* in order to control how much data the tracking facility is   */
+//* able to store. The system will ensure a minimum of 2MB.      */
+//* The actual usable storage size will be smaller.              */
+//*                                                              */
+//* The only supported, optional parameter for GTZINIT is        */
+//* PARM='GTZPRM=*NONE' to let Generic Tracker start without     */
+//* reading in any GTZPRMxx parmlib members. By default the      */
+//* tracker will at start-up use the parmlib members as          */
+//* identified by system parameter GTZ.                          */
+//*                                                              */
+//* In the default case the GTZ startup code needs access to     */
+//* PARMLIB by associating a user ID with the GTZ address space  */
+//* and granting this user ID READ permission to PARMLIB.        */
+//* For example:                                                 */
+//*  PERMIT SYS1.PARMLIB CLASS(DATASET) ID(gtzid) ACCESS(READ)   */
+//*  RDEFINE STARTED GTZ.* STDATA(USER(gtzid))                   */
+//*                                                              */
+//* CHANGE-ACTIVITY:                                             */
+//*  $L0=GENTRKR HBB7790,120509, RDUT: Initial Create            */
+//*                                                              */
+//****************************************************************/
+//GTZ EXEC PGM=GTZINIT,MEMLIMIT=200M,REGION=0M,TIME=NOLIMIT

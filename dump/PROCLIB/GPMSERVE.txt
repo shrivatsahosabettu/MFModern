@@ -1,0 +1,83 @@
+//GPMSERVE PROC MEMBER=00
+//********************************************************************
+//*                                                                  *
+//* NAME:        GPMSERVE                                            *
+//*                                                                  *
+//* COPYRIGHT:   LICENSED MATERIALS - PROPERTY OF IBM                *
+//*              "RESTRICTED MATERIALS OF IBM"                       *
+//*              5650-ZOS                                            *
+//*              COPYRIGHT IBM CORP. 2017                            *
+//*              STATUS=HRM77B0 (Z/OS V2R3 RMF)                      *
+//*                                                                  *
+//* DESCRIPTIVE NAME:                                                *
+//*    DISTRIBUTED DATA SERVER                                       *
+//*                                                                  *
+//* NOTES:                                                           *
+//*    1. START THIS PROCEDURE FROM THE OPERATOR CONSOLE WITH:       *
+//*       "START GPMSERVE,MEMBER=NN" (DEFAULT IS 00)                 *
+//*       CLIENTS WILL THEN BE ABLE TO CONNECT.                      *
+//*                                                                  *
+//*    2. YOU MAY HAVE TO ADD THE STEPLIB DD-CARD TO THE             *
+//*       JCL, IF THE Z/OS LANGUAGE ENVIRONMENT (EX: LE/370)         *
+//*       RUNTIME LIBRARY IS NOT INCLUDED IN THE LINKLIST.           *
+//*       (IN THIS CASE CEE.SCEERUN MUST BE APF-AUTHORIZED)          *
+//*       YOU ALSO MAY HAVE TO ADD CBC.SCLBDLL FOR THE SAME REASONS  *
+//*                                                                  *
+//*    3. GPMSERVE DNAMICALLY ALLOCATES THE LOGICAL PARMLIB          *
+//*       BY USING THE "CONCATENATED PARMLIB SUPPORT" TO             *
+//*       READ THE GPMSRVNN PARMLIB MEMBER. TO REDIRECT THE INPUT TO *
+//*       A SPECIFIC DATASET, PREALLOCATE DDNAME IEFPARM IN THIS     *
+//*       PROCEDURE:                                                 *
+//*       //IEFPARM  DD   DISP=SHR,DSN=USERS.PARMLIB                 *
+//*                                                                  *
+//*    4. TO CREATE THE HOST TRACE AND PRINTOUT DATASETS, REPLACE    *
+//*       THE SYSOUT AND SYSPRINT DD STATEMENTS WITH SYSOUT=A        *
+//*       OR A DATASET DEFINITION.                                   *
+//*       - HOST TRACE (SYSOUT DD) DATASET CHARACTERISTICS:          *
+//*         DCB=(DSORG=PS,RECFM=FBA,LRECL=121,BLKSIZE=0)             *
+//*       - PRINTOUT (SYSPRINT DD) DATASET CHARACTERISTICS:          *
+//*         DCB=(DSORG=PS,RECFM=VB,LRECL=1028,BLKSIZE=0)             *
+//*       WITH A RUNNING SERVER YOU CAN DYNAMICALLY ACTIVATE AND     *
+//*       DEACTIVATE THE TRACE WITH MVS OPERATOR COMMANDS.           *
+//*       - "MODIFY GPMSERVE,TRACEON"      ACTIVATES THE TRACE       *
+//*       - "MODIFY GPMSERVE,TRACEOFF"     TURNS THE TRACE OFF       *
+//*       IF THE TRACE MUST BE ACTIVE DURING STARTUP OF THE SERVER,  *
+//*       ACTIVATE THE "ENVAR(ICLUI_TRACETO=STDERR)" OPTION IN       *
+//*       THE PARM STATEMENT (SEE EXAMPLE BELOW).                    *
+//*                                                                  *
+//*    5. YOU CAN REPLACE THE DATASET OR THE MEMBER SPECIFIED IN     *
+//*       THE GPMPPJCL DD-CARD WITH PRIVATE ONES CONTAINING THE      *
+//*       JCL TEMPLATE FOR RUNNING RMF POSTPROCESSOR FROM THE DDS.   *
+//*       IF YOU DO NOT WANT TO REQUEST POSTPROCESSOR DATA WITH      *
+//*       THE DDS, YOU MAY OMIT THE GPMPPJCL DD-CARD.                *
+//*                                                                  *
+//*                                                                  *
+//*01* DEPENDENCIES:                                                 *
+//*       - TCPIP MUST BE ACTIVE                                     *
+//*       - Z/OS UNIX SYSTEM SERVICES: THE USERID RUNNING THIS       *
+//*         SERVER MUST HAVE AN OMVS SEGMENT IN RACF AND A HOME      *
+//*         DIRECTORY IN THE USS FILESYSTEM.                         *
+//*                                                                  *
+//*01* CHANGE-ACTIVITY:                                              *
+//*    $G0=GPM,HRM6606,,GBO: CREATED                                 *
+//*    $I1=GPM,HRM7703,,GBO: ADD GPMHTC DDNAME, CHANGE REGION SIZE   *
+//*    $J1=GPM,HRM7705,,GBO: Z/OS CHANGES                            *
+//*    $41=GPM,HRM7770,,KGE: ADD GPMPPJCL DDNAME                     *
+//*    $81=ZOSV2R3,HRM77B0,,PMU: REGION=256M                     @81A*
+//*    $82=SMFDS,HRM77B0,,KGE: SMF DATA SET SUPPORT                  *
+//*                                                                  *
+//********************************************************************
+//STEP1    EXEC PGM=GPMDDSRV,REGION=256M,TIME=1440,
+//         PARM='TRAP(ON)/&MEMBER'
+//*        PARM='TRAP(ON),ENVAR(ICLUI_TRACETO=STDERR)/&MEMBER'
+//*
+//*STEPLIB DD   DISP=SHR,DSN=CEE.SCEERUN
+//*        DD   DISP=SHR,DSN=CBC.SCLBDLL
+//GPMINI   DD   DISP=SHR,DSN=SYS1.SERBPWSV(GPMINI)
+//GPMHTC   DD   DISP=SHR,DSN=SYS1.SERBPWSV(GPMHTC)
+//GPMPPJCL DD   DISP=SHR,DSN=SYS1.SERBPWSV(GPMPPJCL)
+//*GPMPPJCL DD  DISP=SHR,DSN=SYS1.SERBPWSV(GPMPPJV2)
+//CEEDUMP  DD   DUMMY
+//SYSPRINT DD   DUMMY
+//SYSOUT   DD   DUMMY
+//         PEND

@@ -1,0 +1,55 @@
+//*** Start of Specifications for BLSJIPCS **************************** 00050000
+//*                                                                     00100000
+//* $MAC(BLSJIPCS) COMP(SC132) PROD(JBB6602): IPCS catalogued procedure 00150000
+//*                                                                     00200000
+//* PROPRIETARY STATEMENT:                                              00250000
+//*                                                                     00300000
+//*   LICENSED MATERIALS - PROPERTY OF IBM                              00450000
+//*   THIS MACRO IS "RESTRICTED MATERIALS OF IBM"                       00456200
+//*   5645-001 (C) COPYRIGHT IBM CORP. 1987, 1996                       00462400
+//*                                                                     00468600
+//*   STATUS = JBB6602                                                  00474800
+//*                                                                     00481000
+//* EXTERNAL CLASSIFICATION: NONE                                       00487200
+//* END OF EXTERNAL CLASSIFICATION:                                     00493400
+//*                                                                     00500000
+//* FUNCTION = Catalogued procedure to run IPCS in batch.               00550000
+//*                                                                     00600000
+//* =================================================================== 00650000
+//*                                                                     00700000
+//* CHANGE ACTIVITY=                                                    00750000
+//*                                                                     00800000
+//*   Products=                                                         00821400
+//* $L1=PARMC,JBB6602,95150,PDE1: Concatenated parmlib support          00842800
+//*     Remove IPCSPARM DD statement to trigger the use of the          00864200
+//*     logical parmlib concatenation for the system                    00885600
+//*                                                                     00907000
+//* ------------------------------------------------------------------- 00928400
+//*                                                                     00950000
+//*   Design changes=                                                   00983300
+//* $D0=DC40302,HBB3310,87259,PDE1: AMDPRDMP equivalence                01016600
+//*                                                                     01050000
+//* ------------------------------------------------------------------- 01066600
+//*                                                                     01083200
+//*   PTMs= none                                                        01100000
+//*                                                                     01116600
+//* ------------------------------------------------------------------- 01133200
+//*                                                                     01150000
+//*   Maintenance= none                                                 01200000
+//*                                                                     01250000
+//** End of Specifications for BLSJIPCS ******************************* 01300000
+//IPCS     PROC CLIST=BLSCBSVA,DUMP=                                    01350000
+//IEFPROC  EXEC PGM=IKJEFT01,REGION=4M,DYNAMNBR=10,                     01400000
+// PARM=('%&CLIST.','&DUMP.')                                           01450000
+//*                                                                     01500000
+//*                         INPUT DATA SETS                             01750000
+//*                                                                     01800000
+//IPCSDUMP DD DSN=&DUMP,DISP=SHR       DUMP OR TRACE DATA SET           01850000
+//SYSPROC  DD DSN=SYS1.SBLSCLI0,DISP=SHR CLIST PROCEDURES               01950000
+//SYSTSIN  DD DUMMY,DCB=(RECFM=F,LRECL=80,BLKSIZE=80) TSO COMMANDS      02000000
+//*                                                                     02050000
+//*                         FORMATTED OUTPUT                            02100000
+//*                                                                     02150000
+//SYSTSPRT DD SYSOUT=A                 BATCH TSO SESSION LOG            02200000
+//IPCSTOC  DD SYSOUT=A                 PRINT FILE TABLE OF CONTENTS     02250000
+//IPCSPRNT DD SYSOUT=A                 PRINT FILE                       02300000

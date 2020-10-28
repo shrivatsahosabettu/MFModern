@@ -1,0 +1,39 @@
+//RMFGAT   PROC                                                         00000100
+//********************************************************************
+//*                                                                  *
+//* PROPRIETARY STATEMENT:                                           *
+//*    LICENSED MATERIALS - PROPERTY OF IBM                          *
+//*    "RESTRICTED MATERIALS OF IBM"                                 *
+//*    5694-A01                                                      *
+//*    COPYRIGHT IBM CORP. 1998, 2007                                *
+//*    STATUS=HRM7740 (Z/OS V1R9 RMF)                                *
+//*                                                                  *  00000900
+//* DESCRIPTIVE_NAME:                                                *  00001000
+//*   PROCEDURE FOR RMF MONITOR III GATHERER                         *  00001100
+//*                                                                  *  00001200
+//* NOTES:                                                           *  00001200
+//*   1. IF YOU START RMF MONITOR III ON A SYSTEM WITHOUT JES        *  00001230
+//*      UNDER THE MASTER ADDRESS SPACE:                             *  00001230
+//*      - PREALLOCATE DDNAME RMFM3III IN THIS PROCEDURE             *  00001230
+//*        EXAMPLE: //MFMESSGE DD DUMMY                              *  00001230
+//*      - ISSUE THE FOLLOWING COMMAND SEQUENCE:                     *  00001230
+//*           START RMF,,,<OPTIONS>,SUB=MSTR                         *  00001230
+//*           MODIFY RMF,S III                                       *  00001230
+//*        (RMF WILL START RMFGAT WITH SUB=MSTR, IF RMF ITSELF WAS   *  00001200
+//*        STARTED WITH SUB=MSTR)                                    *  00001200
+//*   2. FOR THE "LOGICAL PARMLIB SUPPORT" OF OS/390 RELEASE 1.2.0   *  00001200
+//*      SEE THE RMF PROCEDURE.                                      *  00001200
+//*                                                                  *  00001500
+//* CHANGE ACTIVITY:                                                 *  00001600
+//*   $C1=R510,HRM5510,,GBO: REMOVE SYSUDUMP, ADD DESCRIPTION        *  00001700
+//*   GBO: REMOVE DPRTY PARAMETER                            @WA03891*  00001700
+//*   GBO: CLONING SUPPORT / SYMBOLIC NAMES IN PARMLIB       @WA15873*  00001520
+//*        REMOVE IEFPARM/IEFRDER STATEMENTS                 @WA15873*  00001520
+//*        ADD DESCRIPTION FOR OW12805                       @WA15873*  00001520
+//*   $E1=OSREL2,HRM6602,,GBO: CONCATENATED PARMLIB,40M          @E1A*  00001520
+//*   $I1=OSREL10,HRM7703,,GUB: REGION=64M                       @I1A*  00001520
+//*   $01=ZOSV1R8,HRM7730,,GUB: REGION=128M                      @01A*  00001520
+//*   $61=ZOSV2R1,HRM7790,,PMU: REGION=256M                      @61A*  00001520
+//*                                                                  *  00001710
+//********************************************************************  00001800
+//IEFPROC  EXEC PGM=ERB3GMFC,REGION=256M,TIME=1440                      00100000

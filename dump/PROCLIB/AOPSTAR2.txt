@@ -1,0 +1,30 @@
+//*-------------------------------------------------------------------
+//*
+//*  AOPSTART - This procedure starts the Infoprint Server daemons.
+//*             The USERID  executing this proc must be a member of
+//*             the AOPOPER group.
+//*             The first step MUST be coded. The rest are optional
+//*             and depend on  which Infoprint Server services  you
+//*             wish to use.
+//*
+//*-------------------------------------------------------------------
+//AOPSTART PROC
+//*
+//INVENTRY EXEC AOPDEMON,TYPE=AOP Required
+//*
+//INETPRNT EXEC AOPDEMON,TYPE=IPP
+//*
+//LPDEMON  EXEC AOPDEMON,TYPE=LPD
+//*
+//NETSPOOL EXEC AOPDEMON,TYPE=NET
+//*
+//PRINTWAY EXEC AOPDEMON,TYPE=OUT
+//*
+//GUIDEMON EXEC AOPDEMON,TYPE=SSI
+//*
+//SUBSYSTM EXEC AOPDEMON,TYPE=SUB
+//*
+//WORKSELC EXEC AOPDEMON,TYPE=WSM
+//*
+//TRANSFRM EXEC AOPDEMON,TYPE=XFD
+//

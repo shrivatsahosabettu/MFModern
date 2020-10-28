@@ -1,0 +1,50 @@
+//IXGLOGRS PROC                                                         00010000
+//* START OF SPECIFICATIONS ******************************************  00020000
+//*                                                                  *  00030000
+//* MEMBER NAME:  IXGLOGRS                                           *  00040000
+//*                                                                  *  00050000
+//*  DESCRIPTIVE NAME:                                               *  00060000
+//*    PROCEDURE USED TO START THE SYSTEM LOGGER ADDRESS SPACE AFTER *  00070001
+//*    IT HAS TERMINATED.                                            *  00080001
+//*                                                                  *  00090000
+//*01* PROPRIETARY STATEMENT=                                        *  00100000
+//***PROPRIETARY_STATEMENT********************************************  00110000
+//*                                                                  *  00120000
+//* LICENSED MATERIALS - PROPERTY OF IBM                             *  00130000
+//* 5694-A01                                                         *  00140000
+//* (C) COPYRIGHT IBM CORP. 1995, 2003                               *  00150000
+//*                                                                  *  00160000
+//* STATUS = HBB7708                                                 *  00170000
+//*                                                                  *  00180000
+//***END_OF_PROPRIETARY_STATEMENT*************************************  00190000
+//*                                                                  *  00200000
+//*  FUNCTION:  THIS JCL PROCEDURE WILL ATTEMPT TO START THE         *  00210001
+//*    IXGLOGR (LOGGER SERVER) ADDRESS SPACE.                        *  00220001
+//*                                                                  *  00230001
+//*  USE:  THIS PROCEDURE CAN BE USED BY AN OPERATOR TO REQUEST      *  00240001
+//*    THAT THE LOGGER SERVER ADDRESS SPACE, IXGLOGR, BE RE-STARTED  *  00250001
+//*    AFTER THE ADDRESS SPACE HAS ALREADY TERMINATED.               *  00260001
+//*                                                                  *  00270001
+//*  SYNTAX:  S IXGLOGRS                                             *  00280001
+//*                                                                  *  00290001
+//*  INPUT:  NONE                                                    *  00300001
+//*                                                                  *  00310001
+//*  OUTPUT:  A NEW INSTANCE OF THE IXGLOGR ADDRESS SPACE WILL       *  00320001
+//*    BE ATTEMPTED TO BE STARTED.                                   *  00330001
+//*                                                                  *  00340001
+//*  REQUIRES:   ACCESS TO SYS1.PROCLIB FROM SUBMITTING USERID.      *  00350001
+//*                                                                  *  00360001
+//*  REFERENCES:  REFER TO "Z/OS MVS SETTING UP A SYSPLEX" FOR       *  00370001
+//*    CONSIDERATIONS ON THE IXGLOGR ADDRESS SPACE BEING AVAILABLE.  *  00380001
+//*                                                                  *  00390001
+//* DISTRIBUTION LIBRARY:  SYS1.PROCLIB                              *  00400001
+//*                                                                  *  00410001
+//* CHANGE ACTIVITY:                                                 *  00420001
+//*                                                                  *  00430001
+//*FLAG LINEITEM  FMID    DATE    ID    COMMENT                      *  00440001
+//* $00=OW11217   HBB5520 950215  PDDZ: GET IXGLOGR RESTARTED        *  00450001
+//* $L1=LOGDM     HBB7708 030103  PDDZ: UPDATE PROLOG                *  00460002
+//*                                                                  *  00470001
+//* END OF SPECIFICATIONS ********************************************  00480001
+//IXGLOGRS EXEC PGM=IXGBLF00                                            00490000
+//         PEND                                                         00500000

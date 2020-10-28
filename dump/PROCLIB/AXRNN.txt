@@ -1,0 +1,44 @@
+//AXRNN    PROC                                                         00010000
+//* START OF SPECIFICATIONS ******************************************  00020000
+//*                                                                  *  00030000
+//* MEMBER NAME:  AXRNN                                              *  00040000
+//*                                                                  *  00050000
+//*  DESCRIPTIVE NAME:                                               *  00060000
+//*    PROCEDURE USED TO START A TSO SERVER ADDRESS SPACE  FOR       *  00070000
+//*    SYSTEM REXX.                                                  *  00080000
+//*                                                                  *  00090000
+//*01* PROPRIETARY STATEMENT=                                        *  00100000
+//***PROPRIETARY_STATEMENT********************************************  00110000
+//*                                                                  *  00120000
+//* LICENSED MATERIALS - PROPERTY OF IBM                             *  00130000
+//* 5694-A01                                                         *  00140000
+//* COPYRIGHT IBM CORP. 2009                                         *  00150000
+//*                                                                  *  00160000
+//* STATUS = HBB7760                                                 *  00170000
+//*                                                                  *  00180000
+//***END_OF_PROPRIETARY_STATEMENT*************************************  00190000
+//*                                                                  *  00200000
+//*  FUNCTION:  THIS JCL PROCEDURE WILL ATTEMPT TO START A           *  00210000
+//*    TSO SERVER ADDRESS SPACE FOR SYSTEM REXX.                     *  00220000
+//*                                                                  *  00230000
+//*  USE:  USED INTERNALLY BY SYSTEM REXX                            *  00240000
+//*                                                                  *  00250000
+//*  SYNTAX:  N/A                                                    *  00260000
+//*                                                                  *  00270000
+//*  INPUT:  NONE                                                    *  00280000
+//*                                                                  *  00290000
+//*  OUTPUT:  A NEW AXRNN ADDRESS SPACE WILL BE STARTED.             *  00300000
+//*                                                                  *  00310000
+//*  REQUIRES:   N/A                                                 *  00320000
+//*                                                                  *  00330000
+//*  REFERENCES:  NONE                                               *  00340000
+//*                                                                  *  00350000
+//* DISTRIBUTION LIBRARY:  SYS1.PROCLIB                              *  00360000
+//*                                                                  *  00370000
+//* CHANGE ACTIVITY:                                                 *  00380000
+//*                                                                  *  00390000
+//*FLAG LINEITEM  FMID    DATE    ID    COMMENT                      *  00400000
+//* $L0=SYSREXX   HBB7760 080730  PDCS: JES AFFINITY                 *  00410001
+//*                                                                  *  00420000
+//* END OF SPECIFICATIONS ********************************************  00430000
+//         EXEC PGM=AXRRXTSS                                            00440000

@@ -1,0 +1,74 @@
+//HZR      PROC OPTIONS=                                                00010000
+//* START OF SPECIFICATIONS ******************************************  00020000
+//*                                                                  *  00030000
+//* MEMBER NAME:  HZR                                                *  00040000
+//*                                                                  *  00050000
+//*  DESCRIPTIVE NAME:                                               *  00060000
+//*    Procedure used to start Runtime Diagnostics                   *  00070000
+//*                                                                  *  00080000
+//*01* PROPRIETARY STATEMENT=                                        *  00090000
+//***PROPRIETARY_STATEMENT********************************************  00100000
+//*                                                                  *  00110000
+//* LICENSED MATERIALS - PROPERTY OF IBM                             *  00120000
+//* 5694-A01                                                         *  00130000
+//* COPYRIGHT IBM CORP. 2010,2011                                    *  00140001
+//*                                                                  *  00150000
+//* STATUS = HBB7780                                                 *  00160000
+//*                                                                  *  00170000
+//***END_OF_PROPRIETARY_STATEMENT*************************************  00180000
+//*                                                                  *  00190000
+//*  FUNCTION:  This procedure will start the Runtime Diagnostics    *  00200000
+//*    started task.                                                 *  00210000
+//*                                                                  *  00220000
+//*  USE:  This procedure can be used by an operator to start        *  00230000
+//*    the Runtime Diagnostics (RTD) address space.                  *  00240000
+//*                                                                  *  00250000
+//*  SYNTAX:  S HZR,SUB=MSTR                                         *  00260000
+//*                                                                  *  00270000
+//*                                                                  *  00280000
+//*  INPUT:  NONE                                                    *  00290000
+//*                                                                  *  00300000
+//*                                                                  *  00310000
+//*                                                                  *  00320000
+//*                                                                  *  00330000
+//*  NOTE: Parenthesis are optional if only 1 debug option is        *  00340000
+//*      specified.                                                  *  00350000
+//*                                                                  *  00360000
+//*                                                                  *  00361003
+//*                                                                  *  00362001
+//*                                                                  *  00363001
+//*                                                                  *  00364001
+//*                                                                  *  00365001
+//*  OUTPUT:  A new instance of the HZR address space will           *  00370001
+//*    be started.                                                   *  00380001
+//*                                                                  *  00390001
+//*      RETURN CODES:                                               *  00400001
+//*         0  -  Successful, HZR space was started                  *  00410001
+//*                                                                  *  00420001
+//*         8  -  HZR was unable to start (user error)               *  00430001
+//*                                                                  *  00440001
+//*         16 -  HZR failed                                         *  00450001
+//*                                                                  *  00460001
+//*                                                                  *  00470001
+//*  REQUIRES:   N/A                                                 *  00480000
+//*                                                                  *  00490000
+//*  REFERENCES:  NONE                                               *  00500000
+//*                                                                  *  00510000
+//* DISTRIBUTION LIBRARY:  SYS1.PROCLIB                              *  00520000
+//*                                                                  *  00530000
+//* CHANGE ACTIVITY:                                                 *  00540000
+//*                                                                  *  00550000
+//*FLAG LINEITEM  FMID    DATE    ID    COMMENT                      *  00560000
+//* $L0=RTD       HBB7770 090701  PDCS: START RTD                    *  00570000
+//* $L1=RTD2      HBB7780 091101  PDCS: HZR server space             *  00580000
+//* $D1=ME19028   HBB7780 100422  PDNU: Roll up R12 defect ME17785   *  00581001
+//*                                      change SYSPRINT to HZROUT   *  00590001
+//* $D2=ME19331   HBB7780 100617  PDNU: R13 PROC missing PARM        *  00591001
+//* $F3=ME20998   HBB7780 110201  PDNU: BLKSIZE=0 So The System      *  00592001
+//*                                      Picks the optimum BLKSIZE   *  00593001
+//*                                      for the device.             *  00594001
+//* END OF SPECIFICATIONS ********************************************  00600000
+//IEFPROC  EXEC PGM=HZRINIT,TIME=NOLIMIT,PARM='OPTIONS=&OPTIONS',       00610001
+//            MEMLIMIT=NOLIMIT                                          00620001
+//HZROUT   DD  DDNAME=IEFRDER                                           00630001
+//IEFRDER  DD  DUMMY,LRECL=121,BLKSIZE=0,RECFM=FB,DISP=SHR              00640002

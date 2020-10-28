@@ -1,0 +1,280 @@
+//APSWPROF PROC
+//***** THE PSF DOF FONT, DOR and CMR WRITER PROCEDURE  *********** @ICC
+//*
+//* MODULE-NAME = APSWPROF
+//* $MOD(APSWPROF) COMP(APS) PROD(PSF) : VERSION 4.6.0
+//*
+//* DESCRIPTIVE-NAME = STARTUP PROCEDURE FOR PSF:
+//*
+//*        COLOR OR BLACK AND WHITE TCP/IP ATTACHED PRINTER
+//*        UNICODE ENABLED - BY DEFAULT                             @ICC
+//*        MULTIPLE RESOLUTION LIBRARIES
+//*        PRINTER SHARING
+//*        DATA OBJECT FONTS - TRUETYPE/OPENTYPE FONTS
+//*        DATA OBJECT RESOURCES - FOR EXAMPLE IOCA, TIFF, EPS, ETC.
+//*        COLOR MANAGEMENT RESOURCES
+//*        MO:DCA IS/3 OUTPUT STATEMENTS FOR AUXILIARY FILES
+//*          JOB HEADERS, DATA SET HEADERS, TRAILERS AND THE
+//*          MESSAGE DATA SET.                                      @ICA
+//*        TCP/IP V6 EXAMPLE                                        @HHA
+//*
+//* STATUS = HPRF460
+//*
+//* FUNCTION = SET PSF OPTIONS AND RESOURCES.
+//*
+//* NOTES = THE FULL NAME OF THE DEFAULT PAGEDEF IS
+//*            P1A06462.
+//*         THE FULL NAME OF THE DEFAULT FORMDEF IS
+//*            F1A10110.
+//*
+//*         THE FULL NAME OF THE DEFAULT CORE FONT IS X060D8.
+//*         THE FULL NAME OF EQUIVALENT COMPATIBILITY FONT
+//*         IS X0GT15.
+//*
+//*         THE FULL NAME OF THE SEPARATOR PAGE PAGEDEF IS
+//*             P1V06483.
+//*
+//*         THE FULL NAME OF THE SEPARATOR PAGE PAGEDEF FOR MO:DCA
+//*         IS/3 IS P1TT6483.                                       @ICA
+//*
+//*         THE FULL NAME OF THE MESSAGE PAGE PAGEDEF FOR MO:DCA
+//*         IS/3 IS P1TT6462.                                       @ICA
+//*
+//*         THE FULL NAME OF THE SEPARATOR PAGE AND MESSAGE PAGE
+//*         FORMDEF FOR MO:DCA IS/3 IS F1I30110.                    @ICA
+//*
+//*         THE FULL NAME OF THE SEPARATOR PAGE CORE FONT IS
+//*         X060D8.  THE FULL NAME OF EQUIVALENT COMPATIBILITY
+//*         FONT IS X0GT15.
+//*
+//* REQUIRED ACTIONS =
+//*
+//*      A) SIMPLEX/DUPLEX - THIS STARTUP PROCEDURE IS SET UP TO
+//*         DEFAULT TO SIMPLEX PRINTING. TO CHANGE THE DEFAULT TO
+//*         DUPLEX:
+//*         - USE THE LINE CONTAINING /* DEFAULT FORMDEF - DUPLEX
+//*
+//*      B) ATTACHMENT - THIS STARTUP PROCEDURE IS SET UP FOR A TCP/IP
+//*          ATTACHED PRINTER.
+//*         - IF YOUR TCP/IP STARTUP PROCEDURE IS NOT NAMED 'TCPIP',
+//*           THEN CHANGE THE PARM DEFINITION ON THE EXEC STATEMENT.
+//*         - CHOOSE EITHER THE TCP/IP V4 ADDRESS FORMAT OR THE
+//*           TCP/IP V6 ADDRESS FORMAT.                          @HHA
+//*      C) MO:DCA IS/3 - THIS STARTUP PROCEDURE IS SET UP TO    @ICA
+//*         USE THE ORIGINAL OUTPUT STATEMENTS FOR THE AUXILIARY @ICA
+//*         FILES (THE SEPARATOR PAGES AND THE MESSAGE DATA      @ICA
+//*         SET).  IF YOU WANT TO CREATE MO:DCA IS/3 VERSIONS    @ICA
+//*         OF THESE FILES YOU MUST:                             @ICA
+//*         - UPDATE THE AFPPARMS PARAMETER                      @ICA
+//*           AUXILIARY-FILES-MODCA-LEVEL TO SPECIFY IS3.        @ICA
+//*         - UPDATE THE PRINTDEV REFER-BACK PARAMETERS FOR THE  @ICA
+//*           AUXILARY FILES (SEPARATORS AND MESSAGE DATA SET) TO@ICA
+//*           POINT TO THE IS3 VERSION OF THE OUTPUT STATEMENT.  @ICA
+//*           FOR EXAMPLE, FOR THE JOB HEADER THE PRINTDEV       @ICA
+//*           STATEMENT WOULD LOOK LIKE JOBHDR=*.JOBHIS3.        @ICA
+//*         - UPDATE THE FORMDEF CONTROL STATEMENT TO SPECIFY    @ICA
+//*           ONE OF THE IS3 FORMDEFS.                           @ICA
+//*
+//*
+//* CHANGE-ACTIVITY :
+//* $B0=LAPS0010,HPRF340,093003,BDKUPG:  Initial Version         @B0A
+//* $FC=LAPS0010,HPRF340,093003,BDKULD:  Version 3.4.0           @FCA
+//* $FM=LAPS0011,HPRF410,050502,BDKUPG:  Version 4.1.0           @FMA
+//* $FU=LAPS0012,HPRF420,060630,BDKURDD: Version 4.2.0           @FUA
+//* $GD=LAPS0013,HPRF430,080515,BDKURDD: Version 4.3.0           @GDA
+//* $GH=LAPS0014,HPRF440,090922,BDKURDD: Version 4.4.0           @GHA
+//* $HH=LAPS0015,HPRF450,111202,BDKUGLM: Version 4.5.0           @HHA
+//* $HH=LAPS0015,HPRF450,111202,BDKULMM: TCP/IP V6 address       @HHA
+//* $IC=LAPS0015,HPRF450,121119,BDKULMM: IS/3 Updates            @ICA
+//* $HU=LAPS0015,HPRF450,130327,BDKULMM: Unicode always enabled  @HUA   03850000
+//* $01=OA46136, HPRF450,150622,BDKULMM: Correct system font     @01A
+//*                                      library names           @01A
+//* $IL=LAPS0016,HPRF460,151207,BDKUDWP: Version 4.6.0           @ILA
+//*
+//**** END OF SPECIFICATIONS ***/
+//*
+//STEP01   EXEC PGM=APSPPIEP,REGION=4096K,PARM=(,,,,TCPIP,)      @HUC*/
+//JOBHDR OUTPUT PAGEDEF=V06483,     /* JOB SEPARATOR PAGEDEF         */
+//       FORMDEF=A10110,CHARS=60D8  /* JOB SEPARATOR FORMDEF         */
+//JOBHIS3 OUTPUT PAGEDEF=TT6483,    /* IS3 JOB SEPARATOR PAGEDEF @ICA*/
+//       FORMDEF=I30110             /* IS3 JOB SEPARATOR FORMDEF @ICA*/
+//JOBTLR OUTPUT PAGEDEF=V06483,     /* JOB SEPARATOR PAGEDEF         */
+//       FORMDEF=A10110,CHARS=60D8  /* JOB SEPARATOR FORMDEF         */
+//JOBTIS3 OUTPUT PAGEDEF=TT6483,    /* IS3 JOB SEPARATOR PAGEDEF     */
+//       FORMDEF=I30110             /* IS3 JOB SEPARATOR FORMDEF @ICA*/
+//DSHDR  OUTPUT PAGEDEF=V06483,     /* DS  SEPARATOR PAGEDEF     @ICA*/
+//       FORMDEF=A10110,CHARS=60D8  /* DS  SEPARATOR FORMDEF         */
+//DSHIS3 OUTPUT PAGEDEF=TT6483,     /* IS3 DS SEPARATOR PAGEDEF  @ICA*/
+//       FORMDEF=I30110             /* IS3 DS SEPARATOR FORMDEF  @ICA*/
+//MSGDS  OUTPUT PAGEDEF=A06462,     /* MESSAGE DATASET PAGEDEF       */
+//       FORMDEF=A10110             /* MESSAGE DATASET FORMDEF       */
+//MSGIS3 OUTPUT PAGEDEF=TT6462,     /* IS3 MSG DATASET PAGEDEF   @ICA*/
+//       FORMDEF=I30110             /* IS3 MSG DATASET FORMDEF   @ICA*/
+//PRTINFO  DD DSN=INST.PRTINFO,     /* PRINTER INFORMATION       @HHC*/
+//         DISP=SHR                 /* REPORT DATASET                */
+//AFPPARMS DD DSN=INST.AFPPARMS,    /* PSF AFPPARMS PARAMETER    @ICA*/
+//         DISP=SHR                 /* DATA SET                  @ICA*/
+//*
+//FONT01 DD DSN=SYS1.FONTLIBB,DISP=SHR  /* SYSTEM 240 PEL FONTS  @01C*/
+//       DD DSN=SYS1.SFNTILIB,DISP=SHR  /* SYSTEM OUTLINE FONTS  @01C*/
+//       DD DSN=INST1.FONTLIB,DISP=SHR /* INSTALLATION 240 PEL FONTS */
+//FONT02 DD DSN=SYS1.FONT300,DISP=SHR   /* SYSTEM 300 PEL FONTS  @01C*/
+//       DD DSN=SYS1.SFNTILIB,DISP=SHR  /* SYSTEM OUTLINE FONTS  @01C*/
+//       DD DSN=INST2.FONTLIB,DISP=SHR /* INSTALLATION 300 PEL FONTS
+                                                                 @GDC*/
+//TTFONT DD PATH='/usr/lpp/fonts/worldtype/' /* SYSTEM TTFs      @01C*/
+//*                                                             3@01D*/
+//*
+//PSEG01 DD DSN=INST1.PSEGLIB,DISP=SHR /* INSTALLATION PAGE SEGMENTS */
+//*                                       FORMATTED FOR 240 PEL
+//*                                       PRINTERS
+//       DD DSN=SPEC.PSEGLIB,DISP=SHR  /* SPECIAL PAGE SEGMENTS      */
+//*
+//PSEG02 DD DSN=INST2.PSEGLIB,DISP=SHR /* INSTALLATION PAGE SEGMENTS */
+//*                                       FORMATTED FOR 300 PEL
+//*                                       PRINTERS
+//*
+//OLAY01 DD DSN=INST1.OVERLIB,DISP=SHR /* INSTALLATION OVERLAYS      */
+//*                                       FORMATTED FOR 240 PEL
+//*                                       PRINTERS
+//*
+//OLAY02 DD DSN=INST2.OVERLIB,DISP=SHR /* INSTALLATION OVERLAYS      */
+//*                                       FORMATTED FOR 300 PEL
+//*                                       PRINTERS
+//*
+//PDEF01 DD DSN=SYS1.PDEFLIB,DISP=SHR  /* SYSTEM PAGE DEFINITIONS    */
+//       DD DSN=INST.PDEFLIB,DISP=SHR  /* INSTALLATION PAGE DEFS     */
+//*
+//FDEF01 DD DSN=SYS1.FDEFLIB,DISP=SHR  /* SYSTEM FORM DEFINITIONS    */
+//       DD DSN=INST.FDEFLIB,DISP=SHR  /* INSTALLATION FORM DEFS     */
+//DORCMR DD PATH='/usr/lpp/PSF/dor/ioca/' /* SYSTEM DORs         @FUA*/
+//       DD PATH='/usr/lpp/PSF/dor/tiff/' /* SYSTEM DORs         @FUA*/
+//       DD PATH='/usr/lpp/PSF/cmr/'      /* SYSTEM CMRs         @FUA*/
+//*
+//* ***********************************************************      */
+//*              PRINTDEV                                            */
+//* ***********************************************************      */
+//PRT1     CNTL
+//PRT1     PRINTDEV FONTDD=*.FONT01, /* DEFAULT FONT LIBRARY DD      */
+//         FONT240=*.FONT01,         /* 240 PEL FONT LIBRARY DD      */
+//         FONT300=*.FONT02,         /* 300 PEL FONT LIBRARY DD      */
+//         FONTPATH=*.TTFONT,        /* DEFAULT TTF/OTF LIBRARY DD   */
+//         OBJCPATH=*.DORCMR,       /* DEFAULT DOR/CMR LIBRARY DD@FUA*/
+//         OVLYDD=*.OLAY01,          /* DEFAULT OVERLAY LIBRARY DD   */
+//         OVLY240=*.OLAY01,         /* 240 PEL OVERLAY LIBRARY DD   */
+//         OVLY300=*.OLAY02,         /* 300 PEL OVERLAY LIBRARY DD   */
+//         PSEGDD=*.PSEG01,          /* DEFAULT SEGMENT LIBRARY DD   */
+//         PSEG240=*.PSEG01,         /* 240 PEL SEGMENT LIBRARY DD   */
+//         PSEG300=*.PSEG02,         /* 300 PEL SEGMENT LIBRARY DD   */
+//         PDEFDD=*.PDEF01,          /* PAGEDEF LIBRARY DD           */
+//         FDEFDD=*.FDEF01,          /* FORMDEF LIBRARY DD           */
+//         JOBHDR=*.JOBHDR,          /* JOB HEADER SEPARATOR OUTPUT  */
+//         JOBTRLR=*.JOBTLR,         /* JOB TRAILER SEPARATOR OUTPUT */
+//         DSHDR=*.DSHDR,            /* DATA SET HEADER SEPARATOR    */
+//         MESSAGE=*.MSGDS,          /* MESSAGE DATA SET OUTPUT      */
+//********************************************************************/
+//* COMMENT OUT ALL THE PREVIOUS SEPARATOR PAGE AND MESSAGE DATA SET */
+//* CONTROL STATEMENTS AND UNCOMMENT THE FOLLOWING ONES IF           */
+//* SETTING UP THIS STARTUP PROCEDURE FOR MO:DCA IS/3 AUXILIARY      */
+//* FILES.                                                       @ICA*/
+//********************************************************************/
+//*        JOBHDR=*.JOBHIS3,         /* IS3 JOB HDR  OUTPUT      @ICA*/
+//*        JOBTRLR=*.JOBTIS3,        /* IS3 JOB TRAILER  OUTPUT  @ICA*/
+//*        DSHDR=*.DSHIS3,           /* IS3 DATA SET HDR OUTPUT  @ICA*/
+//*        MESSAGE=*.MSGIS3,         /* IS3 MSG DATA SET OUTPUT  @ICA*/
+//         PAGEDEF=A06462,           /* DEVICE PAGEDEF DEFAULT       */
+//         FORMDEF=A10110,           /* DEFAULT FORMDEF - SIMPLEX    */
+//         FORMDEF=A10110,           /* DEFAULT FORMDEF - SIMPLEX    */
+//*        FORMDEF=A10111,           /* DEFAULT FORMDEF - DUPLEX     */
+//*        FORMDEF=I30110,           /* IS3 FORMDEF - SIMPLEX    @ICA*/
+//*        FORMDEF=I30111,           /* IS3 FORMDEF - DUPLEX     @ICA*/
+//         CHARS=(60D8),             /* DEVICE DEFAULT FONT          */
+//         PIMSG=(YES,16),           /* DEFAULT, ACCUMULATE DATA SET */
+//*                                  /* MESSAGES UP TO 16 MSG GROUPS */
+//         DATACK=BLOCK,             /* DEFAULT, DO NOT REPORT ANY   */
+//*                                  /* UNDEFINED CHARACATER OR      */
+//*                                  /* POSITION ERRORS          @GDA*/
+//********************************************************************/
+//* Printer Connection Management #1                                 */
+//* The following lines can be used to set up IPDS Port Switching    */
+//* for printer sharing based on TIME.                               */
+//********************************************************************/
+//*         RELMODE=TIME,            /* Start release interval timer */
+//*                                  /* when release request made@GDA*/
+//*         RELINTV=1800,            /* Release printer 30 minutes   */
+//*                                  /* after release request    @GDA*/
+//*         ACQINTV=300,             /* Acquire printer 5 minutes    */
+//*                                  /* after releasing it       @GDA*/
+//*         MGMTMODE=OUTAVAIL,       /* Default, Acquire printer when*/
+//*                                  /* output available         @GDA*/
+//********************************************************************/
+//* Printer Connection Management #2                                 */
+//* The following lines can be used to set up IPDS Port Switching    */
+//* for printer sharing based on when the printer is IDLE.           */
+//********************************************************************/
+//*         RELMODE=IDLE,            /* Start release interval timer */
+//*                                  /* when no more work        @GDA*/
+//*         RELINTV=30,              /* Release printer 30 seconds   */
+//*                                  /* after being IDLE         @GDA*/
+//*         MGMTMODE=OUTAVAIL,       /* Default, Acquire printer when*/
+//*                                  /* output available         @GDA*/
+//********************************************************************/
+//* Printer Connection Management #3                                 */
+//* The following lines are set up for JES Spool-Driven printer      */
+//* sharing based on using the Disconnect Interval timer(DISCINTV).  */
+//********************************************************************/
+//*         FAILURE=WCONNECT,        /* Default, Wait for connection */
+//*                                  /* interval to expire before    */
+//*                                  /* terminating                  */
+//*         TIMEOUT=REDRIVE,         /* Default, redrive FSA after   */
+//*                                  /* disconnect interval expires  */
+//*                                  /* according to value of        */
+//*                                  /* MGMTMODE.                    */
+//*         DISCINTV=1800,           /* Disconnect interval in       */
+//*                                  /* seconds (30 min.)            */
+//*         MGMTMODE=OUTAVAIL,       /* Default, Acquire printer when*/
+//*                                  /* output available         @GDC*/
+//*         RELMODE=NONE,            /* Default, Ignore Release      */
+//*                                  /* Interval                 @GDA*/
+//*         CONNINTV=600,            /* Default for TCP/IP, try      */
+//*                                  /* connecting for 10 minutes    */
+//********************************************************************/
+//* Printer Connection Management #4                                 */
+//* The following lines are set up to connect to the printer and     */
+//* not share it, stay connected forever.                            */
+//********************************************************************/
+//*        TIMEOUT=REDRIVE,          /* Default, redrive FSA after   */
+//*                                  /* disconnect interval expires  */
+//         MGMTMODE=IMMED,           /* Start communication with     */
+//*                                  /* printer immediately          */
+//         DISCINTV=0,               /* Default, do not end session  */
+//*                                  /* with printer when idle       */
+//*        CONNINTV=600,             /* Default for TCP/IP, try      */
+//*                                  /* connecting for 10 minutes    */
+//         FAILURE=WCONNECT,         /* Default, Wait for connection */
+//*                                  /* interval before terminating  */
+//********************************************************************/
+//         COMPRESS=NO,              /* Default, Do not compress @GDA*/
+//*                                  /* blanks                   @GDA*/
+//*        INTRVMSG=NO,              /* Default, Do not issue    @GDA*/
+//*                                  /* intervention msg to      @GDA*/
+//*                                  /* console                  @GDA*/
+//*        SETUP=FORMS,              /* Issue setup msg for forms@GDA*/
+//*        PRTERROR=NOTHONOR,        /* Default, do not honor    @GDA*/
+//*                                  /* PRTERROR on OUTPUT JCL   @GDA*/
+//*        MAP2OLN=NO,               /* Default, DO not map      @GDA*/
+//*                                  /* raster fonts to outline  @GDA*/
+//*        RESPTIME=0,               /* Default, wait forever for@GDA*/
+//*                                  /* response from printer    @GDA*/
+//*        NORESP=NOTIFY(OPERATOR),  /* Notify operator if no    @GDA*/
+//*                                  /* response from printer    @GDA*/
+//         IPADDR='xxx.xxx.xxx.xxx', /* IP V4 address for TCP/IP @HHC*/
+//*        IPADDR='1234::abcd:c0a8:106',/* IP V6 addr for TCP/IP @HHA*/
+//         PORTNO=5001,              /* Default port number      @GDA*/
+//*                                  /* Add sample dump stmts    @GDA*/
+//*        DUMP=(ABD0653),           /* Take dump for abend 024-0653 */
+//*        DUMP=(07C00400),          /* Take dump for reason code    */
+//*        DUMP=(,APS788I),          /* Take dump on 1st APS788I     */
+//*        DUMP=(,APS788I,3),        /* Take dump on 3rd APS788I     */
+//         TRACE=YES                 /* CREATE INTERNAL TRACE        */
+//PRT1      ENDCNTL

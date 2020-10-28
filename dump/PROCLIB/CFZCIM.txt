@@ -1,0 +1,57 @@
+//CFZCIM PROC
+//********************************************************************
+//*                                                                  *
+//* PROPRIETARY STATEMENT:                                           *
+//*    Licensed Materials - Property of IBM                          *
+//*    5694-A01 Copyright IBM Corp. 2006, 2016                       *
+//*                                                                  *
+//*    STATUS=HPG7780                                                *
+//*                                                                  *
+//* DESCRIPTIVE NAME:                                                *
+//*    CIM SERVER RUNTIME ENVIRONMENT                                *
+//*                                                                  *
+//* NOTES:                                                           *
+//*       START THIS PROCEDURE FROM THE OPERATOR CONSOLE WITH:       *
+//*       "START CFZCIM"                                             *
+//*       CIM CLIENT APPLICATIONS WILL THE BE ABLE TO CONNECT.       *
+//*                                                                  *
+//* DEPENDENCIES:                                                    *
+//*       - TCPIP MUST BE ACTIVE                                     *
+//*       - UNIX SYSTEM SERVICES: THE USERID RUNNING THIS SERVER     *
+//*         MUST HAVE AN OMVS SEGMENT IN RACF AND A HOME DIRECTORY   *
+//*         IN THE USS FILESYSTEM.                                   *
+//*       - ENVIRONMENT FILE /usr/lpp/wbem/cimserver.env HAS TO BE   *
+//*         UPDATED TO CONTAIN THE CORRECT PATH AND TRACE SETTINGS.  *
+//*                                                                  *
+//********************************************************************
+//*  STEP 1 - Start cimserver                                        *
+//********************************************************************/
+//STEP1    EXEC PGM=BPXBATCH,TIME=NOLIMIT,REGION=0M,
+//         PARM='PGM /usr/lpp/wbem/bin/cimserver daemon=false'
+//STDENV   DD   PATH='/etc/wbem/cimserver.env'
+//STDOUT   DD   PATH='/var/wbem/logs/cimserver.out',
+//         PATHOPTS=(OWRONLY,OCREAT,OTRUNC),
+//         PATHMODE=(SIRUSR,SIWUSR,SIRGRP)
+//STDERR   DD   PATH='/var/wbem/logs/cimserver.err',
+//         PATHOPTS=(OWRONLY,OCREAT,OTRUNC),
+//         PATHMODE=(SIRUSR,SIWUSR,SIRGRP)
+//CEEDUMP  DD SYSOUT=*
+//SYSPRINT DD SYSOUT=*
+//SYSUDUMP DD SYSOUT=*
+//SYSMDUMP DD SYSOUT=*
+//********************************************************************
+//*  STEP 2 - Copy stdout back to joblog                             *
+//********************************************************************/
+//STEP2    EXEC PGM=BPXBATCH,
+//         PARM='PGM /bin/cat /var/wbem/logs/cimserver.out',
+//         COND=EVEN
+//STDOUT   DD SYSOUT=*
+//STDERR   DD SYSOUT=*
+//********************************************************************
+//*  STEP 3 - Copy stderr back to joblog                             *
+//********************************************************************/
+//STEP3    EXEC PGM=BPXBATCH,
+//         PARM='PGM /bin/cat /var/wbem/logs/cimserver.err',
+//         COND=EVEN
+//STDOUT   DD SYSOUT=*
+//STDERR   DD SYSOUT=*

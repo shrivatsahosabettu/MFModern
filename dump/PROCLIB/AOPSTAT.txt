@@ -1,0 +1,35 @@
+//*--------------------------------------------------------------------
+//*
+//*  AOPSTAT - This procedure allows the console operator to display
+//*            the status of the Infoprint Server daemons.
+//*
+//*            You might need to specify OPTIONS if Infoprint Server
+//*            is running on a different processor within the sysplex.
+//*
+//*--------------------------------------------------------------------
+//AOPSTAT  PROC OPTIONS=
+//*--------------------------------------------------------------------
+//*  AOPBATCH PARM specifies the path of the program to be run.
+//*  If Infoprint Server was not installed in /usr/lpp/Printsrv, then
+//*  this path must be changed to reflect the installation directory.
+//*--------------------------------------------------------------------
+//STEP0001 EXEC PGM=AOPBATCH,
+//             PARM='//usr/lpp/Printsrv/bin/aopstat -c &OPTIONS'
+//STDIN    DD   DUMMY
+//STDOUT   DD   SYSOUT=(,)
+//STDERR   DD   PATH='/dev/console' or '/dev/operlog'
+//*-------------------------------------------------------------------
+//*  STDENV is used to specify environment variables.
+//*
+//*  A Unix System Services file is usually specified, for example:
+//*    //STDENV  DD  PATH='/etc/Printsrv/env.conf',PATHOPTS=ORDONLY
+//*  but an MVS data set can be used, for example:
+//*    //STDENV  DD  DSN=hlq.stdenv,DISP=SHR
+//*
+//*  This file or data set should contain VARIABLE=VALUE pairs
+//*  starting in column 1. Comment lines start with a #.
+//*  For example:
+//*  # An unnecessary variable since this is the default location.
+//*  AOPCONF=/etc/Printsrv/aopd.conf
+//*-------------------------------------------------------------------
+//* STDENV   DD   DSN=USER.PARMLIB(ENVVARS),DISP=SHR

@@ -1,0 +1,333 @@
+//*****************************************************
+//*    Licensed Materials - Property of IBM           *
+//*    5650-ZOS                                       *
+//*    Copyright IBM Corp. 1992, 2019                 *
+//*                                                   *
+//*    Status = HCS77C0                               *
+//*****************************************************
+//*                                                   *
+//* START OF PROCEDURE CBDJXMIT                       *
+//*                                                   *
+//* PARAMETERS:                                       *
+//* PR      :1-> DO; OR 0-> DON'T WRITE AND MIGRATE   *
+//*          PROCESSOR CONFIGURATION STATEMENTS       *
+//* OS      :1-> DO; OR 0-> DON'T WRITE AND MIGRATE   *
+//*          OS CONFIGURATION STATEMENTS              *
+//* SW      :1-> DO; OR 0-> DON'T WRITE AND MIGRATE   *
+//*          SWITCH CONFIGURATION STATEMENTS          *
+//* ATTEND  :1-> EXPORT ATTENDED                      *
+//*         :0-> EXPORT UNATTENDED                    *
+//* RECORDS :NUMBER OF 4 K BLOCKS FOR IODF INIT.      *
+//* HLQ     :HLQ OF THE TEMPRARY DATASETS TO BE       *
+//*          CREATED                                  *
+//* QUALX   :QUALIFIERS 2- 4 FOR GENERATED TEMPORARY  *
+//*          MESSAGES, LISTING, MSGLOG AND DECK       *
+//*          DATASETS                                 *
+//* DESC1   :HLQ USED AS DESCRIPTION 1 FOR            *
+//*          'BUILD PRODUCTION IODF'                  *
+//* DESC2   :IODFXX  USED AS DESCRIPTION 2 FOR        *
+//*          'BUILD PRODUCTION IODF'                  *
+//* IODFSP  :SOURCE PRODUCTION IODF                   *
+//* IODFTW  :TEMPORARY WORK IODF                      *
+//* IODFTP  :TARGET PRODUCTION IODF                   *
+//*                                                   *
+//*****************************************************
+//CBDJXMIT PROC PR=0,OS=0,SW=0,ATTEND=0,RECORDS='1024',
+//         HLQ='',QUALX='',DESC1='',DESC2='',
+//         IODFSP='',IODFTW='',IODFTP=''
+//*****************************************************
+//* THE FOLLOWING GO.STEP ALLOCATES THE MAIN DATASETS *
+//* WHICH ARE USED LATER BY BACKWARD REFERENCE        *
+//*                                                   *
+//* DEFINE CLUSTER IS DONE VIA GO.SYSIN, WHEN CALLING *
+//* THE PROCEDURE                                     *
+//*****************************************************
+//* VSAM ALLOCATION OF TEMPORARY WORK IODF            *
+//*                                                   *
+//*****************************************************
+//GO       EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//HCDDECK  DD DSN=&HLQ..&QUALX..DECK,
+//         DISP=(NEW,PASS,DELETE),SPACE=(TRK,(10,10),RLSE),
+//         UNIT=SYSDA,DCB=(RECFM=FB,LRECL=80,BLKSIZE=6400)
+//HCDMLOG  DD DSN=&HLQ..&QUALX..MSGLOG,
+//         DISP=(MOD,CATLG,CATLG),
+//         DCB=(RECFM=FBA,LRECL=133,BLKSIZE=1330),
+//         UNIT=SYSDA,SPACE=(TRK,(5,10),RLSE)
+//HCDLIB   DD DSN='SYS1.MACLIB',DISP=SHR
+//HCDTRACE DD DUMMY
+//HCDPROF  DD DUMMY
+//*
+//*****************************************************
+//* VSAM ALLOCATION OF TARGET PRODUCTION IODF         *
+//*                                                   *
+//*****************************************************
+//         IF (RC = 0) THEN
+//ALLOCT2  EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//         ENDIF
+//*
+//*****************************************************
+//* INITIALIZE TEMPORARY WORK IODF                    *
+//*                                                   *
+//* PARAMETER:                                        *
+//* RECORDS :NUMBER OF 4 K BLOCKS FOR IODF INIT.      *
+//*          (DEFAULT 1024)                           *
+//*****************************************************
+//         IF (RC = 0) THEN
+//INIT1    EXEC PGM=CBDMGHCP,
+//         PARM='INITIODF SIZE=&RECORDS,ACTLOG=NO'
+//HCDIODFT DD DSN=&IODFTW,DISP=SHR
+//HCDMLOG  DD DSN=*.GO.HCDMLOG,DISP=OLD
+//HCDTRACE DD DSN=*.GO.HCDTRACE,DISP=OLD
+//         ENDIF
+//*
+//*****************************************************
+//* INITIALIZE TARGET PRODUCTION IODF                 *
+//*                                                   *
+//* PARAMETER:                                        *
+//* RECORDS :NUMBER OF 4 K BLOCKS FOR IODF INIT.      *
+//*          (DEFAULT 1024)                           *
+//*****************************************************
+//         IF (RC = 0) THEN
+//INIT2    EXEC PGM=CBDMGHCP,
+//         PARM='INITIODF SIZE=&RECORDS,ACTLOG=NO'
+//HCDIODFT DD DSN=&IODFTP,DISP=SHR
+//HCDMLOG  DD DSN=*.GO.HCDMLOG,DISP=OLD
+//HCDTRACE DD DSN=*.GO.HCDTRACE,DISP=OLD
+//         ENDIF
+//*
+//*****************************************************
+//* WRITE PROCESSOR CONFIGURATION STATEMENTS          *
+//*                                                   *
+//* PARAMETER:                                        *
+//* PR      :1-> DO; OR 0-> DON'T WRITE               *
+//*          PROCESSOR CONFIGURATION STATEMENTS       *
+//*                                                   *
+//* LIST OF PROCESSORS IS PROVIDED VIA BLDPR1.HCDCNTL *
+//* WHEN CALLING THE PROCEDURE                        *
+//*****************************************************
+//         IF (&PR.=1) AND (INIT1.RC=0) AND (RC<8) THEN
+//BLDPR1   EXEC PGM=CBDMGHCP,PARM='CONFIG,PR,*'
+//HCDIODFS DD DSN=&IODFSP,DISP=SHR
+//HCDDECK  DD DSN=*.GO.HCDDECK,DISP=(OLD,PASS)
+//HCDMLOG  DD DSN=*.GO.HCDMLOG,DISP=OLD
+//HCDTRACE DD DSN=*.GO.HCDTRACE,DISP=OLD
+//HCDPROF  DD DSN=*.GO.HCDPROF,DISP=SHR
+//         ENDIF
+//*
+//*****************************************************
+//* MIGRATE PROCESSOR CONFIGURATION STATEMENTS        *
+//*                                                   *
+//* PARAMETER:                                        *
+//* PR      :1-> DO; OR 0-> DON'T MIGRATE             *
+//*          PROCESSOR CONFIGURATION STATEMENTS       *
+//*                                                   *
+//*****************************************************
+//         IF   (&PR. = 1) AND (BLDPR1.RC = 0 ) THEN
+//MIGRPR1  EXEC PGM=CBDMGHCP,PARM='MIGR,I,*,COPY'
+//HCDASMP  DD DSN=&HLQ..&QUALX..PR1.LISTING,
+//         DCB=(RECFM=FBA,LRECL=121,BLKSIZE=1573),
+//         SPACE=(CYL,(1,10),RLSE),DISP=(MOD,CATLG,CATLG),UNIT=SYSDA
+//HCDPRINT DD DSN=&HLQ..&QUALX..PR1.MESSAGES,
+//         DCB=(RECFM=FBA,LRECL=121,BLKSIZE=22869),
+//         SPACE=(TRK,(2,11),RLSE),DISP=(MOD,CATLG,CATLG),UNIT=SYSDA
+//HCDLIB   DD DSN=*.GO.HCDLIB,DISP=SHR
+//HCDIODFT DD DSN=&IODFTW,DISP=SHR
+//HCDIN    DD DSN=*.GO.HCDDECK,DISP=(OLD,PASS)
+//HCDMLOG  DD DSN=*.GO.HCDMLOG,DISP=OLD
+//HCDTRACE DD DSN=*.GO.HCDTRACE,DISP=OLD
+//HCDPROF  DD DSN=*.GO.HCDPROF,DISP=SHR
+//         ENDIF
+//*
+//*****************************************************
+//* SAVE MESSAGE AND LISTING OF MIGRATION IN CASE     *
+//* OF ERROR                                          *
+//*                                                   *
+//*****************************************************
+//         IF   (&PR.=1) AND (MIGRPR1.RC < 8) THEN
+//PRINTPR1 EXEC PGM=IEFBR14
+//SYSUT1   DD DSN=*.MIGRPR1.HCDASMP,DISP=(OLD,DELETE)
+//SYSUT2   DD DSN=*.MIGRPR1.HCDPRINT,DISP=(OLD,DELETE)
+//         ENDIF
+//*
+//*****************************************************
+//* WRITE OS CONFIGURATION STATEMENTS                 *
+//*                                                   *
+//* PARAMETER:                                        *
+//* OS      :1-> DO; OR 0-> DON'T WRITE               *
+//*          OS CONFIGURATION STATEMENTS              *
+//*                                                   *
+//* LIST OF OS IS PROVIDED VIA BLDOS1.HCDCNTL WHEN    *
+//* CALLING THE PROCEDURE                             *
+//*****************************************************
+//         IF (&OS.=1) AND (INIT1.RC=0) AND (RC<8) THEN
+//BLDOS1   EXEC PGM=CBDMGHCP,PARM='CONFIG,OS,*'
+//HCDIODFS DD DSN=&IODFSP,DISP=SHR
+//HCDDECK  DD DSN=*.GO.HCDDECK,DISP=(OLD,PASS)
+//HCDMLOG  DD DSN=*.GO.HCDMLOG,DISP=OLD
+//HCDTRACE DD DSN=*.GO.HCDTRACE,DISP=OLD
+//HCDPROF  DD DSN=*.GO.HCDPROF,DISP=SHR
+//         ENDIF
+//*
+//*****************************************************
+//* MIGRATE OS CONFIGURATION STATEMENTS               *
+//*                                                   *
+//* PARAMETER:                                        *
+//* OS      :1-> DO; OR 0-> DON'T MIGRATE             *
+//*          OS CONFIGURATION STATEMENTS              *
+//*                                                   *
+//*****************************************************
+//         IF   (&OS.=1) AND (BLDOS1.RC = 0) THEN
+//MIGROS1  EXEC PGM=CBDMGHCP,PARM='MIGR,O,*'
+//HCDLIB   DD DSN=*.GO.HCDLIB,DISP=SHR
+//HCDIODFT DD DSN=&IODFTW,DISP=SHR
+//HCDIN    DD DSN=*.GO.HCDDECK,DISP=(OLD,PASS)
+//HCDMLOG  DD DSN=*.GO.HCDMLOG,DISP=OLD
+//HCDTRACE DD DSN=*.GO.HCDTRACE,DISP=OLD
+//HCDASMP  DD DSN=&HLQ..&QUALX..OS1.LISTING,
+//         DCB=(RECFM=FBA,LRECL=121,BLKSIZE=1573),
+//         SPACE=(CYL,(1,10),RLSE),DISP=(MOD,CATLG,CATLG),UNIT=SYSDA
+//HCDPRINT DD DSN=&HLQ..&QUALX..OS1.MESSAGES,
+//         DCB=(RECFM=FBA,LRECL=121,BLKSIZE=22869),
+//         SPACE=(TRK,(2,11),RLSE),DISP=(MOD,CATLG,CATLG),UNIT=SYSDA
+//HCDPROF  DD DSN=*.GO.HCDPROF,DISP=SHR
+//         ENDIF
+//*
+//*****************************************************
+//* SAVE MESSAGE AND LISTING OF MIGRATION IN CASE     *
+//* OF ERROR                                          *
+//*                                                   *
+//*****************************************************
+//         IF   (&OS.=1) AND (MIGROS1.RC<8) THEN
+//PRINTOS1 EXEC PGM=IEFBR14
+//SYSUT1   DD DSN=*.MIGROS1.HCDASMP,DISP=(OLD,DELETE)
+//SYSUT2   DD DSN=*.MIGROS1.HCDPRINT,DISP=(OLD,DELETE)
+//         ENDIF
+//*
+//*****************************************************
+//* WRITE SWITCH CONFIGURATION STATEMENTS             *
+//*                                                   *
+//* PARAMETER:                                        *
+//* SW      :1-> DO; OR 0-> DON'T WRITE               *
+//*          SWITCH CONFIGURATION STATEMENTS          *
+//*                                                   *
+//* LIST OF SWITCH CONFIGURATIONS IS PROVIDED VIA     *
+//* BLDSW1.HCDCNTL WHEN CALLING THE PROCEDURE         *
+//*****************************************************
+//         IF (&SW.=1) AND (INIT1.RC=0) AND (RC<8) THEN
+//BLDSW1   EXEC PGM=CBDMGHCP,PARM='CONFIG,SW,*'
+//HCDIODFS DD DSN=&IODFSP,DISP=SHR
+//HCDDECK  DD DSN=*.GO.HCDDECK,DISP=(OLD,PASS)
+//HCDMLOG  DD DSN=*.GO.HCDMLOG,DISP=OLD
+//HCDTRACE DD DSN=*.GO.HCDTRACE,DISP=OLD
+//HCDPROF  DD DSN=*.GO.HCDPROF,DISP=SHR
+//         ENDIF
+//*
+//*****************************************************
+//* MIGRATE SWITCH CONFIGURATION STATEMENTS           *
+//*                                                   *
+//* PARAMETER:                                        *
+//* SW       :1-> DO; OR 0-> DON'T MIGRATE            *
+//*          SWITCH CONFIGURATION STATEMENTS          *
+//*                                                   *
+//*****************************************************
+//         IF   (&SW.=1) AND (BLDSW1.RC = 0) THEN
+//MIGRSW1  EXEC PGM=CBDMGHCP,PARM='MIGR,S,*'
+//HCDLIB   DD DSN=*.GO.HCDLIB,DISP=SHR
+//HCDIODFT DD DSN=&IODFTW,DISP=SHR
+//HCDIN    DD DSN=*.GO.HCDDECK,DISP=(OLD,PASS)
+//HCDMLOG  DD DSN=*.GO.HCDMLOG,DISP=OLD
+//HCDTRACE DD DSN=*.GO.HCDTRACE,DISP=OLD
+//HCDASMP  DD DSN=&HLQ..&QUALX..SW1.LISTING,
+//         DCB=(RECFM=FBA,LRECL=121,BLKSIZE=1573),
+//         SPACE=(CYL,(1,10),RLSE),DISP=(MOD,CATLG,CATLG),UNIT=SYSDA
+//HCDPRINT DD DSN=&HLQ..&QUALX..SW1.MESSAGES,
+//         DCB=(RECFM=FBA,LRECL=121,BLKSIZE=22869),
+//         SPACE=(TRK,(2,11),RLSE),DISP=(MOD,CATLG,CATLG),UNIT=SYSDA
+//HCDPROF  DD DSN=*.GO.HCDPROF,DISP=SHR
+//         ENDIF
+//*
+//*****************************************************
+//* SAVE MESSAGE AND LISTING OF MIGRATION IN CASE     *
+//* OF ERROR                                          *
+//*                                                   *
+//*****************************************************
+//         IF   (&SW.=1) AND (MIGRSW1.RC<8) THEN
+//PRINTSW1 EXEC PGM=IEFBR14
+//SYSUT1   DD DSN=*.MIGRSW1.HCDASMP,DISP=(OLD,DELETE)
+//SYSUT2   DD DSN=*.MIGRSW1.HCDPRINT,DISP=(OLD,DELETE)
+//         ENDIF
+//*
+//*****************************************************
+//* BUILD PRODUCTION IODF                             *
+//*                                                   *
+//* PARAMETERS:                                       *
+//* DESC1   : HLQ OF TARGET IODF NAME                 *
+//* DESC2   : IODFXX OF TARGET IODF NAME              *
+//*****************************************************
+//         IF   (INIT2.RC=0) AND (RC<8) THEN
+//BPROD    EXEC PGM=CBDMGHCP,
+//            PARM='PRODIODF DESC1=&DESC1,DESC2=&DESC2'
+//HCDIODFT DD DSN=&IODFTP,DISP=SHR
+//HCDIODFS DD DSN=&IODFTW,DISP=SHR
+//HCDMLOG  DD DSN=*.GO.HCDMLOG,DISP=OLD
+//HCDTRACE DD DSN=*.GO.HCDTRACE,DISP=OLD
+//         ENDIF
+//*
+//*****************************************************
+//* EXPORT TARGET PRODUCTION IODF TO ATTENDED NODE    *
+//*                                                   *
+//* PARAMETER:                                        *
+//* ATTEND  :1-> EXPORT ATTENDED                      *
+//*                                                   *
+//*****************************************************
+//         IF   (BPROD.RC < 8) THEN
+//         IF   (&ATTEND. = 1) THEN
+//EXPOATT  EXEC PGM=IKJEFT01
+//SYSPRINT DD SYSOUT=*
+//SYSTSPRT DD SYSOUT=*
+//HCDIODFS DD DSN=&IODFTP,DISP=SHR
+//HCDMLOG  DD DSN=*.GO.HCDMLOG,DISP=OLD
+//HCDTRACE DD DSN=*.GO.HCDTRACE,DISP=OLD
+//*
+//*****************************************************
+//* EXPORT TARGET PRODUCTION IODF TO UNATTENDED NODE  *
+//*                                                   *
+//* PARAMETER:                                        *
+//* ATTEND   :0-> DO EXPORT UNATTENDED                *
+//*                                                   *
+//*****************************************************
+//         ELSE
+//EXPOUATT EXEC PGM=IKJEFT01
+//SYSPRINT DD SYSOUT=*
+//SYSTSPRT DD SYSOUT=*
+//HCDIODFS DD DSN=&IODFTP,DISP=SHR
+//HCDMLOG  DD DSN=*.GO.HCDMLOG,DISP=OLD
+//HCDTRACE DD DSN=*.GO.HCDTRACE,DISP=OLD
+//HCDCNTL  DD DUMMY
+//         ENDIF
+//         ENDIF
+//*
+//*****************************************************
+//* DELETE TEMPORARY WORK AND TARGET PRODUCTION IODF  *
+//*                                                   *
+//* DELETE IS DONE VIA DEL1.SYSIN AND DEL2.SYSIN      *
+//* WHEN CALLING THE PROCEDURE                        *
+//*****************************************************
+//         IF   GO.RC = 0 THEN
+//DEL1     EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//         ENDIF
+//         IF   ALLOCT2.RC = 0 THEN
+//DEL2     EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//         ENDIF
+//*
+//*****************************************************
+//*                                                   *
+//*   END OF PROCEDURE CBDJXMIT                       *
+//*                                                   *
+//*****************************************************
+//         PEND
+//*

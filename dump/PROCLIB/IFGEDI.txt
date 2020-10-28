@@ -1,0 +1,30 @@
+//IFGEDI   PROC                                                         00050000
+//******************************************************************    00100000
+//*$MAC(IFGEDI);     DFSMS OCE EXTENDED DATA INTEGRITY STARTED     *    00150000
+//*                  TASK                                          *    00200000
+//*                                                                *    00250000
+//* STATUS = Z/OS DFSMS V1R6                                       *    00300000
+//*                                                                *    00350000
+//*PROPRIETARY V3 STATEMENT                                        *    00400000
+//*LICENSED MATERIALS - PROPERTY OF IBM                            *    00450000
+//*"RESTRICTED MATERIALS OF IBM"                                   *    00500000
+//*5694-A01                                                        *    00550000
+//*(C) COPYRIGHT 2003, 2004  IBM CORP.                             *    00600000
+//*END PROPRIETARY V3 STATEMENT                                    *    00850000
+//*                                                                *    00900000
+//*  FUNCTION -                                                    *    00950000
+//*     THIS PROCEDURE IS USED TO START DFSMS OCE STARTED          *    01000000
+//*     TASK IFG0DSNT TO BUILD 2 IN STORAGE TABLES: 1) DATA SET    *    01050000
+//*     NAMES CONTAINED IN PARMLIB MEMBER IFGPSEDI. 2) COMMON      *    01100000
+//*     FILTER SERVICES TABLE OF POINTERS AND LENGTH OF DATA SET   *    01150000
+//*     NAMES IN THE DSN TABLE.                                    *    01200000
+//*                                                                *    01250000
+//*$00=EDI,HDZ11H0,020630,SJPLJAL: OCE EXTENDED DATA INTEGRITY     *    01300000
+//*                                    SUPPORT                     *    01350000
+//*$P1=K1H0620,HDZ11H0,020924,SJPLGEC: ADD TIME PARM TO AVOID  @P1A*    01366600
+//*                                     ABEND 322(TIME OUT)    @P1A*    01383200
+//*$01=OA06021,HDZ11H0,040130,SJPLJAL: REDESIGN                $01A*    01391600
+//*                                                                *    01400000
+//******************************************************************    01450000
+//EDIST    EXEC PGM=IFG0DSNT,REGION=512K,TIME=20                $01C    01500000
+//*                                                            5$01D    01550000

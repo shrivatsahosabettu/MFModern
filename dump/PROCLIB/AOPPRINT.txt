@@ -1,0 +1,11 @@
+//*-------------------------------------------------------------------
+//* AOPPRINT - OS/390 Print Server batch print procedure
+//*-------------------------------------------------------------------
+//AOPPRINT PROC PRINTER='p1',OPTIONS=,OUTCLASS='*',ERRCLASS='*'
+//LP       EXEC PGM=AOPBATCH,
+// PARM='/lp -d &PRINTER -o "&OPTIONS" //DD:SYSIN'
+//STDOUT   DD   SYSOUT=&OUTCLASS
+//STDERR   DD   SYSOUT=&ERRCLASS
+//* STDENV may point to a dataset containing environment variables.
+//*        Builtin values will work for the default installation.
+//*STDENV   DD   DSN=USERID.JCL(ENVVARS),DISP=SHR

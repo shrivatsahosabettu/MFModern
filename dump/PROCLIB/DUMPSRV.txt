@@ -1,0 +1,12 @@
+//DUMPSRV   EXEC  PGM=IEAVTDSV                                          00050000
+//* THE DUMPSRV PROCEDURE IS FOR INTERNAL SYSTEM USE ONLY.              00100000
+//* DO NOT ATTEMPT TO START THE DUMPSRV ADDRESS SPACE BY                00150000
+//* ISSUING THE S DUMPSRV COMMAND FROM AN OPERATOR CONSOLE.             00200000
+//* THE INSTALLATION MAY OPTIONALLY SPECIFY A STEPLIB WHICH             00250000
+//* CONTAINS THEIR POST DUMP EXITS.  THIS LIBRARY MUST BE APF           00300000
+//* AUTHORIZED.                                                         00350000
+//*                                                                     00375000
+//* SINCE THE DUMPSRV ADDRESS SPACE IS STARTED BY THE MASTER            00425000
+//* SUBSYSTEM, NO SYSIN OR SYSOUT DD STATEMENTS ARE ALLOWED.            00475000
+//SYSTSPRT DD DUMMY                                                     00525000
+//SYSTSIN  DD DUMMY                                                     00575000

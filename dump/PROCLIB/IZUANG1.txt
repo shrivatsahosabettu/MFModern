@@ -1,0 +1,22 @@
+//IZUANG1  PROC P='',C=N,OUTCLS='*',
+//   IZUTIME=NOLIMIT,
+//   NAME=IZUANG1,
+//   WLPDIR='/usr/lpp/zosmf/liberty'
+//*--------------------------------------------------------------*/
+//* Startup procedure for the z/OSMF Websphere Liberty Profile   */
+//* Angel process.                                               */
+//*                                                              */
+//* PROPRIETARY STATEMENT:                                       */
+//*                                                              */
+//*     LICENSED MATERIALS - PROPERTY OF IBM                     */
+//*     5650-ZOS                                                 */
+//*     COPYRIGHT IBM CORP. 2017                                 */
+//*     STATUS = HSMA230                                         */
+//*--------------------------------------------------------------*/
+//*
+//STEP1   EXEC PGM=BPXBATA2,REGION=0M,
+//  TIME=&IZUTIME.,
+//  PARM='PGM &WLPDIR./lib/native/zos/s390x/bbgzangl COLD=&C NAME=&NAME
+//              &P'
+//STDOUT    DD SYSOUT=&OUTCLS
+//STDERR    DD SYSOUT=&OUTCLS

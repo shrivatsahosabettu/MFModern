@@ -1,0 +1,60 @@
+//RMFM3B   PROC RMF=SYS1,ISPF=SYS1,REPORT=WFEX,HLQ=                     00005001
+//********************************************************************  00005101
+//*                                                                  *  00005201
+//* PROPRIETARY STATEMENT:                                           *  00005301
+//*    LICENSED MATERIALS - PROPERTY OF IBM                          *  00005401
+//*    "RESTRICTED MATERIALS OF IBM"                                 *  00005501
+//*    5694-A01                                                      *  00005601
+//*    COPYRIGHT IBM CORP. 1998, 2007                                *  00005701
+//*    STATUS=HRM7740 (Z/OS V1R9 RMF)                                *  00005801
+//*                                                                  *  00005901
+//* DESCRIPTION:                                                     *  00006001
+//*    RMF MONITOR III REPORTER BACKGROUND SESSION                   *  00008001
+//*    PRODUCES FREE SELECTABLE REPORTS ACCORDINGLY                  *  00010001
+//*    TO THE &REPORT INPUT PARAMETER                                *  00020001
+//*    THE REPORT FREQUENCY DEPENDS ON THE MINTIME                   *  00021001
+//*    OPTION OF THE MONITOR III GATHERER (DEFAULT 100S)             *  00022001
+//*                                                                  *  00022101
+//* CHANGE ACTIVITY:                                                 *  00022201
+//*    $C0=R430,HRM4430,,HBE: CREATED                                *  00022301
+//*    $F1=R604,HRM6604,,GBO: ADDED COPYRIGHT                        *  00022401
+//*    HBE: ENABLE WTOS FOR WLM CAPPING                      @WA52087*  00023001
+//*    FDL: ADDS TIME=1440 TO EXEC STATEMENT                 @OA07834*  00023101
+//*    $91=ZOSV2R4,HRM77C0,,PMU: REGION=128M                     @91A*  00023201
+//*                                                                  *  00024001
+//********************************************************************  00030001
+//DELETE   EXEC PGM=IKJEFT01,                                           00031001
+//         PARM='DELETE &HLQ..ERBPHDS3.ISPTABLE'                        00032001
+//SYSTSPRT DD SYSOUT=A                                                  00033001
+//SYSTSIN  DD DUMMY                                                     00034001
+//SYSPRINT DD SYSOUT=A                                                  00035001
+//ALLOC    EXEC PGM=IEFBR14                                             00036001
+//ERBPHDS3 DD DISP=(NEW,CATLG),DSN=&HLQ..ERBPHDS3.ISPTABLE,             00037001
+//            UNIT=SYSDA,                                               00038001
+//            SPACE=(TRK,(1,1,1)),                                      00039001
+//            DCB=(LRECL=80,RECFM=FB,BLKSIZE=3120)                      00039101
+//SYSPRINT DD SYSOUT=A                                                  00039201
+//ERBM3B   EXEC PGM=IKJEFT01,REGION=128M,DYNAMNBR=90,TIME=1440,         00040001
+//         PARM='ERBM3B &HLQ &REPORT'                     /* @OA07834*/ 00050001
+//ISPPROF  DD DSN=&&TEMP,UNIT=SYSDA,SPACE=(TRK,(2,1,2)),                00081001
+//         DCB=(DSORG=PO,LRECL=80,BLKSIZE=3120,RECFM=FB)                00082001
+//ISPLOG   DD DSN=&&TEMP,UNIT=SYSDA,SPACE=(TRK,(5,5)),                  00083001
+//         DCB=(DSORG=PS,LRECL=125,BLKSIZE=129,RECFM=VA)                00084001
+//SYSPROC  DD DISP=SHR,DSN=&HLQ..RMFM3B.SERBCLS                         00100001
+//         DD DISP=SHR,DSN=&RMF..SERBCLS                                00110001
+//         DD DISP=SHR,DSN=&ISPF..SISPEXEC                              00120001
+//         DD DISP=SHR,DSN=&ISPF..SISPCLIB                              00130001
+//ISPPLIB  DD DISP=SHR,DSN=&ISPF..SISPPENU                              00140001
+//         DD DISP=SHR,DSN=&RMF..SERBPENU                               00141001
+//ISPSLIB  DD DISP=SHR,DSN=&ISPF..SISPSENU                              00150001
+//ISPMLIB  DD DISP=SHR,DSN=&ISPF..SISPMENU                              00160001
+//         DD DISP=SHR,DSN=&RMF..SERBMENU                               00161001
+//ISPTLIB  DD DISP=SHR,DSN=&ISPF..SISPTENU                              00170001
+//         DD DISP=SHR,DSN=*.ALLOC.ERBPHDS3                             00171001
+//         DD DISP=SHR,DSN=&HLQ..RMFM3B.ISPTABLE                        00180001
+//         DD DISP=SHR,DSN=&RMF..SERBTENU                               00181001
+//         DD DISP=SHR,DSN=&RMF..SERBT                                  00182001
+//ISPTABL  DD DISP=SHR,DSN=*.ALLOC.ERBPHDS3                             00183001
+//SYSTSPRT DD SYSOUT=A                                                  00200001
+//SYSTSIN  DD DUMMY                                                     00210001
+//SYSPRINT DD SYSOUT=A                                                  00220001

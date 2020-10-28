@@ -1,0 +1,18 @@
+      *-----------------------
+       IDENTIFICATION DIVISION.
+      *-----------------------
+       PROGRAM-ID.    CBL0013
+       AUTHOR.        Otto B. Fun.
+      *--------------------
+       ENVIRONMENT DIVISION.
+      *--------------------
+      *-------------
+       DATA DIVISION.
+      *-------------
+       WORKING-STORAGE SECTION.
+       01 TEST02            PIC X(09) VALUE '210986289'.
+       01 TEST04            PIC X(07) VALUE '4331799'.
+       PROCEDURE DIVISION.
+           DISPLAY 'SKIP PO BECAUSE IT MATCHES MAIN PO OF '
+               TEST02 ' INV NO ' TEST04.
+           STOP RUN.

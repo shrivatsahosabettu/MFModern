@@ -1,0 +1,34 @@
+//IZUFPROC PROC ROOT='/usr/lpp/zosmf'  /* zOSMF INSTALL ROOT     */
+//         EXPORT SYMLIST=(XX)
+//         SET QT=''''
+//         SET XX=&QT.&ROOT.&QT.
+//IZUFPROC EXEC PGM=IKJEFT01,DYNAMNBR=200
+//****************************************************************/
+//* TSO LOGON PROC FOR Z/OS DATA SET AND FILE REST INTERFACE     */
+//*                                                              */
+//* PROPRIETARY STATEMENT:                                       */
+//*                                                              */
+//*     LICENSED MATERIALS - PROPERTY OF IBM                     */
+//*     5650-ZOS                                                 */
+//*     COPYRIGHT IBM CORP. 2014, 2019                           */
+//*     STATUS = HSMA240                                         */
+//****************************************************************/
+//CEEOPTS DD *,SYMBOLS=JCLONLY
+ ENVAR("PATH=/bin:&XX./bin")
+//SYSEXEC  DD DISP=SHR,DSN=ISP.SISPEXEC
+//         DD DISP=SHR,DSN=SYS1.SBPXEXEC
+//SYSPROC  DD DISP=SHR,DSN=ISP.SISPCLIB
+//         DD DISP=SHR,DSN=SYS1.SBPXEXEC
+//ISPLLIB  DD DISP=SHR,DSN=SYS1.SIEALNKE
+//ISPPLIB  DD DISP=SHR,DSN=ISP.SISPPENU
+//ISPTLIB  DD RECFM=FB,LRECL=80,SPACE=(TRK,(1,0,1)) UNIT=SYSALLDA
+//         DD DISP=SHR,DSN=ISP.SISPTENU
+//ISPSLIB  DD DISP=SHR,DSN=ISP.SISPSENU
+//ISPMLIB  DD DISP=SHR,DSN=ISP.SISPMENU
+//ISPPROF DD DISP=NEW,UNIT=SYSDA,SPACE=(TRK,(15,15,5)),
+//        DCB=(RECFM=FB,LRECL=80,BLKSIZE=3120)
+//IZUSRVMP DD PATH='&ROOT./defaults/izurf.tsoservlet.mapping.json'
+//SYSOUT   DD SYSOUT=H
+//CEEDUMP  DD SYSOUT=H
+//SYSUDUMP DD SYSOUT=H
+//

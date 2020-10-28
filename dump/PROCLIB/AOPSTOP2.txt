@@ -1,0 +1,21 @@
+//*-------------------------------------------------------------------
+//*
+//*  AOPSTOP2 - This procedure stops Infoprint Server daemons.
+//*             The USERID assigned to this proc must be a member of
+//*             the AOPOPER group.
+//*
+//*             MEMB the 8 character XCF-name of the daemon to stop
+//*                  the value "ALL" stops all READY daemons
+//*
+//*-------------------------------------------------------------------
+//AOPSTOP  PROC MEMB=ALL
+//*-------------------------------------------------------------------
+//*  The AOPBATCH PARM includes the path of the aopsend command.
+//*  If Infoprint Server was not installed in /usr/lpp/Printsrv then
+//*  this path must be changed appropriately.
+//*-------------------------------------------------------------------
+//AOPSTOP  EXEC PGM=AOPBATCH,
+//             PARM='//usr/lpp/Printsrv/bin/aopsend -c STOP -m&MEMB'
+//STDIN    DD   DUMMY
+//STDOUT   DD   SYSOUT=*
+//STDERR   DD   PATH='/dev/console' or '/dev/operlog'

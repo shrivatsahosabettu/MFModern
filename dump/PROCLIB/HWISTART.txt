@@ -1,0 +1,56 @@
+//HWISTART PROC                                                         00010400
+//* START OF SPECIFICATIONS ******************************************  00010900
+//*                                                                  *  00011400
+//* MEMBER NAME:  HWISTART                                           *  00011900
+//*                                                                  *  00012400
+//*  DESCRIPTIVE NAME:                                               *  00012900
+//*    PROCEDURE USED TO START THE BASE CONTROL PROGRAM INTERNAL     *  00013400
+//*    INTERFACE (BCPII) ADDRESS SPACE AFTER IT HAS TERMINATED.      *  00013900
+//*    THIS ADDRESS SPACE IS USED TO INTERFACE WITH THE HARDWARE     *  00014400
+//*    MANAGEMENT CONSOLE (HMC) NETWORK BY AUTHORIZED APPLICATION    *  00014900
+//*    PROGRAMS RUNNING ON Z/OS.                                     *  00015300
+//*                                                                  *  00015800
+//*01* PROPRIETARY STATEMENT=                                        *  00016300
+//***PROPRIETARY_STATEMENT********************************************  00016800
+//*                                                                  *  00017300
+//* LICENSED MATERIALS - PROPERTY OF IBM                             *  00017800
+//* 5694-A01                                                         *  00018300
+//* COPYRIGHT IBM CORP. 1995, 2009                                   *  00018801
+//*                                                                  *  00019300
+//* STATUS = HBB7750                                                 *  00019800
+//*                                                                  *  00020200
+//***END_OF_PROPRIETARY_STATEMENT*************************************  00020700
+//*                                                                  *  00021200
+//*  FUNCTION:  THIS JCL PROCEDURE WILL ATTEMPT TO START THE         *  00021700
+//*    HWIBCPII (BCPII) ADDRESS SPACE.                               *  00022200
+//*                                                                  *  00022700
+//*  USE:  THIS PROCEDURE CAN BE USED BY AN OPERATOR TO REQUEST      *  00023200
+//*    THAT THE BASE CONTROL PROGRAM INTERNAL INTERFACE (BCPII)      *  00023701
+//*    ADDRESS SPACE SPACE (HWIBCPII) BE RE-STARTED AFTER THE        *  00023801
+//*    ADDRESS SPACE HAS ALREADY TERMINATED.                         *  00024201
+//*                                                                  *  00025100
+//*  SYNTAX:  S HWISTART                                             *  00025600
+//*                                                                  *  00026100
+//*  INPUT:  NONE                                                    *  00026600
+//*                                                                  *  00027100
+//*  OUTPUT:  A NEW INSTANCE OF THE HWIBCPII ADDRESS SPACE WILL      *  00027600
+//*    BE ATTEMPTED TO BE STARTED.                                   *  00028100
+//*                                                                  *  00028600
+//*  REQUIRES:   ACCESS TO SYS1.PROCLIB FROM SUBMITTING USERID.      *  00029100
+//*                                                                  *  00029600
+//*  REFERENCES:  REFER TO THE "Z/OS MVS CALLABLE SERVICES" MANUAL   *  00030000
+//*    FOR CONSIDERATIONS ON THE HWIBCPII ADDRESS SPACE BEING        *  00030500
+//*    AVAILABLE.                                                    *  00031000
+//*                                                                  *  00031500
+//* DISTRIBUTION LIBRARY:  SYS1.PROCLIB                              *  00032000
+//*                                                                  *  00032500
+//* CHANGE ACTIVITY:                                                 *  00033000
+//*                                                                  *  00033500
+//*FLAG LINEITEM  FMID    DATE    ID     COMMENT                     *  00034000
+//* $L0=0A25426   HBB7750 090315  PDSCW: BASE CONTROL PROGRAM        *  00034500
+//*     INTERNAL INTERFACE (BCPII)                                   *  00034600
+//* $P0=ME15611   HBB7760 090317  PDRH:  REMOVE (C) FROM COPYRIGHT.  *  00034701
+//*                                                                  *  00034900
+//* END OF SPECIFICATIONS ********************************************  00035400
+//HWISTART EXEC PGM=HWIAMIN1                                            00035900
+//         PEND                                                         00036400

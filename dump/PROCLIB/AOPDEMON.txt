@@ -1,0 +1,50 @@
+//*-------------------------------------------------------------------
+//*
+//*  AOPDEMON - This procedure starts an Infoprint Server daemon.
+//*             The UID assigned to this started task must be a member
+//*             of the AOPOPER group.
+//*
+//*             TYPE = the 3 character "type" of the daemon to start.
+//*             Valid choices are: AOP IPP LPD NET OUT SSI SUB WSM XFD
+//*
+//*-------------------------------------------------------------------
+//AOPDEMON PROC TYPE=
+//*-------------------------------------------------------------------
+//*  The AOPBATCH PARM includes the path of the aopdemon command.
+//*  If Infoprint Server was not installed in /usr/lpp/Printsrv,  then
+//*  this path must be changed appropriately.
+//*-------------------------------------------------------------------
+//AOPDEMON EXEC PGM=AOPBATCH,REGION=512M,TIME=NOLIMIT,
+//             PARM='//usr/lpp/Printsrv/bin/aopdemon -t&TYPE'
+//STDIN    DD   DUMMY
+//STDOUT   DD   PATH='/dev/console' or '/dev/operlog'
+//STDERR   DD   PATH='/dev/console' or '/dev/operlog'
+//*-------------------------------------------------------------------
+//*  To change values of default environment variables,  or to specify
+//*  more variables.
+//*
+//*  1. Define one of these below:
+//*     - An MVS PDS member (or sequential data set), such as:
+//*       //dd_name DD  DSN=hlq.stdenv(member),DISP=SHR
+//*     - A UNIX System Services file, such as:
+//*       //dd_name DD  PATH='/etc/Printsrv/env.conf',PATHOPTS=ORDONLY
+//*
+//*  2. In this dd_name file, specify each environment variable in the
+//*     format VARIABLE=VALUE by following these rules:
+//*     - Specify one VARIABLE=VALUE per line, starting in column 1.
+//*     - Use a # symbol to start a comment.
+//*     For example:
+//*     # Environment variables to turn on tracing and set time zone.
+//*     AOPTRACEON=1
+//*     TZ=MST7MDT               # Mountain Time Zone
+//*
+//*  3. Use dd_name=STDENV for  AOPTRACEBYTES,  AOPTRACEMAXFILES,  any
+//*     variable  whose name  begins with  AOPTRACEON,  AOPVALIDATEDB,
+//*     AOPDUMPON, LANG, LC_ALL, LC_CTYPE, LC_TIME and TZ.
+//*
+//*  4. Any other environment variables must be set in dd_name=VARFILE
+//*     and  the UID assigned to this started task  must be zero.   If
+//*     you need a VARFILE,  the STDENV environment variables could be
+//*     moved here and the STDENV DD statement eliminated.
+//*-------------------------------------------------------------------
+//* dd_name  DD   DSN=USER.PARMLIB(ENVVARS),DISP=SHR

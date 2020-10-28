@@ -1,0 +1,41 @@
+//NETSPOOL PROC LUCLASS=(1),INV='AOP1',DURATION=NOLIMIT,                00010000
+//             SIZE=31M,MSGFILE=USER.MSGFILE                            00020000
+//*                                                             @04C    00030000
+//********************************************************************* 00040000
+//*                                                                     00050000
+//*      SAMPLE NAME:        APIJPJCL                                   00060000
+//*                                                                     00070000
+//*      DESCRIPTIVE NAME:   Sample NetSpool Startup Procedure          00080000
+//*                                                                     00090000
+//*      STATUS:                                                        00100000
+//*         HNET705                                             @05C    00110000
+//*                                                                     00120000
+//*      FUNCTION:                                                      00130000
+//*         This is a sample NetSpool startup procedure, which you can  00140000
+//*         use as a model for your installation.                       00150000
+//*                                                                     00160000
+//*      NOTE:                                                          00170000
+//*         Change the data set names and symbolic parameters for your  00180000
+//*         installation.                                               00190000
+//*                                                                     00200000
+//*         See the OS/390 Infoprint Server Customization publication   00210000
+//*         (G544-5694) for an explanation of the JCL statements        00220000
+//*         shown here.                                         @03C    00230000
+//*                                                                     00240000
+//* CHANGE ACTVITY:                                                     00250000
+//*                                                                     00260000
+//* $01=OW21953, HPRF226, 082796 DKU1KZB : NEW FUNCT             @01A   00270000
+//* $02=OW28515, HPRF226, 082297 DKU1KZB : NLS ENABLEMENT        @02A   00280000
+//* $03=LAPS0001,HNET280, 040199 BXNMWLK : V2R8 support          @03A   00290000
+//* $04=OW39524, HNET280, 060799 BXNMKZB : Correct region size   @04A   00300000
+//* $05=LAPS0002,HNET705, 020501 DKUKZB : z/OS V1R2 support      @03A   00310000
+//*                                                                     00320000
+//********************************************************************* 00330000
+//APIPPAAA EXEC PGM=APIPPAAA,REGION=&SIZE,TIME=&DURATION,              X00340000
+//         PARM='LUCLASS=&LUCLASS,INV=&INV'                             00350000
+//* Modify the next STEPLIB to replace the transparent data exit or     00360000
+//* the beginning of file exit. This library must be APF                00370000
+//* authorized.                                                  @03C   00380000
+//*STEPLIB  DD DSN=NETSPOOL.EXITS.LOADLIB,DISP=SHR                      00390000
+//APIMMSG  DD DSN=&MSGFILE,DISP=SHR                              @02A   00400000
+//SYSPRINT DD SYSOUT=*                                                  00410000

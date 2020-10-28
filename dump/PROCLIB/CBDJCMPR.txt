@@ -1,0 +1,16 @@
+//*--------------------------------------------------------------------
+//*    Licensed Materials - Property of IBM
+//*    5650-ZOS
+//*    Copyright IBM Corp. 1992, 2019
+//*
+//*    Status = HCS77C0
+//*--------------------------------------------------------------------
+//* CBDJCMPR: JCL PROCEDURE FOR IODF COMPARE
+//*--------------------------------------------------------------------
+//CBDJCMPR PROC  CS='*',NEWIODF='',OLDIODF=''
+//GO       EXEC  PGM=CBDMGHCP
+//HCDIODFS DD    DSN=&NEWIODF,DISP=SHR
+//HCDIODFT DD    DSN=&OLDIODF,DISP=SHR
+//HCDPRINT DD    SYSOUT=&CS,DCB=(RECFM=FBA,LRECL=133,BLKSIZE=6650)
+//HCDRPT   DD    SYSOUT=&CS,DCB=(RECFM=FBA,LRECL=133,BLKSIZE=6650)
+//HCDMLOG  DD    SYSOUT=&CS,DCB=(RECFM=FBA,LRECL=133,BLKSIZE=6650)

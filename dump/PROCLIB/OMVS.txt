@@ -1,0 +1,18 @@
+//*********************************************************/            00050000
+//*                                                       */            00100000
+//*     $MAC(OMVS) COMP(SCPX1) PROD(BPX):                 */            00150000
+//*                                                       */            00200000
+//* OPENMVS STARTUP PROC                                  */            00250000
+//*                                                       */            00300000
+//* THE OPENMVS KERNEL ADDRESS SPACE IS STARTED AS PART   */            00350000
+//* OF SYSTEM INITIALIZATION.                             */            00400000
+//*                                                       */            00450000
+//* CHANGE-ACTIVITY:                                      */            00500000
+//*                                                       */            00550000
+//*  $00=OW06506  HOM1130 940912 PDJI: FREE IEFPARM       */            00600000
+//*  $D0=DRGA112  HOM1150 950918 PDI6: PERMANENT KERNEL   */            00650000
+//*  $P0=PUX0571  HBB6605 970925 PDI6: REMOVE S OMVS CMT  */            00700000
+//*  $D1=DWKA335  HBB6608 980810 PDJC: A335.00 LIMITS     */            00750000
+//*********************************************************/            00800000
+//OMVS PROC                                                             00850000
+//OMVS EXEC     PGM=BPXINIT,REGION=0K,TIME=NOLIMIT                      00900000

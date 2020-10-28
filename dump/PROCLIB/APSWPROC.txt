@@ -1,0 +1,87 @@
+//APSWPROC PROC
+//**************** THE PSF WRITER PROCEDURE ******************
+//*
+//*01* MODULE-NAME = APSWPROC
+//* $MOD(APSWPROC) COMP(APS) PROD(PSF) : VERSION 4.6.0
+//*
+//*01* DESCRIPTIVE-NAME = START PROCEDURE FOR PSF (3800
+//*                          PRINTERS)
+//*
+//*01* STATUS = HPRF460
+//*
+//*01* FUNCTION = SET PSF OPTIONS AND RESOURCES.                 @DUC
+//*
+//*01* NOTES = THE FULL NAME OF THE DEFAULT PAGEDEF IS P106080.
+//*            THE FULL NAME OF THE DEFAULT FORMDEF IS F10101.
+//*            THE FULL NAMES OF THE DEFAULT FONTS ARE
+//*                X1GF12, X1GS12, X1GT12, AND X1GU12.
+//*            THE FULL NAME OF THE SEPARATOR PAGE PAGEDEF IS
+//*                P18.
+//*            THE FULL NAME OF THE SEPARATOR PAGE FONT IS
+//*                X1GT15.
+//*
+//*01* CHANGE-ACTIVITY :                                         @L1C
+//* $H1=LAPS0001, HAF1103, 110984 TD4  : RELEASE 1.1             @L1A
+//* $H2=LAPS0002, HAF1203, 022586 BJ13RK  : RELEASE 2.0          @L1A
+//* $H3=LAPS0003, HAF1220, 081787 B53KJG  : RELEASE 2.1          @L1A
+//* $L1=LAPS0004, HAF1228, 011389 B53KJG  : RELEASE 3.0          @L1A
+//* $H7=LAPS0005, HPRF102, 071990 B53KDAR : REL 2.1.0 NEW FUNCT  @H7A
+//* $DU=LAPS0007,HPRF310,980604,BDKURLB: Version 3.1.0           @DUA
+//* $DS=LAPS0007,HPRF310,980730,BDKUMAL: Move CCW Data Buffers   @DSA
+//* $DX=LAPS0008,HPRF320,991117,BUQ4RLB: Version 3.2.0           @DXA
+//* $EV=LAPS0009,HPRF330,010926,BUQ4RLB: Version 3.3.0           @EVA
+//* $FC=LAPS0010,HPRF340,030203,BDKULD:  Version 3.4.0           @FCA
+//* $FM=LAPS0011,HPRF410,050502,BDKUPG:  Version 4.1.0           @FMA
+//* $FU=LAPS0012,HPRF420,060630,BDKURDD: Version 4.2.0           @FUA
+//* $GD=LAPS0013,HPRF430,080515,BDKURDD: Version 4.3.0           @GDA
+//* $GH=LAPS0014,HPRF440,090922,BDKURDD: Version 4.4.0           @GHA
+//* $HH=LAPS0015,HPRF450,111202,BDKUGLM: Version 4.5.0           @HHA
+//* $IL=LAPS0016,HPRF460,151207,BDKUDWP: Version 4.6.0           @ILA
+//*
+//**** END OF SPECIFICATIONS ***/
+//STEP01   EXEC PGM=APSPPIEP,REGION=1750K
+//JOBHDR OUTPUT PAGEDEF=8,          /* JOB SEPARATOR PAGEDEF         */
+//       FORMDEF=0101,CHARS=GT15    /* JOB SEPARATOR FORMDEF         */
+//JOBTLR OUTPUT PAGEDEF=8,          /* JOB SEPARATOR PAGEDEF         */
+//       FORMDEF=0101,CHARS=GT15    /* JOB SEPARATOR FORMDEF         */
+//DSHDR  OUTPUT PAGEDEF=8,          /* DS  SEPARATOR PAGEDEF         */
+//       FORMDEF=0101,CHARS=GT15    /* DS  SEPARATOR FORMDEF         */
+//MSGDS  OUTPUT PAGEDEF=8,          /* MESSAGE DATASET PAGEDEF       */
+//       FORMDEF=0101,CHARS=GT15    /* MESSAGE DATASET FORMDEF       */
+//PRTINFO  DD DSN=APSWPROT.PRTINFO, /* Printer Information       @FMA*/
+//         DISP=SHR                 /* Report Dataset            @FMA*/
+//FONT01   DD   DSN=SYS1.FONTLIB,   /* SYSTEM FONTS                  */
+//         DISP=SHR
+//PSEG01   DD   DSN=SYS1.PSEGLIB,   /* SYSTEM PAGE SEGMENTS          */
+//         DISP=SHR
+//OLAY01   DD   DSN=SYS1.OVERLIB,   /* SYSTEM MEDIUM OVERLAYS    @H3C*/
+//         DISP=SHR                 /*                           @H3C*/
+//PDEF01   DD   DSN=SYS1.PDEFLIB,   /* SYSTEM PAGEDEFS               */
+//         DISP=SHR
+//FDEF01   DD   DSN=SYS1.FDEFLIB,   /* SYSTEM FORMDEFS               */
+//         DISP=SHR
+//PRT1     CNTL
+//PRT1     PRINTDEV FONTDD=*.FONT01, /* FONT     LIBRARY DD          */
+//          OVLYDD=*.OLAY01,         /* OVERLAY  LIBRARY DD          */
+//          PSEGDD=*.PSEG01,         /* SEGMENT  LIBRARY DD          */
+//          PDEFDD=*.PDEF01,         /* PAGEDEF  LIBRARY DD          */
+//          FDEFDD=*.FDEF01,         /* FORMDEF  LIBRARY DD          */
+//          JOBHDR=*.JOBHDR,         /* JOB HEADER SEPARATOR         */
+//*                                  /*   OUTPUT                     */
+//          JOBTRLR=*.JOBTLR,        /* JOB TRAILER SEPARATOR        */
+//*                                  /*   OUTPUT                     */
+//          DSHDR=*.DSHDR,           /* DATA SET HEADER              */
+//*                                  /*   SEPARATOR                  */
+//          MESSAGE=*.MSGDS,         /* MESSAGE DATA SET OUTPUT      */
+//          BUFNO=1,                 /* NUMBER OF WRITE DATA         */
+//*                                  /*   BUFFERS                @DSC*/
+//          PAGEDEF=06080,           /* DEVICE PAGEDEF DEFAULT       */
+//          FORMDEF=0101,            /* DEVICE FORMDEF DEFAULT       */
+//          CHARS=(GF12,             /* DEVICE                   @H1C*/
+//          GS12,GT12,GU12),         /* DEFAULT FONT SET         @H1C*/
+//          PIMSG=YES,               /* ACCUMULATE DATA SET          */
+//*                                  /*   MESSAGES                   */
+//          DATACK=UNBLOCK,          /* REPORT ALL DATA-CHECK    @H7A*/
+//*                                  /*   ERRORS                     */
+//          TRACE=YES                /* BUILD INTERNAL TRACE     @DRC*/
+//PRT1      ENDCNTL

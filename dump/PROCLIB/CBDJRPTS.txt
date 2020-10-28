@@ -1,0 +1,12 @@
+//*--------------------------------------------------------------------
+//*    Licensed Materials - Property of IBM
+//*    5650-ZOS
+//*    Copyright IBM Corp. 1992, 2019
+//*
+//*    Status = HCS77C0
+//*--------------------------------------------------------------------
+//CBDJRPTS PROC  CS='*',IODF='',RPARM=''
+//GO       EXEC  PGM=CBDMGHCP,PARM='&RPARM'
+//HCDIODFS DD    DSN=&IODF,DISP=SHR
+//HCDRPT   DD    SYSOUT=&CS,DCB=(RECFM=FBA,LRECL=133,BLKSIZE=6650)
+//HCDMLOG  DD    SYSOUT=&CS,DCB=(RECFM=FBA,LRECL=133,BLKSIZE=6650)

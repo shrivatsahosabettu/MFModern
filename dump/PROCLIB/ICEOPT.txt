@@ -1,0 +1,20 @@
+//*  PRODUCT: Z/OS DFSORT (5740SM105)                                   00000010
+//*                                                                     00000020
+//*  5650-ZOS                                                 @SM01385C 00000030
+//*  COPYRIGHT IBM CORP. 2008, 2013                           @SM01385A 00000035
+//*  LICENSED MATERIALS - PROPERTY OF IBM                               00000040
+//*                                                                     00000050
+//*  FUNCTION: STARTUP PROC FOR CHANGING DFSORT INSTALLATION DEFAULTS.  00000060
+//*                                                                     00000070
+//*  ISSUE                                                              00000080
+//*  S ICEOPT,ICEPRM=x1                                                 00000090
+//*  OR                                                                 00000091
+//*  S ICEOPT,ICEPRM=(x1,...,xn)                                        00000092
+//*  WHERE xn IS THE SUFFIX OF A PARMLIB MEMBER NAMED ICEPRMxn          00000093
+//*  TO BE ACTIVATED.                                                   00000094
+//*  SEE "Z/OS DFSORT INSTALLATION AND CUSTOMIZATION" FOR               00000095
+//*  DETAILS ON THE START ICEOPT COMMAND AND ICEPRMxn MEMBERS.          00000096
+//*                                                                     00000097
+//ICEOPT   PROC  ICEPRM=                                                00000098
+//ICESTEP  EXEC  PGM=ICEPRML,TIME=30,
+//   PARM='&ICEPRM'

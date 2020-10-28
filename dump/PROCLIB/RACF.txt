@@ -1,0 +1,19 @@
+//******************************************************************//  00002700
+//*  RACF:                                                         *//  00005400
+//*                                                                *//  00008100
+//*      THIS RACF SYS1.PROCLIB PROCEDURE CAN BE USED TO START     *//  00010800
+//*      THE RACF ADDRESS SPACE.                                   *//  00013500
+//*      BEFORE EXECUTING IT, THE FOLLOWING PROCEDURE SHOULD BE    *//  00016200
+//*      MODIFIED TO MEET YOUR INSTALLATION'S REQUIREMENTS.        *//  00018900
+//*                                                                *//  00021600
+//*      THE ADDRESS SPACE WILL AUTO-START DURING SYSTEM IPL.      *//  00024300
+//*      THE RACF SUBSYSTEM INITIALIZATION PROGRAM WILL ISSUE      *//  00027000
+//*      AN INTERNAL MVS START COMMAND TO START THE RACF STARTED   *//  00029700
+//*      PROCEDURE, WHICH IN TURN WILL INITIALIZE THE RACF ADDRESS *//  00032400
+//*      SPACE.                                                    *//  00035100
+//*                                                                *//  00037800
+//*      CHANGE ACTIVITY =                                         *//  00040500
+//*      $L0=ADDRSP  JRF1922  920731 PDPJL1: PTM PIM0401           *//  00043200
+//******************************************************************//  00045900
+//RACF PROC                                                             00050000
+//RACF EXEC PGM=IRRSSM00,REGION=0M                                      00100000

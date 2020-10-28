@@ -1,0 +1,112 @@
+       IDENTIFICATION DIVISION.
+         PROGRAM-ID. JSONPAR.
+       DATA DIVISION.
+        WORKING-STORAGE SECTION.
+         1 JTXT-1047-CLIENT-DATA.
+          3 PIC X(16)  VALUE '{"CLIENT-DATA":{'.
+          3 PIC X(28)  VALUE ' "ACCOUNT-NUM":123456789012,'.
+          3 PIC X(19)  VALUE ' "BALANCE":-125.53,'.
+          3 PIC X(17)  VALUE ' "BILLING-INFO":{'.
+          3 PIC X(22)  VALUE '  "NAME-FIRST":"MATT",'.
+          3 PIC X(22)  VALUE '  "NAME-LAST":"CUZ",'.
+          3 PIC X(37)  VALUE '  "ADDR-STREET":"2455 SOUTH RD",'.
+          3 PIC X(25)  VALUE '  "ADDR-CITY":"POK",'.
+          3 PIC X(27)  VALUE '  "ADDR-REGION":"NEW YORK",'.
+          3 PIC X(21)  VALUE '  "ADDR-CODE":"12601"'.
+          3 PIC X(3)   VALUE '  }'.
+          3 PIC X(2)   VALUE ' }'.
+          3 PIC X(1)   VALUE '}'.
+        1 JTXT-1047-TRANSACTIONS.
+          3 PIC X(16)  VALUE '{"TRANSACTIONS":'.
+          3 PIC X(14)  VALUE ' {"TX-RECORD":'.
+          3 PIC X(3)   VALUE '  ['.
+          3 PIC X(4)   VALUE '   {'.
+          3 PIC X(19)  VALUE '    "TX-UID":107,'.
+          3 PIC X(34)  VALUE '    "TX-ITEM-DESC":"PROD A VER 1",'.
+          3 PIC X(30)  VALUE '    "TX-ITEM-UID":"AB142424",'.
+          3 PIC X(26)  VALUE '    "TX-PRICEINUS$":12.34,'.
+          3 PIC X(35)  VALUE '    "TX-COMMENT":"EXPRESS SHIPPING"'.
+          3 PIC X(5)   VALUE '   },'.
+          3 PIC X(4)   VALUE '   {'.
+          3 PIC X(19)  VALUE '    "TX-UID":1904,'.
+          3 PIC X(35)  VALUE '    "TX-ITEM-DESC":"PROD G VER 2",'.
+          3 PIC X(30)  VALUE '    "TX-ITEM-UID":"GB051533",'.
+          3 PIC X(27)  VALUE '    "TX-PRICEINUS$":833.22,'.
+          3 PIC X(35)  VALUE '    "TX-COMMENT":"DIGITAL DOWNLOAD"'.
+          3 PIC X(5)   VALUE '   } '.
+          3 PIC X(3)   VALUE '  ]'.
+          3 PIC X(2)   VALUE ' }'.
+          3 PIC X(1)   VALUE '}'.
+         1 JTXT-1208 PIC X(1000) VALUE IS ALL X'20'.
+         77 TXNUM PIC 999999 USAGE DISPLAY  VALUE ZERO .
+         1 CLIENT-DATA.
+          3 ACCOUNT-NUM   PIC 999,999,999,999.
+          3 BALANCE       PIC $$$9.99CR.
+          3 BILLING-INFO.
+           5 NAME-FIRST  PIC N(20).
+           5 NAME-LAST   PIC N(20).
+           5 ADDR-STREET PIC N(20).
+           5 ADDR-CITY   PIC N(20).
+           5 ADDR-REGION PIC N(20).
+           5 ADDR-CODE   PIC N(10).
+          3 TRANSACTIONS.
+           5 TX-RECORD OCCURS 0 TO 100 DEPENDING TXNUM.
+            7 TX-UID       PIC 99999 USAGE DISPLAY.
+            7 TX-ITEM-DESC PIC X(50).
+            7 TX-ITEM-UID  PIC AA/9999B99.
+            7 TX-PRICE     PIC $$$9.99.
+            7 TX-COMMENT   PIC N(20).
+       PROCEDURE DIVISION.
+           INITIALIZE JTXT-1208 ALL VALUE.
+           MOVE FUNCTION DISPLAY-OF(
+            FUNCTION NATIONAL-OF(
+            JTXT-1047-CLIENT-DATA) 1208)
+             TO JTXT-1208(1:FUNCTION LENGTH(JTXT-1047-CLIENT-DATA)).
+           JSON PARSE JTXT-1208 INTO CLIENT-DATA
+             WITH DETAIL
+             SUPPRESS TRANSACTIONS
+             NOT ON EXCEPTION
+               DISPLAY "SUCCESSFUL JSON PARSE"
+           END-JSON.
+           DISPLAY "ACCOUNT NUMBER:"
+           DISPLAY "  " ACCOUNT-NUM
+           DISPLAY "BALANCE:"
+           DISPLAY "  " BALANCE
+           DISPLAY "CLIENT INFORMATION: "
+           DISPLAY "  NAME:"
+           DISPLAY "    " FUNCTION DISPLAY-OF(NAME-LAST)
+           DISPLAY "    " FUNCTION DISPLAY-OF(NAME-FIRST)
+           DISPLAY "  ADDRESS:"
+           DISPLAY "    " FUNCTION DISPLAY-OF(ADDR-STREET)
+           DISPLAY "    " FUNCTION DISPLAY-OF(ADDR-CITY)
+           DISPLAY "    " FUNCTION DISPLAY-OF(ADDR-REGION)
+           DISPLAY "    " FUNCTION DISPLAY-OF(ADDR-CODE).
+           MOVE 2 TO TXNUM.
+           INITIALIZE JTXT-1208 ALL VALUE.
+           MOVE FUNCTION DISPLAY-OF(
+            FUNCTION NATIONAL-OF(
+            JTXT-1047-TRANSACTIONS) 1208)
+             TO JTXT-1208(1:FUNCTION LENGTH(JTXT-1047-TRANSACTIONS)).
+           JSON PARSE JTXT-1208 INTO TRANSACTIONS
+             WITH DETAIL
+             NAME TX-PRICE IS 'TX-PRICEINUS$'
+             NOT ON EXCEPTION
+               DISPLAY "SUCCESSFUL JSON PARSE"
+           END-JSON.
+           DISPLAY "TRANSACTIONS:"
+           DISPLAY "  RECORD 1:"
+           DISPLAY "    TXID:        " TX-UID(1)
+           DISPLAY "    DESCRIPTION: " TX-ITEM-DESC(1)
+           DISPLAY "    ITEM ID:     " TX-ITEM-UID(1)
+           DISPLAY "    PRICE:       " TX-PRICE(1)
+           DISPLAY "    COMMENT:     "
+             FUNCTION DISPLAY-OF(TX-COMMENT(1))
+           DISPLAY "  RECORD 2:"
+           DISPLAY "    TXID:        " TX-UID(2)
+           DISPLAY "    DESCRIPTION: " TX-ITEM-DESC(2)
+           DISPLAY "    ITEM ID:     " TX-ITEM-UID(2)
+           DISPLAY "    PRICE:       " TX-PRICE(2)
+           DISPLAY "    COMMENT:     "
+             FUNCTION DISPLAY-OF(TX-COMMENT(2))
+           GOBACK.
+       END PROGRAM JSONPAR.

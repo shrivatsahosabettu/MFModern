@@ -1,0 +1,128 @@
+//APSWPROA PROC
+//**************** THE PSF WRITER PROCEDURE ******************
+//*
+//*01* MODULE-NAME = APSWPROA
+//* $MOD(APSWPROA) COMP(APS) PROD(PSF) : VERSION 4.6.0
+//*
+//*01* DESCRIPTIVE-NAME = START PROCEDURE FOR PSF:
+//*
+//* CHANNEL ATTACHED PRINTER, ALL DEFAULTS SPECIFIED             @GDC
+//* 240 PEL FONT RESOLUTION (CAN BE SWITCHED TO 300 PEL)         @GDA
+//*
+//*
+//*01* STATUS = HPRF460
+//*
+//*01* FUNCTION = SET PSF OPTIONS AND RESOURCES.                 @DUC
+//*
+//*01* NOTES = THE FULL NAME OF THE DEFAULT PAGEDEF IS
+//*               P1A06462.
+//*            THE FULL NAME OF THE DEFAULT FORMDEF IS
+//*               F1A10110.
+//*
+//*            THE FULL NAME OF THE DEFAULT CORE FONT IS X060D8. @02A
+//*            THE FULL NAME OF EQUIVALENT COMPATIBILITY FONT    @02A
+//*            IS X0GT15.                                        @02A
+//*
+//*            THE FULL NAME OF THE SEPARATOR PAGE PAGEDEF IS
+//*                P1V06483.
+//*
+//*            THE FULL NAME OF THE SEPARATOR PAGE CORE FONT IS
+//*            X060D8. THE FULL NAME OF EQUIVALENT COMPATIBILITY @02C
+//*            FONT IS X0GT15.                                   @DRC
+//*
+//*            IF THE PRINTER IS A 300 PEL FONT PRINTER (A       @01A
+//*            3935 FOR EXAMPLE),                                @01A
+//*            THE FIRST FONT01 DD STATEMENT BELOW               @01A
+//*            MUST BE COMMENTED OUT AND THE SECOND FONT01       @01A
+//*            DD MUST BE UNCOMMENTED.                           @01A
+//*                                                              @DRD
+//*
+//*01* CHANGE-ACTIVITY :                                         @L1C
+//* $H1=LAPS0001, HAF1103, 110984 TD4  : RELEASE 1.1             @L1A
+//* $H2=LAPS0002, HAF1203, 022586 BJ13RK  : RELEASE 2.0          @L1A
+//* $H3=LAPS0003, HAF1220, 081787 B53KJG  : RELEASE 2.1          @L1A
+//* $L1=LAPS0004, HAF1228, 011389 B53KJG  : RELEASE 3.0          @L1A
+//* $H7=LAPS0005, HPRF102, 071990 B53KDAR : REL 2.1.0 NEW FUNCT  @H7A
+//* $01=OW80593,  HPRF220, 020995 J13JAU  : REL 2.2.0            @01A
+//* $DU=LAPS0007,HPRF310,050598,BDKUMAL: Version 3.1.0           @DUA
+//* $DR=LAPS0007, HPRF310, 050598 BDKUMAL : Default to core font @DRA
+//* $DS=LAPS0007, HPRF310, 073098 BDKUMAL: Move CCW Data Buffers @DSA
+//* $02=OW39733,  HPRF310, 061699 BDKUMAL: Correct typo          @02A
+//* $DX=LAPS0008,HPRF320,991117,BUQ4RLB: Version 3.2.0           @DXA
+//* $EV=LAPS0009,HPRF330,010926,BUQ4RLB: Version 3.3.0           @EVA
+//* $FC=LAPS0010,HPRF340,030203,BDKULD : Version 3.4.0           @FCA
+//* $FM=LAPS0011,HPRF410,050502,BDKUPG : Version 4.1.0           @FMA
+//* $FU=LAPS0012,HPRF420,060630,BDKURDD: Version 4.2.0           @FUA
+//* $GD=LAPS0013,HPRF430,080515,BDKURDD: Version 4.3.0           @GDA
+//* $GH=LAPS0014,HPRF440,090922,BDKURDD: Version 4.4.0           @GHA
+//* $HH=LAPS0015,HPRF450,111202,BDKUGLM: Version 4.5.0           @HHA
+//* $03=OA46136, HPRF450,150622,BDKULMM: Correct system font     @03A
+//*                                      library names           @03A
+//* $IL=LAPS0016,HPRF460,151207,BDKUDWP: Version 4.6.0           @ILA
+//*
+//**** END OF SPECIFICATIONS ***/
+//STEP01   EXEC PGM=APSPPIEP,REGION=4096K
+//JOBHDR OUTPUT PAGEDEF=V06483,     /* JOB SEPARATOR PAGEDEF         */
+//       FORMDEF=A10110,CHARS=60D8  /* JOB SEPARATOR FORMDEF     @02C*/
+//JOBTLR OUTPUT PAGEDEF=V06483,     /* JOB SEPARATOR PAGEDEF         */
+//       FORMDEF=A10110,CHARS=60D8  /* JOB SEPARATOR FORMDEF     @02C*/
+//DSHDR  OUTPUT PAGEDEF=V06483,     /* DATA SET SEPARATOR            */
+//*                                 /*   PAGEDEF                     */
+//       FORMDEF=A10110,CHARS=60D8  /* DATASET SEPARATOR         @02C*/
+//*                                 /*   FORMDEF                 @H3C*/
+//MSGDS  OUTPUT PAGEDEF=A06462,     /* MESSAGE DATASET PAGEDEF       */
+//       FORMDEF=A10110             /* MESSAGE DATASET FORMDEF   @H3C*/
+//PRTINFO  DD DSN=APSWPROT.PRTINFO, /* Printer Information       @FMA*/
+//         DISP=SHR                 /* Report Dataset            @FMA*/
+//FONT01   DD   DSN=SYS1.FONTLIBB,  /* SYSTEM FONTS              @03C*/
+//*                                                              @DRD*/
+//*FONT01  DD   DSN=SYS1.FONT300,   /* SYSTEM FONTS, 300 PEL     @03C*/
+//         DISP=SHR
+//PSEG01   DD   DSN=SYS1.PSEGLIB,   /* SYSTEM PAGE SEGMENTS          */
+//         DISP=SHR                 /*                           @H3C*/
+//OLAY01   DD   DSN=SYS1.OVERLIB,   /* SYSTEM OVERLAYS           @H3C*/
+//         DISP=SHR                 /*                           @H3C*/
+//PDEF01   DD   DSN=SYS1.PDEFLIB,   /* SYSTEM PAGEDEFS               */
+//         DISP=SHR
+//FDEF01   DD   DSN=SYS1.FDEFLIB,   /* SYSTEM FORMDEFS               */
+//         DISP=SHR
+//* ***********************************************************      */
+//*              PRINTDEV                                            */
+//* ***********************************************************      */
+//PRT1     CNTL
+//PRT1     PRINTDEV FONTDD=*.FONT01, /* FONT     LIBRARY DD          */
+//          OVLYDD=*.OLAY01,         /* OVERLAY  LIBRARY DD          */
+//          PSEGDD=*.PSEG01,         /* SEGMENT  LIBRARY DD          */
+//          PDEFDD=*.PDEF01,         /* PAGEDEF  LIBRARY DD          */
+//          FDEFDD=*.FDEF01,         /* FORMDEF  LIBRARY DD          */
+//          JOBHDR=*.JOBHDR,         /* JOB HEADER SEPARATOR         */
+//*                                  /*   OUTPUT                     */
+//          JOBTRLR=*.JOBTLR,        /* JOB TRAILER SEPARATOR        */
+//*                                  /*   OUTPUT                     */
+//          DSHDR=*.DSHDR,           /* DATA SET HEADER              */
+//*                                  /*   SEPARATOR                  */
+//          MESSAGE=*.MSGDS,         /* MESSAGE DATA SET OUTPUT      */
+//          BUFNO=1,                 /* NUMBER OF WRITE DATA         */
+//*                                  /*   BUFFERS                @DSC*/
+//          PAGEDEF=A06462,          /* DEVICE PAGEDEF DEFAULT       */
+//          FORMDEF=A10110,          /* DEVICE FORMDEF DEFAULT   @H3C*/
+//          CHARS=(60D8),            /* DEVICE DEFAULT FONT      @02C*/
+//          COMPRESS=NO,             /* Default, No blank compression*/
+//*                                  /* performed                @GDA*/
+//*         OVERLAY=O1GLOBAL,        /* CONSTANT OVERLAY         @GDA*/
+//          PIMSG=(YES,16),          /* Default, accumulate data set */
+//*                                  /* messages up to 16 msg groups */
+//          DATACK=BLOCK,            /* Default, Do not report   @GDC*/
+//*                                  /* undefined character or   @GDC*/
+//*                                  /* position errors          @GDC*/
+//*         MAP2OLN=NO,              /* Default, Do not map raster   */
+//*                                  /* fonts to outline         @GDA*/
+//*         PRTERROR=NOTHONOR,       /* Default, do not honor        */
+//*                                  /* PRTERROR on OUTPUT JCL   @GDA*/
+//*                                  /* Add dump stmt samples    @GDA*/
+//*         DUMP=(ABD0653),          /* Take dump for abend 024-0653 */
+//*         DUMP=(07C00400),         /* Take dump for reason code    */
+//*         DUMP=(,APS788I),         /* Take dump on 1st APS788I     */
+//*         DUMP=(,APS788I,3),       /* Take dump on 3rd APS788I     */
+//          TRACE=YES                /* BUILD INTERNAL TRACE     @DRC*/
+//PRT1      ENDCNTL

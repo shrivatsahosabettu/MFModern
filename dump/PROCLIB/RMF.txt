@@ -1,0 +1,59 @@
+//RMF      PROC                                                         00000100
+//********************************************************************  00000200
+//*                                                                  *  00000300
+//* PROPRIETARY STATEMENT:                                           *  00000400
+//*    LICENSED MATERIALS - PROPERTY OF IBM                          *  00000500
+//*    "RESTRICTED MATERIALS OF IBM"                                 *  00000600
+//*    5694-A01                                                      *  00000600
+//*    COPYRIGHT IBM CORP. 1998, 2007                                *  00000700
+//*    STATUS=HRM7740 (Z/OS V1R9 RMF)                                *  00000800
+//*                                                                  *  00000900
+//* DESCRIPTIVE_NAME:                                                *  00001000
+//*   PROCEDURE FOR RMF CONTROL TASK / MON I / MON II BACKGROUND     *  00001100
+//*                                                                  *  00001200
+//* NOTES:                                                           *  00001210
+//*                                                                  *  00001200
+//*   1. CUSTOMER MAY ADD RMF DATA BUFFER OPTIONS IN THE PARM        *  00001220
+//*      FIELD OF THE EXEC STATEMENT (SEE RMF USER'S GUIDE)          *  00001221
+//*                                                                  *  00001200
+//*   2. ALSO ANY OTHER MONITOR I DATA GATHERER OPTION IS ALLOWED    *  00001221
+//*      IN THE PARM FIELD, FOR EXAMPLE: MEMBER(XX)                  *  00001221
+//*      ATTENTION: PARAMETERS IN THE PARM FIELD ARE NOT SUBJECT     *  00001221
+//*      TO SUBSTITUTION OF SYMBOLIC NAMES.                          *  00001221
+//*                                                                  *  00001200
+//*   3. RMF DYNAMICALLY ALLOCATES THE LOGICAL PARMLIB CONCATENATION *  00001221
+//*      BY USING THE "CONCATENATED PARMLIB SUPPORT OF OS/390" TO    *  00001221
+//*      READ THE ERBRMFXX PARMLIB MEMBERS. TO REDIRECT THE INPUT TO *  00001221
+//*      A FIXED DATASET, PREALLOCATE DDNAME IEFPARM IN THIS         *  00001230
+//*      PROCEDURE:                                                  *  00001230
+//*      //IEFPARM  DD   DISP=SHR,DSN=USERS.PARMLIB                  *  00001230
+//*      PLEASE BE AWARE THAT THE CHANGE IN THIS PROCEDURE ALSO      *  00001230
+//*      AFFECTS MONITOR III PARMLIB PROCESSING.                     *  00001230
+//*      NO CHANGE IS NECESSARY IN PROCEDURE RMFGAT.             @E1C*  00001230
+//*                                                                  *  00001200
+//*   4. IF YOU START RMF ON A SYSTEM WITHOUT JES UNDER THE MASTER   *  00001230
+//*      ADDRESS SPACE, USE: START RMF,,,<OPTIONS>,SUB=MSTR.         *  00001230
+//*      IN THIS CASE TAKE CARE, THAT RMF DOES NOT ALLOCATE SYSOUT   *  00001230
+//*      DATASET DYNAMICALLY (013-C0/C8 ABENDS).                     *  00001230
+//*      - AVOID REPORT OUTPUT BY SPECIFYING THE NOREPORT OPTION     *  00001230
+//*        IN THE M I AND M II BACKGROUND SESSION OPTIONS.           *  00001230
+//*      - PREALLOCATE THE FOLLOWING DDNAMES IN THIS PROCEDURE:      *  00001230
+//*        MFMESSGE, RMFSCZZ, RMFSCIII, RMFSC<XX>, WHERE <XX> IS     *  00001230
+//*        MONITOR II BACKGROUND SESSION NAME.                       *  00001230
+//*        EXAMPLE: //MFMESSGE DD DUMMY                              *  00001230
+//*      - CHANGE PROCEDURE RMFGAT TO PREALLOCATE RMFM3III   @WA15873*  00001230
+//*                                                                  *  00001230
+//*                                                                  *  00001500
+//* CHANGE ACTIVITY:                                                 *  00001510
+//*   $C1=R510,HRM5510,,GBO: REMOVE SYSUDUMP, ADD DESCRIPTION        *  00001520
+//*   GBO: REMOVE DPRTY PARAMETER                            @WA03891*  00001520
+//*   GBO: CLONING SUPPORT / SYMBOLIC NAMES IN PARMLIB       @WA15873*  00001520
+//*        REMOVE IEFPARM DD STATEMENT (DEFAULT=DYNALLOC)    @WA15873*  00001520
+//*        ADD DESCRIPTION FOR OW12805                       @WA15873*  00001520
+//*   $E1=OSREL2,HRM6602,,GBO: CONCATENATED PARMLIB SUPPORT      @E1A*  00001520
+//*   $01=ZOSV1R8,HRM7730,,GUB: REGION=128M                      @01A*  00001520
+//*   $61=ZOSV2R1,HRM7790,,PMU: REGION=256M                      @61A*  00001520
+//*                                                                  *  00001530
+//********************************************************************  00001600
+//IEFPROC  EXEC PGM=ERBMFMFC,REGION=256M,TIME=1440,                     00001700
+//         PARM=''                                                      00001710

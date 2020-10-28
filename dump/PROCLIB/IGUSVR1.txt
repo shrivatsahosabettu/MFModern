@@ -1,0 +1,77 @@
+//IZUSVR1  PROC PARMS='zosmfServer',     /* Server parms             */
+//      ROOT='/usr/lpp/zosmf',           /* z/OSMF installation root */
+//      WLPDIR='/usr/lpp/zosmf/liberty', /* Liberty directory        */
+//      OUTCLS='*',                      /* SYSOUT class             */
+//      USERDIR='/global/zosmf',         /* Configuration directory  */
+//      TRACE='N',                       /* Trace option             */
+//             KCINDEX='Y',              /* KC index rebuild flag */
+//      IZUPRM='PREV',                   /* Parmlib suffixes or PREV */
+//      SERVER='AUTOSTART',              /* AUTOSTART server         */
+//      Z='0',                           /* Reserved for IBM         */
+//      IZUMEM=4G                        /* Server memlimit          */
+//*
+//*--------------------------------------------------------------*/
+//* z/OSMF AUTOSTART Websphere Liberty Profile server startup    */
+//* procedure                                                    */
+//*
+//* PROPRIETARY STATEMENT:                                                  */
+//* Licensed Materials - Property of IBM                                    */
+//* 5650-ZOS                                                                */
+//* Copyright IBM Corp. 2013, 2019                                          */
+//* Status = HSMA240                                                        */
+//*                                                                         */
+//* ----------------------------------------------------------------------  */
+//*                                                                         */
+//*
+//*------------------------------------------------------------------
+//* Parse z/OSMF PARMLIB member
+//*------------------------------------------------------------------
+//ZPARM   EXEC  PGM=IZUPARMS,REGION=0M,
+// PARM='/IZUPRM=&IZUPRM,TRACE=&TRACE,USERDIR=&USERDIR,SERVER=&SERVER,Z
+//             =&Z'
+//*
+//DFLTCFG  DD  PATH='&ROOT./defaults/configuration.defaults'
+//*
+//STDOUT   DD  SYSOUT=&OUTCLS
+//STDERR   DD  SYSOUT=&OUTCLS
+//CEEDUMP  DD  SYSOUT=&OUTCLS
+//*
+//*------------------------------------------------------------------
+//* Configure z/OSMF server
+//*------------------------------------------------------------------
+//CONFZMF EXEC PGM=BPXBATCH,REGION=0M,COND=(0,LT),
+// PARM='SH &ROOT./bin/izuconfig.sh &ROOT &USERDIR &TRACE &KCINDEX'
+//*
+//SYSPRINT  DD SYSOUT=&OUTCLS
+//SYSOUT    DD SYSOUT=&OUTCLS
+//STDERR    DD SYSOUT=&OUTCLS
+//STDOUT    DD SYSOUT=&OUTCLS
+//*
+//*------------------------------------------------------------------
+//* Start the Websphere Liberty Profile server
+//*
+//* WLPUDIR - PATH DD that points to the Liberty Profile's "user"
+//*           directory. If the DD is not allocated, the user
+//*           directory location defaults to the wlp/usr directory
+//*           in the install tree.
+//* STDOUT  - Destination for stdout (System.out)
+//* STDERR  - Destination for stderr (System.err)
+//* STDENV  - Initial Unix environment - read by the system.  The
+//*           installation default and server specific server
+//*           environment files will be merged into this environment
+//*           before the JVM is launched.
+//*------------------------------------------------------------------
+//ZOSMF   EXEC PGM=BPXBATSL,REGION=0M,COND=(0,LT),
+//  MEMLIMIT=&IZUMEM.,TIME=NOLIMIT,
+//  PARM='PGM &WLPDIR./lib/native/zos/s390x/bbgzsrv --clean &PARMS'
+//*
+//WLPUDIR  DD PATH='&USERDIR./configuration'
+//*
+//STDOUT   DD SYSOUT=&OUTCLS
+//STDERR   DD SYSOUT=&OUTCLS
+//*STDOUT   DD PATH='&ROOT/izusvr1.stdout',
+//*            PATHOPTS=(OWRONLY,OCREAT,OTRUNC),
+//*            PATHMODE=SIRWXU
+//*STDERR   DD PATH='&ROOT/izusvr1.stderr',
+//*            PATHOPTS=(OWRONLY,OCREAT,OTRUNC),
+//*            PATHMODE=SIRWXU

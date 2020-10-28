@@ -1,0 +1,38 @@
+//RMFCSC   PROC RMF=SYS1,ISPF=SYS1,HLQ=
+//********************************************************************
+//*                                                                  *
+//* PROPRIETARY STATEMENT:                                           *
+//*    LICENSED MATERIALS - PROPERTY OF IBM                          *
+//*    "RESTRICTED MATERIALS OF IBM"                                 *
+//*    5694-A01                                                      *
+//*    COPYRIGHT IBM CORP. 1998, 2007                                *
+//*    STATUS=HRM7740 (Z/OS V1R9 RMF)                                *
+//*                                                                  *
+//* DESCRIPTIVE_NAME:                                                *
+//*    RMF CLIENT/SERVER CONTROL TASK                                *
+//*    WAITS FOR A MODIFY COMMAND TO ESTABLISH A C/S MONITOR SESSION *
+//*                                                                  *
+//* CHANGE ACTIVITY:                                                 *  00001510
+//*    $C0=R430,HRM4430,,HBE: CREATED                                *  00001520
+//*    $F1=R604,HRM6604,,GBO: ADDED COPYRIGHT                        *  00001520
+//*                                                                  *  00001500
+//********************************************************************
+//ERBCSC   EXEC PGM=IKJEFT01,REGION=4M,DYNAMNBR=90,
+//         PARM='ERBCSINI &HLQ'
+//STEPLIB  DD DISP=SHR,DSN=&HLQ..RMFCS.LINKLIB
+//         DD DISP=SHR,DSN=&ISPF..SISPLOAD
+//         DD DISP=SHR,DSN=&ISPF..SISPLPA
+//         DD DISP=SHR,DSN=&ISPF..SISPSASC
+//ISPPROF  DD DISP=SHR,DSN=&HLQ..ISPFCS.ISPPROF
+//ISPLOG   DD DISP=SHR,DSN=&HLQ..ISPFCS.ISPLOG
+//SYSPROC  DD DISP=SHR,DSN=&HLQ..RMFCS.CLIST
+//         DD DISP=SHR,DSN=&RMF..SERBCLS
+//         DD DISP=SHR,DSN=&ISPF..SISPEXEC
+//         DD DISP=SHR,DSN=&ISPF..SISPCLIB
+//ISPPLIB  DD DISP=SHR,DSN=&ISPF..SISPPENU
+//ISPSLIB  DD DISP=SHR,DSN=&ISPF..SISPSENU
+//ISPMLIB  DD DISP=SHR,DSN=&ISPF..SISPMENU
+//ISPTLIB  DD DISP=SHR,DSN=&ISPF..SISPTENU
+//SYSTSPRT DD SYSOUT=A
+//SYSTSIN  DD DUMMY
+//SYSPRINT DD SYSOUT=A

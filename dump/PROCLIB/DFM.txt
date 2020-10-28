@@ -1,0 +1,38 @@
+//*PROPRIETARY V3 STATEMENT                                             00001000
+//*LICENSED MATERIALS - PROPERTY OF IBM                                 00002000
+//*5695-DF1                                                             00003000
+//*(C) COPYRIGHT 1994, IBM CORP.                                        00004000
+//*END PROPRIETARY V3 STATEMENT                                         00005000
+//DFM     PROC  PARMS='NORMAL'                                          00010000
+//***************************************************************       00020000
+//*                                                             *       00030000
+//*  DFSMS MVS/DFM START UP PROCEDURE                           *       00040000
+//*                                                             *       00050000
+//***************************************************************       00060000
+//DFM      EXEC PGM=GDEISBOT,                                           00070000
+//             PARM='&PARMS',                                           00080000
+//             REGION=0K,                                               00090000
+//             TIME=1440                                                00100000
+//IEFPARM  DD   DSN=SYS1.PARMLIB,DISP=SHR                               00110000
+//* CHANGE THE STEPLIB STATEMENT AS REQUIRED IF YOUR INSTALLATION       00120000
+//* DOESN'T HAVE THE LE RUNTIME DATA SET IN ITS LINK LIST.              00130000
+//*STEPLIB  DD  DSN=SYS1.SCEERUN,DISP=SHR                               00140000
+//SYSPRINT DD   SYSOUT=*                                                00150000
+//SYSUDUMP DD   SYSOUT=*                                                00160000
+//*                                                                     00170000
+//*  THE TWO FILES ASSOCIATED WITH THE DD STATEMENTS CDRATRC AND        00180000
+//*  SYSOUT CAN BE USED TO DIAGNOSE DFM STARTUP PROBLEMS RELATED        00190000
+//*  TO CDRA. (CDRA IS INVOKED DURING STARTUP FOR CERTAIN CCSID         00191000
+//*  VALUES IN THE SYS1.PARMLIB MEMBER DFM00.)                          00192000
+//*                                                                     00193000
+//*  YOU MUST ALLOCATE THE TWO FILES AS RECFM=FBA, LRECL=133,           00194000
+//*  AND DSORG=PS BEFORE STARTING DFM WITH THE DD STATEMENTS            00195000
+//*  ACTIVE.                                                            00196000
+//*                                                                     00197000
+//*  NOTE THAT SYSOUT IS REQUIRED AND CDRATRC IS OPTIONAL               00198000
+//*  WHEN USING CDRA AND THE DEFAULT INSTALLATION IS SET UP TO          00199000
+//*  USE CDRA IF YOUR HOST CODE PAGE IS OTHER THAN 500.                 00200000
+//*                                                                     00201000
+//*  CDRATRC  DD  DSN=SYS1.CDRATRC,DISP=SHR    CDRA API TRACING         00202000
+//*  SYSOUT   DD  DSN=SYS1.CDRAOUT,DISP=SHR    C RUNTIME MESSAGES       00203000
+//SYSOUT   DD  DUMMY <- DEFAULT = CDRA WITH RUNTIME MESSAGES DISCARDED  00204000

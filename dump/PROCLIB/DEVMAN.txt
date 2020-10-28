@@ -1,0 +1,29 @@
+//DEVMAN   PROC                                                         00050000
+//********************************************************************* 00100000
+//* $MAC(DEVMAN): DEVICE MANAGER PROCEDURE                            * 00150000
+//*                                                                   * 00200000
+//* STATUS = Z/OS V1R10                                               * 00250000
+//*                                                                   * 00300000
+//*PROPRIETARY V3 STATEMENT                                           * 00350000
+//*LICENSED MATERIALS - PROPERTY OF IBM                               * 00400000
+//*"RESTRICTED MATERIALS OF IBM"                                      * 00450000
+//*5694-A01                                                           * 00500000
+//*COPYRIGHT IBM CORP. 1998,2008                                      * 00550000
+//*END PROPRIETARY V3 STATEMENT                                       * 00600000
+//*                                                                   * 00650000
+//*     THIS PROCEDURE IS USED TO START DEVICE MANAGER ADDRESS SPACE. * 00700000
+//*                                                                   * 00800000
+//*     SYNTAX:                                                       * 00850000
+//*      START COMMAND:                                               * 00900000
+//*        START DEVMAN                                               * 00950000
+//*                                                                   * 02800000
+//* CHANGE-ACTIVITY =                                                 * 02900000
+//*                                                                   * 02950000
+//* $L0=DEVMAN  ,HDZ11K0,04MAR19,SJPLJBC: INITIAL LEVEL               * 02975000
+//* $L1=K1K0696 ,HDZ11K0,05JAN10,SJPLRDB: CHANGE PROC NAME FROM       * 03000000
+//*                                       DMOSTART TO DEVMAN          * 03025000
+//* $L2=L1A2269 ,HDZ1A10,08FEB25,SJPLRDB: REMOVE OBSOLETE PROLOG INFO.* 03037500
+//*                                                                   * 03050000
+//********************************************************************* 03100000
+//DEVMAN EXEC PGM=DMOVS001,REGION=4M,TIME=1440                          03150000
+//SYSPRINT DD DUMMY                                                     03200000

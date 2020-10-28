@@ -1,0 +1,77 @@
+//CBDQDISP PROC ENV='ENVAR()'
+//*   JNP='CBD'
+//*   LOG=NOLOG
+//*   PORT=51107
+//*   JSK=+SYS1.PROCLIB(CBDQAJSK)
+//*   P0='P0=10000'
+//*   P1='P1=65530'
+//**********************************************************
+//* START HCD DISPATCHER FOR TCP/IP CONNECTION             *
+//*                                                        *
+//* IF YOU HAVE A REASON TO CHANGE THE TCP/IP PORT NUMBER  *
+//* OF THE DISPATCHER, UN-COMMENT THE PORT=51107           *
+//* ABOVE AND SUBSTITUTE A VALID TCP/IP PORT               *
+//* NUMBER FOR 51107.                                      *
+//*                                                        *
+//* THE DISPATCHER STARTS A BATCH JOB FOR EACH INCOMING    *
+//* LOGIN REQUEST. BY DEFAULT, THIS BATCH JOB WILL GET     *
+//* A JOBNAME STARTING WITH 'CBD'.                         *
+//* IF YOU WOULD LIKE TO HAVE A DIFFERENT PREFIX FOR THE   *
+//* JOBNAME, UN-COMMENT THE JNP='CBD' ABOVE AND            *
+//* SPECIFY A JOBNAME PREFIX OF YOUR CHOICE INSTEAD OF     *
+//* 'CBD'.                                                 *
+//* YOU CAN HAVE THE USERID OF THE CLIENT AS PART OF       *
+//* THE JOBNAME BY USING THE SPECIAL PATTERN '+U' IN THE   *
+//* JNP= PARAMETER:                                        *
+//* FOR EXAMPLE, SPECIFYING JNP='X+UY' WILL (FOR A         *
+//* USER NAMED 'BMGN') RESULT IN JOBNAMES STARTING         *
+//* WITH XBMGNY.                                           *
+//* AT MOST 7 CHARACTERS OF THE SPECIFIED JOBNAME PREFIX   *
+//* (AFTER USERID SUBSTITUTION) WILL BE USED:              *
+//* THE FINAL JOBNAME WILL BE 8 CHARACTERS LONG WITH A     *
+//* SUFFIX BUILT FROM THE CHARACTERS 0..9 AND A...Z.       *
+//*                                                        *
+//* IF YOU WOULD LIKE TO SPECIFY A DIFFERENT JCL SKELETON  *
+//* FOR THE AGENT (INSTEAD OF SYS1.PROCLIB(CBDQAJSK)),     *
+//* UN-COMMENT THE JSK=+... ABOVE AND SPECIFY THE          *
+//* DATASET NAME OF YOUR CHOSEN JCL SKELETON               *
+//* (USE A '+' PREFIX FOR FULLY QUALIFIED DATASET NAMES)   *
+//* (E.G. //   JSK=+USER.PROCLIB(CBDQAJSK)             )   *
+//*                                                        *
+//* IF YOU WOULD LIKE TO CAPTURE TRACE OUTPUT OF THE       *
+//* DISPATCHER,                                            *
+//* UN-COMMENT THE LOG=NOLOG ABOVE AND SPECIFY THE         *
+//* DATASET NAME OF YOUR TRACE OUTPUT DATASET              *
+//* (USE A '+' PREFIX FOR FULLY QUALIFIED DATASET NAMES)   *
+//* (E.G. //   LOG=+USER.CBDQTDIS.LOG                  )   *
+//* AND MAKE SURE THE DATASET IS WRITE-PERMITTED TO THE    *
+//* DISPATCHER USERID.                                     *
+//*                                                        *
+//* IF YOU WOULD LIKE TO CHANGE THE DEFAULT PORT RANGE     *
+//* SEARCHED BY THE DISPATCHER FOR A FREE AGENT PORT,      *
+//* UN-COMMENT THE P0=... P1=... LINES ABOVE AND DEFINE    *
+//* THE APPROPRIATE PORT RANGE.  FOR EXAMPLE, TO ALLOW     *
+//* ONLY AGENT PORTS IN THE RANGE 50000...50999, SPECIFY   *
+//*       P0='P0=50000',                                   *
+//*       P1='P1=50999'                                    *
+//*                                                        *
+//* ------------------------------------------------------ *
+//* IF YOU ACTIVATE ANY OF THE PARAMETERS ABOVE DON'T      *
+//* FORGET TO APPEND A COMMA IN THE LINE ABOVE TO AVOID    *
+//* JCL ERRORS.                                            *
+//* ------------------------------------------------------ *
+//*                                                        *
+//**********************************************************
+//*     Licensed Materials - Property of IBM               *
+//*     5650-ZOS                                           *
+//*     Copyright IBM Corp. 1992, 2019                     *
+//*                                                        *
+//*     Status = HCS77C0                                   *
+//**********************************************************
+//TDIS     EXEC PGM=CBDQTDIS,REGION=48M,TIME=NOLIMIT,
+//         PARM='&ENV/L=&LOG P=&PORT JNP=&JNP S=&JSK &P0 &P1'
+//JCLOUT   DD   SYSOUT=(A,INTRDR)
+//SYSOUT   DD   SYSOUT=*
+//SYSPRINT DD   SYSOUT=*
+//CEEDUMP  DD   SYSOUT=*
+//*

@@ -1,0 +1,15 @@
+//IZUINSTP  PROC OUTCLS='*'
+//*--------------------------------------------------------------*/
+//* The procedure is to detect if USS and TCPIP are woken up     */
+//*                                                              */
+//* PROPRIETARY STATEMENT:                                       */
+//*                                                              */
+//*     LICENSED MATERIALS - PROPERTY OF IBM                     */
+//*     5650-ZOS                                                 */
+//*     COPYRIGHT IBM CORP. 2017                                 */
+//*     STATUS = HSMA230                                         */
+//*--------------------------------------------------------------*/
+//*
+//STEP1   EXEC PGM=IZUINST0,REGION=0M
+//STDOUT    DD SYSOUT=&OUTCLS
+//STDERR    DD SYSOUT=&OUTCLS

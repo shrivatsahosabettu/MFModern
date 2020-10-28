@@ -1,0 +1,17 @@
+//ANFWPROC PROC  HLQ=ANF,
+//     TCPHLQ=TCPIP
+//* ----------------------------------------------------
+//* this is a sample procedure for starting IP PrintWay
+//* ----------------------------------------------------
+//IEFPROC  EXEC  PGM=ANFFIEP,REGION=4M,TIME=NOLIMIT,PARM='INV=AOP1'
+//*-----------------------------------------------------
+//* AOP1 is the default name of the printer inventory
+//* server. This must be modified if this is not the
+//* name being used for the inventory server
+//*-----------------------------------------------------
+//ANFQUEUE DD DSN=&HLQ..QUEUE,DISP=SHR
+//SYSTCPD  DD DSN=&TCPHLQ..TCPIP.DATA,DISP=SHR
+//ANFMMSG  DD DSN=&HLQ..MSGFILE,DISP=SHR
+//SYSPRINT DD SYSOUT=*
+//SYSABEND DD SYSOUT=*
+//SYSUDUMP DD SYSOUT=*

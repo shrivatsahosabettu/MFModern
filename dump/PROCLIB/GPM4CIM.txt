@@ -1,0 +1,76 @@
+//GPM4CIM PROC OS=A                                                     00040006
+//********************************************************************  00050000
+//*                                                                  *  00060000
+//* PROPRIETARY STATEMENT:                                           *  00070000
+//*    LICENSED MATERIALS - PROPERTY OF IBM                          *  00080000
+//*    "RESTRICTED MATERIALS OF IBM"                                 *  00090000
+//*    5650-ZOS                                                      *  00100016
+//*    COPYRIGHT IBM CORP. 2011,2013                                 *  00110015
+//*    STATUS=HRM7790 (z/OS V2R1 RMF)                                *  00120015
+//*                                                                  *  00130000
+//* DESCRIPTIVE NAME:                                                *  00140000
+//*    DISTRIBUTED DATA SERVER FOR SYSTEMS WITH CIM INTRUMENTATION   *  00150000
+//*                                                                  *  00160000
+//* NOTES:                                                           *  00170000
+//*    1. START THIS PROCEDURE FROM THE OPERATOR CONSOLE WITH:       *  00180008
+//*       "START GPM4CIM[.identifier],OS=A|W|X|Z"                    *  00190015
+//*                                                                  *  00210000
+//*    2. SUPPLY THE TARGET OPERATING SYSTEM WITH THE &OS PARAMETER: *  00210108
+//*       - A  AIX ON SYSTEM p                                       *  00210208
+//*       - W  WINDOWS ON SYSTEM x                                   *  00210315
+//*       - X  LINUX ON SYSTEM x                                     *  00210414
+//*       - Z  LINUX ON SYSTEM z                                     *  00210614
+//*                                                                  *  00210714
+//*       SINCE MULTIPLE INSTANCES OF GPM4CIM CAN BE STARTED IT IS   *  00211008
+//*       RECOMMENDED TO ASSIGN AN IDENTIFIER WHICH CAN BE USED FOR  *  00212008
+//*       SUBSEQUENT STOP OR MODIFY COMMANDS.                        *  00213008
+//*                                                                  *  00214008
+//*    3. WITH A RUNNING SERVER YOU CAN DYNAMICALLY ACTIVATE AND     *  00214108
+//*       DEACTIVATE THE TRACE FUNCTION WITH MVS OPERATOR COMMANDS.  *  00214208
+//*       - "MODIFY GPM4CIM,TRACEON"       ACTIVATES THE TRACE       *  00214313
+//*       - "MODIFY GPM4CIM,TRACEOFF"      TURNS THE TRACE OFF       *  00214413
+//*       IF THE TRACE MUST BE ACTIVE DURING STARTUP OF THE SERVER,  *  00214508
+//*       ADD THE FOLLOWING STATEMENT TO THE ENVIRONMENT FILE        *  00214608
+//*       SPECIFIED WITH THE STDENV DD CARD: ICLUI_TRACETO=STDERR    *  00214708
+//*                                                                  *  00214808
+//*                                                                  *  00214908
+//*01* DEPENDENCIES:                                                 *  00215808
+//*       - TCPIP MUST BE ACTIVE                                     *  00215908
+//*       - Z/OS UNIX SYSTEM SERVICES: THE USERID RUNNING THIS       *  00216008
+//*         SERVER MUST HAVE AN OMVS SEGMENT IN RACF AND A HOME      *  00216108
+//*         DIRECTORY IN THE USS FILESYSTEM.                         *  00216208
+//*                                                                  *  00217008
+//*01* CHANGE-ACTIVITY:                                              *  00218008
+//*    $52=ZHYB,HRM7780,,HBE:  CREATED                               *  00219014
+//*    $OA36188,HRM7780,,KGE:  Changed comment (3.)                  *  00219114
+//*    $61=XPWIN,HRM7790,,HBE: RMF XP Windows Support                *  00219214
+//*                                                                  *  00219314
+//********************************************************************  00220000
+//********************************************************************  00230000
+//*  STEP 1 - Execute GPM4CIM                                        *  00240002
+//********************************************************************  00250011
+//STEP1    EXEC PGM=BPXBATCH,TIME=NOLIMIT,REGION=0M,                    00260002
+//       PARM='PGM /usr/lpp/gpm/bin/gpm4cim cfg=/etc/gpm/gpm4&OS..cfg'  00270007
+//STDENV   DD   PATH='/etc/gpm/gpm4cim.env'                             00280002
+//STDOUT   DD   PATH='/var/gpm/logs/gpm4cim&OS..out',                   00300006
+//         PATHOPTS=(OWRONLY,OCREAT,OTRUNC),                            00320000
+//         PATHMODE=(SIRUSR,SIWUSR,SIRGRP)                              00330000
+//STDERR   DD   PATH='/var/gpm/logs/gpm4cim&OS..trc',                   00340006
+//         PATHOPTS=(OWRONLY,OCREAT,OTRUNC),                            00360000
+//         PATHMODE=(SIRUSR,SIWUSR,SIRGRP)                              00370000
+//********************************************************************  00420000
+//*  STEP 2 - Copy stdout back to joblog                             *  00430002
+//********************************************************************  00440011
+//STEP2    EXEC PGM=BPXBATCH,                                           00450002
+//         PARM='PGM /bin/cat /var/gpm/logs/gpm4cim&OS..out'            00470006
+//STDOUT   DD   SYSOUT=*                                                00480002
+//STDERR   DD   SYSOUT=*                                                00490002
+//********************************************************************  00500000
+//*  STEP 3 - Copy stderr back to joblog                             *  00510002
+//********************************************************************  00520011
+//STEP3    EXEC PGM=BPXBATCH,                                           00530002
+//         PARM='PGM /bin/cat /var/gpm/logs/gpm4cim&OS..trc'            00550006
+//STDOUT   DD   SYSOUT=*                                                00560002
+//STDERR   DD   SYSOUT=*                                                00570002
+//********************************************************************  00580000
+//         PEND                                                         00590000

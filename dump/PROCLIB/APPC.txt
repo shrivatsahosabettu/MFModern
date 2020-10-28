@@ -1,0 +1,3 @@
+//APPC PROC APPC=00                                                     00050000
+//APPC EXEC PGM=ATBINITM,PARM='APPC=&APPC',REGION=0K                    00100000
+ 

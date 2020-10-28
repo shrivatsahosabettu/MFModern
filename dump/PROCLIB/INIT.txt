@@ -1,0 +1,66 @@
+//********************************************************************/ 00050000
+//*** START OF SPECIFICATIONS ****************************************/ 00075000
+//*                                                                  */ 00100000
+//*    PROCEDURE NAME : INIT                                         */ 00150000
+//*                                                                  */ 00200000
+//*    FUNCTION: The INIT procedure is used to start the MVS     @p2C*/ 00236600
+//*              by calling the module IEFIIC.                   @p2C*/ 00273200
+//*                                                                  */ 00309800
+//* PROPRIETARY STATEMENT:                                            * 00346400
+//*                                                                   * 00383200
+//* LICENSED MATERIALS - PROPERTY OF IBM                              * 00429000
+//* THIS MACRO IS "RESTRICTED MATERIALS OF IBM"                       * 00474800
+//* 5694-A01 (C) COPYRIGHT IBM CORP. 1987, 2003                       * 00520600
+//*                                                                   * 00566400
+//* STATUS= HBB7708                                                   * 00612200
+//*                                                                   * 00658000
+//***END_OF_PROPRIETARY_STATEMENT************************************** 00703800
+//*                                                                  */ 00750000
+//*  COMPONENT: Initiator (SC1B6)                                @p2C*/ 00800000
+//*                                                                  */ 00850000
+//*  DESCRIPTIVE NAME: N/A                                       @p2A*/ 00857800
+//*  MACRO NAME:       N/A                                       @p2A*/ 00865600
+//*  DSECT NAME:       N/A                                       @p2A*/ 00873400
+//*  EYE-CATCHER:      N/A                                       @L8A*/ 00881200
+//*     Offset:        N/A                                       @p2A*/ 00889100
+//*     Length:        N/A                                       @p2A*/ 00897000
+//*  STORAGE ATTRIBUTES:   Main Storage:      N/A                @p2A*/ 00904900
+//*                        Virtual Storage:   N/A                @p2A*/ 00912800
+//*                        Auxiliary Storage: N/A                @p2A*/ 00920700
+//*                        Subpool:           N/A                @p2A*/ 00928600
+//*                        Key:               N/A                @p2A*/ 00936500
+//*                        Data Space:        N/A                @p2A*/ 00944400
+//*                        Residency:         N/A                @p2A*/ 00952300
+//*  SIZE:             N/A                                       @p2A*/ 00960200
+//*  CREATED BY:       N/A                                       @p2A*/ 00968100
+//*  POINTED TO BY:    N/A                                       @p2A*/ 00976000
+//*  SERIALIZATION:    N/A                                       @p2A*/ 00983900
+//*  METHOD OF ACCESS: N/A                                       @p2A*/ 00991800
+//*                                                                  */ 01000000
+//*  EXTERNAL CLASSIFICATION:  PSPI                              @p2A*/ 01050000
+//*  END OF EXTERNAL CLASSIFICATION:                             @p2A*/ 01100000
+//*                                                                  */ 01150000
+//*  DISTRIBUTION LIBRARY: SYS1.PROCLIB                              */ 01200000
+//*                                                                  */ 01250000
+//**** END OF SPECIFICATIONS *****************************************/ 01300000
+//*                                                                  */ 01550000
+//*01* CHANGE ACTIVITY:                                              */ 01600000
+//*                                                                  */ 01650000
+//*    $P1= PUX0016 HBB6605 970527 PDTN: Relieve SWA fragmentation   */ 01662500
+//*                                                              @P1A*/ 01675000
+//*    $P2= PYN0834 HBB7708 030601 PDOO: Remove obsolete DPRTY   @P2A*/ 01681200
+//*                                                                  */ 01687500
+//********************************************************************/ 01700000
+//*                                                                     01703300
+//* INIT     - C - Added IEFINDMY DD statement.  The dummy DD           01709400
+//*                statement causes an allocation to be done shortly    01715500
+//*                after the initiator address space is started.        01721600
+//*                This prevents SWA fragmentation that would           01727700
+//*                otherwise occur when a dynamic allocation was done   01733800
+//*                under the initiatior's task.                  @P1A   01739900
+//*                                                                     01746200
+//* INIT     - C - Removed the DPRTY=12 parameter from the EXEC         01759600
+//*                statement. This parameter is obsolete.        @P2A   01768500
+//********************************************************************  01777400
+//IEFPROC   EXEC   PGM=IEFIIC                                    @p2C   01788700
+//IEFINDMY  DD     DUMMY                                                01800000

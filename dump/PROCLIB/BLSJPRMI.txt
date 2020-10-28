@@ -1,0 +1,43 @@
+//*** Start of Specifications for BLSJPRMI **************************** 00001800
+//*                                                                     00003600
+//* $MAC(BLSJPRMI) COMP(SC132) PROD(JBB6602): JCL - Build SNAP tables   00005400
+//*                                                                     00007200
+//* PROPRIETARY STATEMENT:                                              00010200
+//*                                                                     00013200
+//*   LICENSED MATERIALS - PROPERTY OF IBM                              00016200
+//*   THIS MACRO IS "RESTRICTED MATERIALS OF IBM"                       00016400
+//*   5645-001 (C) COPYRIGHT IBM CORP. 1987, 1996                       00016600
+//*                                                                     00017000
+//*   STATUS = JBB6602                                                  00017200
+//*                                                                     00017400
+//* EXTERNAL CLASSIFICATION: NONE                                       00017600
+//* END OF EXTERNAL CLASSIFICATION:                                     00017800
+//*                                                                     00018000
+//* FUNCTION = Catalogued procedure to build tables for SNAP.           00019800
+//*                                                                     00021600
+//* =================================================================== 00023400
+//*                                                                     00025200
+//* CHANGE ACTIVITY=                                                    00027000
+//*                                                                     00028800
+//*   Products=                                                         00030600
+//* $L0=IPCSENH,HBB3310,87016,PDE4: IPCS PARMLIB support                00032400
+//* $L1=PARMC,JBB6602,95150,PDE1: Concatenated parmlib support          00032700
+//*     Remove IPCSPARM DD statement to trigger the use of the          00033000
+//*     logical parmlib concatenation for the system                    00033300
+//*                                                                     00033600
+//* ------------------------------------------------------------------- 00033900
+//*                                                                     00034200
+//*   Design changes= none                                              00036000
+//*                                                                     00037800
+//* ------------------------------------------------------------------- 00038400
+//*                                                                     00039000
+//*   PTMs= none                                                        00039600
+//*                                                                     00040200
+//* ------------------------------------------------------------------- 00040800
+//*                                                                     00041400
+//*   Maintenance= none                                                 00043200
+//*                                                                     00045000
+//** End of Specifications for BLSJPRMI ******************************* 00047500
+//IEFPROC EXEC PGM=BLSQPRMI,REGION=4096K,TIME=1440                      00050000
+//SYSTSPRT DD DUMMY                                                     00150000
+//SYSTSIN DD DUMMY                                                      00200000

@@ -1,0 +1,13 @@
+//CVAFTR   PROC                                                         00050000
+//*$MAC(CVAFTR) COMP(DM1CV) PROD(DMS-XZ): CVAF GTF TRACE PROC           00100000
+//*PROPRIETARY V3 STATEMENT                                             00150000
+//*LICENSED MATERIALS - PROPERTY OF IBM                                 00200000
+//*"RESTRICTED MATERIALS OF IBM"                                        00250000
+//*5695-DF1                                                             00300000
+//*(C) COPYRIGHT 1980,1985  IBM CORP.                                   00350000
+//*END PROPRIETARY V3 STATEMENT                                         00400000
+//* THIS PROCEDURE IS TO BE USED BY AN OPERATOR 'START' COMMAND         00450000
+//* TO START OR STOP GTF TRACING OF CVAF (COMMON VTOC ACCESS            00500000
+//* FACILITY) EVENTS.                                                   00550000
+//*$L0=IXVTOC,JDM1134,T790225,STLRJM: INDEXED VTOC SUPPORT              00600000
+//IEFPROC EXEC PGM=CVAFGTF                                              00650000

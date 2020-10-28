@@ -1,0 +1,27 @@
+//*********************************************************************
+//*                                                                   *
+//*              Licensed Materials - Property of IBM                 *
+//*              5650-ZOS                                             *
+//*              Copyright IBM Corp.  2001, 2013                      *
+//*              Status=HKY7790                                       *
+//*                                                                   *
+//*********************************************************************
+//*********************************************************************
+//*                                                                   *
+//* Procedure for starting the PKI Services Daemon                    *
+//*                                                                   *
+//*********************************************************************
+//PKISERVD PROC REGSIZE=256M,                                          X
+//             OUTCLASS='A',                                           X
+//             TZ='EST5EDT',                                           X
+//             FN='pkiserv.envars',                                    X
+//             DIR='/usr/lpp/pkiserv/samples',                         X
+//             STDO='1>DD:STDOUT',                                     X
+//             STDE='2>DD:STDERR'
+//*--------------------------------------------------------------------
+//GO       EXEC  PGM=IKYPKID,REGION=&REGSIZE,TIME=1440,
+//  PARM=('ENVAR("_CEE_ENVFILE=&DIR/&FN","TZ=&TZ") / &STDO &STDE')
+//STDOUT   DD  SYSOUT=&OUTCLASS
+//STDERR   DD  SYSOUT=&OUTCLASS
+//SYSOUT   DD  SYSOUT=&OUTCLASS
+//CEEDUMP  DD  SYSOUT=&OUTCLASS
