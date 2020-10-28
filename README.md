@@ -1,3 +1,2 @@
 # MFModern
-This is a Mainframe Modernization Repository
-and currently its private
+This is a Mainframe Modernization Repository.
