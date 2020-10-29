@@ -1,6 +1,8 @@
 from pathlib import Path
+from global_file import *
 
-folder_path = r'/projects/MFModern/dump/'
 p = Path(folder_path)
 for child in p.rglob("*.*"):
     print(child)
+
+    
